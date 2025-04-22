@@ -7,6 +7,12 @@ import Footer from './pages/footer/footer';
 import Engagement from './pages/engagement/engagement';
 import About from './pages/about/about';
 import Diamond from './pages/diamond/diamond';
+import Terms from './pages/terms-conditions/terms';
+import Policy from './pages/policy/policy';
+import Weddingbrands from './pages/wedding-brands/weddingBrands';
+
+
+
 
 export default function App() {
   const location = useLocation();
@@ -22,6 +28,10 @@ export default function App() {
           <Route path="/engagement" element={<Engagement />} />
           <Route path="/about" element={<About />} />
           <Route path="/diamond" element={<Diamond />} />
+          <Route path="/terms" element={<Terms />}  />
+          <Route path="/policy" element={<Policy /> } />
+<Route path="/wedding-brands" element={<Weddingbrands/> } />
+
         </Routes>
       </main>
       <Footer />

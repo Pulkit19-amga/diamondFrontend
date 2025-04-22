@@ -2,12 +2,12 @@ import React,{useState} from 'react'
 import "./index.css";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
-import DiamondFilter from './DiamondFilter';
-import ColorSelect from "./ColorSelect";
-import ClaritySlider from './ClaritySlider';
-import FilterActions from './FilterActions';
-import DiamondHeader from './DiamondHeader';
-import DiamondTable from  './DiamondTable';
+import DiamondFilter from './diamondFilter/DiamondFilter';
+import ColorSelect from "./colorSelect/ColorSelect";
+import ClaritySlider from './claritySlider/ClaritySlider';
+import FilterActions from './filterAction/FilterActions';
+import DiamondHeader from './diamondHeader/DiamondHeader';
+import DiamondTable from  './diamondTable/DiamondTable';
 
 const { Range } = Slider;
 const steps = [
@@ -50,7 +50,7 @@ export default function Diamond() {
     <>
     <section className="hero_section_wrapper">
     <div className="container-fluid p-0 position-relative">
-      <img src="images/Header_Banner.jpg" alt="" className="img-fluid w-100"  style={{marginTop:"170px"}}  />
+      <img src="images/Header_Banner.jpg" alt="" className="img-fluid w-100"/>
     </div>
   </section>
 

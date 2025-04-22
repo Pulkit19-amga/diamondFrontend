@@ -166,6 +166,8 @@ const SecondHeader = () => {
           </nav>
         </div>
       </header>
+      <div className="header-spacer" style={{ height: "172px" }}></div>
+
     </>
   );
 };
