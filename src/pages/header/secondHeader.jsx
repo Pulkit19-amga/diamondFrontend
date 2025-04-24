@@ -62,8 +62,8 @@ const SecondHeader = () => {
             </div>
 
             <div className="logo-wrapper">
-              <a className="navbar-brand text-black" href="#">
-                <img src="./images/logo.png" className="img-fluid" alt="Logo" />
+              <a className="navbar-brand text-black" href="/">
+                <img src="./images/logo2.png" className="img-fluid" alt="Logo" />
               </a>
             </div>
 
@@ -141,7 +141,7 @@ const SecondHeader = () => {
                 <ul className="navbar-nav text-center gap-5 align-items-center">
                   {[
                     { label: "ENGAGEMENT", path: "/engagement" },
-                    { label: "WEDDING" },
+                    { label: "WEDDING", path: "/wedding-brands" },
                     { label: "Diamonds", path: "/diamond" },
                     { label: "HIGh jewelry" },
                     { label: "jewelry" },

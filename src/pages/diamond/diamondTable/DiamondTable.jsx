@@ -10,7 +10,7 @@ const diamonds = [
     cut: 'Very Good',
     report: 'GIA',
     price: '$199',
-    image: '../../../public/images/250223-2.jpg',
+    image: '/images/shapes/round.jpg',
   },
   {
     shape: 'Round',
@@ -20,7 +20,7 @@ const diamonds = [
     cut: 'Excellent',
     report: 'GIA',
     price: '$208',
-    image: '../../../public/images/250223-2.jpg',
+    image: '/images/shapes/round.jpg',
   },
   {
     shape: 'Emerald',
@@ -30,7 +30,7 @@ const diamonds = [
     cut: 'Excellent',
     report: 'GIA',
     price: '$215',
-    image: '../../../public/images/250223-2.jpg',
+    image: '/images/shapes/emerald.jpg',
   },
   {
     shape: 'Round',
@@ -40,7 +40,7 @@ const diamonds = [
     cut: 'Excellent',
     report: 'GIA',
     price: '$234',
-    image: '../../../public/images/250223-2.jpg',
+    image: '/images/shapes/round.jpg',
   },
   {
     shape: 'Round',
@@ -50,7 +50,7 @@ const diamonds = [
     cut: 'Excellent',
     report: 'GIA',
     price: '$238',
-    image: '../../../public/images/250223-2.jpg',
+    image: '/images/shapes/round.jpg',
   },
   {
     shape: 'Round',
@@ -60,7 +60,7 @@ const diamonds = [
     cut: 'Excellent',
     report: 'GIA',
     price: '$238',
-    image: '../../../public/images/250223-2.jpg',
+    image: '/images/shapes/round.jpg',
   },
   {
     shape: 'Round',
@@ -70,7 +70,7 @@ const diamonds = [
     cut: 'Excellent',
     report: 'GIA',
     price: '$251',
-    image: '../../../public/images/250223-2.jpg',
+    image: '/images/shapes/round.jpg',
   },
   {
     shape: 'Round',
@@ -80,7 +80,7 @@ const diamonds = [
     cut: 'Excellent',
     report: 'GIA',
     price: '$252',
-    image: '../../../public/images/250223-2.jpg',
+    image: '/images/shapes/round.jpg',
   },
   {
     shape: 'Emerald',
@@ -90,7 +90,7 @@ const diamonds = [
     cut: 'Excellent',
     report: 'GIA',
     price: '$258',
-    image: '../../../public/images/250223-2.jpg',
+    image: '/images/shapes/emerald.jpg',
   },
 ];
 

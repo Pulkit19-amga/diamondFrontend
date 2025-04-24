@@ -8,6 +8,7 @@ import ClaritySlider from './claritySlider/ClaritySlider';
 import FilterActions from './filterAction/FilterActions';
 import DiamondHeader from './diamondHeader/DiamondHeader';
 import DiamondTable from  './diamondTable/DiamondTable';
+import DiamondTabFilter from './diamondTabFilter/DiamondTabFilter';
 
 const { Range } = Slider;
 const steps = [
@@ -32,7 +33,7 @@ const steps = [
 
 export default function Diamond() {
   const [color, setColor] = useState("");
-    const [activeTab, setActiveTab] = useState("natural-diamonds");
+   
     const [currentStep, setCurrentStep] = useState(1);
     const [selected, setSelected] = useState(null);
 
@@ -40,11 +41,31 @@ export default function Diamond() {
       setCurrentStep(stepId);
     };
 
+    const [activeTab, setActiveTab] = useState("lab-diamonds");
+
     const tabs = [
-        { key: "lab-diamonds", label: "Lab Diamonds" },
-        { key: "natural-diamonds", label: "Natural Diamonds" },
-        { key: "color-diamonds", label: "Color Diamonds" },
-      ];
+      { key: "lab-diamonds", label: "Lab Diamonds" },
+      { key: "natural-diamonds", label: "Natural Diamonds" },
+      { key: "color-diamonds", label: "Color Diamonds" },
+    ];
+  
+    const diamondShapes = {
+      "lab-diamonds": [
+        { name: "Round" },
+        { name: "Princess" },
+        { name: "Oval" },
+      ],
+      "natural-diamonds": [
+        { name: "Cushion" },
+        { name: "Emerald" },
+        { name: "Asscher" },
+      ],
+      "color-diamonds": [
+        { name: "Radiant" },
+        { name: "Pear" },
+        { name: "Heart" },
+      ],
+    };
 
   return (
     <>
@@ -77,41 +98,10 @@ export default function Diamond() {
       </div> */}
     </div>
 
-    <div className="diamond-tab-container page-width">
-      <div className="tab-wrapper">
-        {tabs.map((tab) => (
-          <p
-            key={tab.key}
-            className={`diamond-tab ${activeTab === tab.key ? "active" : ""}`}
-            onClick={() => setActiveTab(tab.key)}
-            data-diamond={tab.key}
-          >
-            {tab.label}
-          </p>
-        ))}
-      </div>
-{/* 
-      <div className="tab-content">
-        {activeTab === "lab-diamonds" && <p>Showing Lab Diamonds...</p>}
-        {activeTab === "natural-diamonds" && <p>Showing Natural Diamonds...</p>}
-        {activeTab === "color-diamonds" && <p>Showing Color Diamonds...</p>}
-      </div> */}
-    </div>
+   <DiamondTabFilter />
 
 
-    <div className="diamond-filter-wrapper">
-      {diamondShapes.map((shape) => (
-        <div key={shape.name} className="diamond-shape-box">
-          <img
-            src="/public/images/filter-diamond-shape.png"
-            alt={shape.name}
-            className="diamond-shape-icon"
-          />
-          <p className="diamond-shape-name">{shape.name}</p>
-        </div>
-      ))}
-    </div>
-
+    
    <DiamondFilter />
 
    <div style={{ padding: "20px" }}>

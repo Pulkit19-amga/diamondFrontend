@@ -37,7 +37,7 @@ const navigate = useNavigate();
             </div>
           </div>
           <div className="logo-wrapper">
-            <a className="navbar-brand text-white" href="#">
+            <a className="navbar-brand text-white" href="/">
               <img src="./images/logo.png" className="img-fluid" alt="" />
             </a>
           </div>
@@ -148,6 +148,7 @@ const navigate = useNavigate();
                       type="button"
                       className="btn text-uppercase  dropdown-toggle text-white"
                       data-bs-toggle="dropdown"
+                      onClick={() => navigate("/wedding-brands")}
                     >
                       WEDDING
                     </button>

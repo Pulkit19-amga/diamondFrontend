@@ -37,10 +37,10 @@ const Footer = () => {
                   <a href="#" className="text-white">Affiliate Program</a>
                 </li>
                 <li className="site-footer__linklist-item">
-                  <a href="terms-conditions.html" className="text-white">Terms of Use</a>
+                  <a href="/terms" className="text-white">Terms of Use</a>
                 </li>
                 <li className="site-footer__linklist-item">
-                  <a href="policy.html" className="text-white">Privacy Policy</a>
+                  <a href="/policy" className="text-white">Privacy Policy</a>
                 </li>
                 <li className="site-footer__linklist-item">
                   <a href="#" className="text-white">Site Map</a>
@@ -53,13 +53,13 @@ const Footer = () => {
     <p className="footer-nav__title acc-title text-white">Education</p>
     <ul className="site-footer__linklist p-0 acc-content">
       <li id="footer-link_diamonds" className="site-footer__linklist-item">
-        <a href="">Diamonds</a>
+        <a href="/diamond">Diamonds</a>
       </li>
       <li id="footer-link_engagement" className="site-footer__linklist-item">
-        <a href="">Engagement</a>
+        <a href="/engagement">Engagement</a>
       </li>
       <li id="footer-link_wedding-bands" className="site-footer__linklist-item">
-        <a href="">Wedding bands</a>
+        <a href="/wedding-brands">Wedding bands</a>
       </li>
       <li id="footer-link_gemstones" className="site-footer__linklist-item">
         <a href="">Gemstones</a>
@@ -86,23 +86,25 @@ const Footer = () => {
           <div className="col-2">
   <div className="site-footer__item-inner site-footer__item-inner--link_list">
     <p className="footer-nav__title acc-title text-white">Shop</p>
+   
     <ul className="site-footer__linklist acc-content p-0">
-      {[
-        "Diamonds",
-        "Engagement rings",
-        "Bands for him",
-        "Bands for her",
-        "Home preview",
-        "Gemstone rings",
-        "Preset rings",
-        "Custom rings",
-        "Fine jewelry",
-      ].map((item, i) => (
-        <li key={i} className="site-footer__linklist-item">
-          <a href="#">{item}</a>
-        </li>
-      ))}
-    </ul>
+  {[
+    { label: "Diamonds", link: "/diamond" },
+    { label: "Engagement rings", link: "/engagement-rings" },
+    { label: "Bands for him", link: "/bands-for-him" },
+    { label: "Bands for her", link: "/bands-for-her" },
+    { label: "Home preview", link: "/home-preview" },
+    { label: "Gemstone rings", link: "/gemstone-rings" },
+    { label: "Preset rings", link: "/preset-rings" },
+    { label: "Custom rings", link: "/custom-rings" },
+    { label: "Fine jewelry", link: "/fine-jewelry" },
+  ].map((item, i) => (
+    <li key={i} className="site-footer__linklist-item">
+      <a href={item.link}>{item.label}</a>
+    </li>
+  ))}
+</ul>
+
   </div>
 </div>
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import "./DiamondFilter.css";
 
 const DiamondFilter = () => {
@@ -7,9 +7,10 @@ const DiamondFilter = () => {
   const [cut, setCut] = useState([0, 75]);
 
   const handleRangeChange = (e, index, state, setState) => {
-    const newValue = [...state];
-    newValue[index] = Number(e.target.value);
-    if (newValue[0] > newValue[1]) return;
+    const value = Number(e.target.value);
+    let newValue = [...state];
+    newValue[index] = value;
+    newValue.sort((a, b) => a - b); // Ensure correct order
     setState(newValue);
   };
 
@@ -24,6 +25,9 @@ const DiamondFilter = () => {
 
   const colorLabels = ["FDY", "FLBY", "FBEY", "LY", "FLFY", "FY", "FVY"];
   const cutLabels = ["Good", "Very Good", "Ideal", "True Hearts"];
+
+  // Add z-index logic for overlapping thumbs
+  const getZIndex = (val, min, max) => (val === min ? 5 : 4);
 
   return (
     <div className="filter-container">
@@ -43,6 +47,7 @@ const DiamondFilter = () => {
             step="10"
             value={price[0]}
             onChange={(e) => handleRangeChange(e, 0, price, setPrice)}
+            style={{ zIndex: getZIndex(price[0], 0, 60) }}
           />
           <input
             type="range"
@@ -51,6 +56,7 @@ const DiamondFilter = () => {
             step="10"
             value={price[1]}
             onChange={(e) => handleRangeChange(e, 1, price, setPrice)}
+            style={{ zIndex: getZIndex(price[1], 0, 60) }}
           />
         </div>
         <div className="slider-labels">
@@ -81,6 +87,7 @@ const DiamondFilter = () => {
             step="100"
             value={carat[0]}
             onChange={(e) => handleRangeChange(e, 0, carat, setCarat)}
+            style={{ zIndex: getZIndex(carat[0], 100, 500) }}
           />
           <input
             type="range"
@@ -89,6 +96,7 @@ const DiamondFilter = () => {
             step="100"
             value={carat[1]}
             onChange={(e) => handleRangeChange(e, 1, carat, setCarat)}
+            style={{ zIndex: getZIndex(carat[1], 100, 500) }}
           />
         </div>
         <div className="slider-labels">
@@ -119,6 +127,7 @@ const DiamondFilter = () => {
             step="25"
             value={cut[0]}
             onChange={(e) => handleRangeChange(e, 0, cut, setCut)}
+            style={{ zIndex: getZIndex(cut[0], 0, 75) }}
           />
           <input
             type="range"
@@ -127,6 +136,7 @@ const DiamondFilter = () => {
             step="25"
             value={cut[1]}
             onChange={(e) => handleRangeChange(e, 1, cut, setCut)}
+            style={{ zIndex: getZIndex(cut[1], 0, 75) }}
           />
         </div>
         <div className="slider-labels">
@@ -134,11 +144,11 @@ const DiamondFilter = () => {
             <span key={i}>{label}</span>
           ))}
         </div>
-        {/* <div className="range-inputs">
+        <div className="range-inputs">
           <input type="text" readOnly value={cutLabels[cut[0] / 25]} />
           <span className="to-label">to</span>
           <input type="text" readOnly value={cutLabels[cut[1] / 25]} />
-        </div> */}
+        </div>
       </div>
     </div>
   );
