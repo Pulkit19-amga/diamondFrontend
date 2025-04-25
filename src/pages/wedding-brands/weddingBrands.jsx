@@ -1,4 +1,9 @@
 import React from 'react'
+import Customize from '../engagement/customize/customize';
+import Education from '../engagement/education/education';
+import DesigningProcess from '../engagement/designing-process/designingProcess.';
+import Quetions from '../engagement/quetions/quetions';
+import WedingCollection from './collaction/wedingCollection';
 
 export default function Weddingbrands() {
   return (
@@ -31,6 +36,17 @@ export default function Weddingbrands() {
     </div>
   </div>
 </section>
+
+
+<WedingCollection />
+
+<Customize />
+
+<Education />
+
+<DesigningProcess />
+
+<Quetions />
 
     </>
   )
