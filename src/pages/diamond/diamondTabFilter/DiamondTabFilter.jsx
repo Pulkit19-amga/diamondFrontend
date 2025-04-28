@@ -58,22 +58,25 @@ const DiamondTabFilter = () => {
           <p>No shapes available</p>
         ) : (
           shapes.map(shape => {
-            const isSelected = selectedShape === shape;
-            const shapeSlug = shape.toLowerCase().replace(/\s/g, '-');
+          
+            const shapeName = shape.name || ''; // fallback just in case
+            const shapeSlug = shapeName.toLowerCase().replace(/\s/g, '-');
+            const isSelected = selectedShape?.name === shapeName;
 
             return (
               <div
-                key={shape}
-                className={`shape-box${isSelected ? ' selected' : ''}`}
-                onClick={() => handleShapeClick(shape)}
-              >
-                <img
-                  src={`/images/shapes/${shapeSlug}.jpg`}
-                  alt={shape}
-                  className="shape-icon"
-                />
-                <div className="shape-name">{shape}</div>
-              </div>
+              key={shape.id}
+              className={`shape-box${isSelected ? ' selected' : ''}`}
+              onClick={() => handleShapeClick(shape)}
+            >
+              <img
+                src={`/images/shapes/${shapeSlug}.jpg`}
+                alt={shapeName}
+                className="shape-icon"
+              />
+              <div className="shape-name">{shapeName}</div>
+            </div>
+          
             );
           })
         )}
