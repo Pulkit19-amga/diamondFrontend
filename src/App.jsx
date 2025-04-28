@@ -10,6 +10,8 @@ import Diamond from './pages/diamond/diamond';
 import Terms from './pages/terms-conditions/terms';
 import Policy from './pages/policy/policy';
 import Weddingbrands from './pages/wedding-brands/weddingBrands';
+import RingStyle from './pages/engagemnet-ring-style/ringStyle';
+import DiamondDetails from './pages/diamond-detail/diamondDetails/diamondDetails';
 
 
 
@@ -30,7 +32,10 @@ export default function App() {
           <Route path="/diamond" element={<Diamond />} />
           <Route path="/terms" element={<Terms />}  />
           <Route path="/policy" element={<Policy /> } />
-<Route path="/wedding-brands" element={<Weddingbrands/> } />
+          <Route path="/wedding-brands" element={<Weddingbrands/> } />
+          <Route path="/engagement-ring-style" element={<RingStyle />} />
+          <Route path="/diamond-details" element={<DiamondDetails /> } />
+          
 
         </Routes>
       </main>
