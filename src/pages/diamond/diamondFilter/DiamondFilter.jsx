@@ -59,6 +59,37 @@ const DiamondFilter = () => {
             style={{ zIndex: getZIndex(price[1], 0, 60) }}
           />
         </div>
+        {/* <div className="slider-wrapper">
+          <div className="slider-track"></div>
+            <div
+              className="slider-active"
+              style={{
+                left: `${(price[0] / 60) * 100}%`,
+                width: `${((price[1] - price[0]) / 60) * 100}%`,
+              }}
+            ></div>
+
+            <input
+              type="range"
+              min="0"
+              max="60"
+              step="1"
+              value={price[0]}
+              onChange={(e) => handleRangeChange(e, 0)}
+              className="thumb thumb-left"
+              style={{ zIndex: price[0] > 50 ? '5' : '3' }}
+            />
+            <input
+              type="range"
+              min="0"
+              max="60"
+              step="1"
+              value={price[1]}
+              onChange={(e) => handleRangeChange(e, 1)}
+              className="thumb thumb-right"
+            />
+        </div> */}
+        
         <div className="slider-labels">
           {colorLabels.map((label, i) => (
             <span key={i}>{label}</span>

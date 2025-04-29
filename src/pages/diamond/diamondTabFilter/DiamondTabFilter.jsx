@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axiosClient from '../../../api/axios'; // Ensure path is correct
 import './DiamondTabFilter.css';
 
-const DiamondTabFilter = () => {
+const DiamondTabFilter = ({ onShapeChange }) => {
   const tabs = [
     { label: 'LAB DIAMONDS', key: 'lab' },
     { label: 'NATURAL DIAMONDS', key: 'natural' },
@@ -10,7 +10,7 @@ const DiamondTabFilter = () => {
   ];
 
   const [activeTab, setActiveTab] = useState(tabs[0].key);
-  const [selectedShape, setSelectedShape] = useState(null);
+  const [selectedShapes, setSelectedShapes] = useState([]);
   const [shapes, setShapes] = useState([]);
   const [error, setError] = useState('');
 
@@ -30,11 +30,20 @@ const DiamondTabFilter = () => {
 
   const handleTabClick = (key) => {
     setActiveTab(key);
-    setSelectedShape(null);
+    setSelectedShapes([]);  // Clear shape selection on tab change
+    onShapeChange([]); // Send empty array to parent
   };
 
   const handleShapeClick = (shape) => {
-    setSelectedShape(shape);
+    const isSelected = selectedShapes.some(s => s.name === shape.name);
+    let updatedShapes;
+    if (isSelected) {
+      updatedShapes = selectedShapes.filter(s => s.name !== shape.name);
+    } else {
+      updatedShapes = [...selectedShapes, shape];
+    }
+    setSelectedShapes(updatedShapes);
+    onShapeChange(updatedShapes); // Send updated shapes to parent
   };
 
   return (
@@ -61,7 +70,7 @@ const DiamondTabFilter = () => {
           
             const shapeName = shape.name || ''; // fallback just in case
             const shapeSlug = shapeName.toLowerCase().replace(/\s/g, '-');
-            const isSelected = selectedShape?.name === shapeName;
+            const isSelected = selectedShapes.some(s => s.name === shapeName);
 
             return (
               <div
