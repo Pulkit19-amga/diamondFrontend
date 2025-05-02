@@ -16,7 +16,7 @@ const navigate = useNavigate();
           <p className="m-0 text-center p-2 ">
             <strong className="text-white">
               {" "}
-              FREE INSURED SHIPPING & RETURNS | LIFETIME WARRANTY
+              FREE INSURED SHIPPING & RETURNS | LIFETIME WARRANTY asdfdfs
             </strong>
           </p>
         </div>

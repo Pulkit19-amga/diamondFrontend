@@ -19,7 +19,6 @@ const steps = [
 ];
 
 export default function Diamond() {
-  const [color, setColor] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedShapes, setSelectedShapes] = useState([]); // select single as well as mutltiple shape
   const [diamonds, setDiamonds] = useState([]); // insert api data
@@ -28,9 +27,24 @@ export default function Diamond() {
   const [loading, setLoading] = useState(false);
 
   // diamond filter 2nd component
-  const [price, setPrice] = useState([0, 60]);
-  const [carat, setCarat] = useState([100, 500]);
-  const [cut, setCut] = useState([0, 75]);
+  const [price, setPrice] = useState([0, 10000]);
+  const [carat, setCarat] = useState([0, 20]);
+  const [cut, setCut] = useState([0, 5]);
+
+  // color filter
+  const [color, setColor] = useState([0, 5]);
+
+  // clearity
+  const [clarity, setClarity] = useState([0, 6]);
+
+  const resetFilters = () => {
+    setSelectedShapes([]);
+    setPrice([0, 10000]);
+    setCarat([0, 20]);
+    setCut([0, 5]);
+    setColor([0, 5]);
+    setClarity([0, 6]);
+  };
 
   const handleStepClick = (stepId) => {
     setCurrentStep(stepId);
@@ -62,16 +76,6 @@ export default function Diamond() {
     fetchDiamonds();
   }, []);
 
-  // Filter diamonds based on the selected tab and shapes
-  /* const filteredDiamonds = (Array.isArray(diamonds) ? diamonds : []).filter(
-    (diamond) => {
-      if (!diamond || !diamond.shape) return false;
-      return (
-        selectedShapes.length === 0 ||
-        selectedShapes.some((shape) => shape.name === diamond.shape.name)
-      );
-    }
-  ); */
 
   const filteredDiamonds = (Array.isArray(diamonds) ? diamonds : []).filter(
     (diamond) => {
@@ -81,7 +85,9 @@ export default function Diamond() {
         !diamond.shape ||
         !diamond.price ||
         !diamond.carat_weight ||
-        !diamond.cut
+        !diamond.cut ||
+        !diamond.color ||
+        !diamond.clarity
       ) {
         console.log("Invalid diamond skipped:", diamond?.id);
         return false;
@@ -96,29 +102,36 @@ export default function Diamond() {
         );
 
       // 3. Price filter (convert from thousands to actual price)
-      const [minPrice, maxPrice] = price.map((p) => p * 1000);
+      const [minPrice, maxPrice] = price.map(Number);
       const priceMatch = diamond.price >= minPrice && diamond.price <= maxPrice;
 
       // 4. Carat filter (assuming carat is stored as points, convert to carats)
-      const [minCarat, maxCarat] = carat.map((c) => c / 1);
+      const [minCarat, maxCarat] = carat.map(Number);
       const caratMatch =
         diamond.carat_weight >= minCarat && diamond.carat_weight <= maxCarat;
 
       // 5. Cut filter (convert slider values to cut indices)
       const cutMatch =
-        diamond.cut >= Math.floor(cut[0] / 25) &&
-        diamond.cut <= Math.floor(cut[1] / 25);
+        diamond.cut > cut[0] && (cut[1] < 4 ? diamond.cut <= cut[1] : true);
 
       // 6. Color filter
-      // const colorMatch = !color ||
-      //                  (diamond.color && diamond.color.toLowerCase() === color.toLowerCase());
+      const colorMatch =
+        diamond.color.id > color[0] &&
+        (color[1] < 5 ? diamond.color.id < color[1] : true);
+
+      // 6. Color filter
+      const clarityMatch =
+        diamond.clarity.id > clarity[0] &&
+        (clarity[1] < 6 ? diamond.clarity.id <= clarity[1] : true);
 
       // Debug logging for excluded diamonds
       if (
         !shapeMatch ||
         !priceMatch ||
         !caratMatch ||
-        !cutMatch /* || !colorMatch */
+        !cutMatch ||
+        !colorMatch ||
+        !clarityMatch
       ) {
         console.log("Diamond excluded:", {
           id: diamond?.id,
@@ -133,9 +146,13 @@ export default function Diamond() {
               `Price $${diamond.price} not in range $${minPrice}-$${maxPrice}`,
             carat:
               !caratMatch &&
-              `Carat ${diamond.carat} not in range ${minCarat}-${maxCarat}`,
+              `Carat ${diamond.carat_weight} not in range ${minCarat}-${maxCarat}`,
             cut: !cutMatch && `Cut ${diamond.cut} not in range`,
-            // color: !colorMatch && `Color ${diamond.color} doesn't match ${color}`
+            color:
+              !colorMatch && `Color ${diamond.color.id} doesn't match ${color}`,
+            clarity:
+              !clarityMatch &&
+              `Clarity ${diamond.clarity.id} doesn't match ${clarity}`,
           },
         });
         return false;
@@ -144,20 +161,6 @@ export default function Diamond() {
       return true;
     }
   );
-
-  // testing perpose
-  // useEffect(() => {
-  //   console.log("Current filter values:", {
-  //     selectedShapes,
-  //     price,
-  //     carat,
-  //     cut,
-  //     color
-  //   });
-
-  //   console.log("Filtered diamonds count:", filteredDiamonds.length);
-  //   console.log("First few filtered diamonds:", filteredDiamonds.slice(0, 3));
-  // }, [selectedShapes, price, carat, cut, color, filteredDiamonds]);
 
   return (
     <>
@@ -197,6 +200,7 @@ export default function Diamond() {
       <DiamondTabFilter onShapeChange={handleShapeChange} />
 
       <DiamondFilter
+        className="p-2"
         price={price}
         setPrice={setPrice}
         carat={carat}
@@ -205,13 +209,12 @@ export default function Diamond() {
         setCut={setCut}
       />
 
-      <div style={{ padding: "20px" }}>
-        <ColorSelect value={color} onChange={(e) => setColor(e.target.value)} />
+      <div className="second-filter"> 
+        <ColorSelect color={color} setColor={setColor} />
+        <ClaritySlider clarity={clarity} setClarity={setClarity} />
       </div>
 
-      <ClaritySlider />
-
-      <FilterActions />
+      <FilterActions onReset={resetFilters}/>
 
       <DiamondHeader />
 

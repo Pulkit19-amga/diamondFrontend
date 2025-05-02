@@ -2,154 +2,169 @@ import React, { useState } from "react";
 import "./DiamondFilter.css";
 
 const DiamondFilter = ({ price, setPrice, carat, setCarat, cut, setCut }) => {
+  const minPrice = 0;
+  const maxPrice = 10000;
+  const minPriceDifference = 100;
 
-  const handleRangeChange = (e, index, state, setState) => {
-    const value = Number(e.target.value);
-    let newValue = [...state];
-    newValue[index] = value;
-    newValue.sort((a, b) => a - b); // Ensure correct order
+  const minCarat = 0;
+  const maxCarat = 20;
+  const minCaratDifference = 1;
 
-    // console.log(`Filter changed - ${state === price ? 'Price' : state === carat ? 'Carat' : 'Cut'}:`, newValue);
-    setState(newValue);
+
+
+  const cutLabels = ["Excellent", "Very Good", "Good", "Ideal", "8X"];
+  const minCutIndex = 0;
+  const maxCutIndex = cutLabels.length;
+
+  const handlePriceChange = (index, value) => {
+    const newPrice = [...price];
+    newPrice[index] = Number(value);
+    // Ensure min is always at least 10 less than max
+    if (index === 0 && newPrice[0] > newPrice[1] - minPriceDifference) {
+      newPrice[0] = newPrice[1] - minPriceDifference;
+    } else if (index === 1 && newPrice[1] < newPrice[0] + minPriceDifference) {
+      newPrice[1] = newPrice[0] + minPriceDifference;
+    }
+
+    setPrice(newPrice);
   };
 
-  const createTrackStyle = (min, max, values) => {
-    const percent1 = ((values[0] - min) / (max - min)) * 100;
-    const percent2 = ((values[1] - min) / (max - min)) * 100;
+  const getPriceTrackStyle = () => {
+    const left = ((price[0] - minPrice) / (maxPrice - minPrice)) * 100;
+    const right = ((price[1] - minPrice) / (maxPrice - minPrice)) * 100;
     return {
-      left: `${percent1}%`,
-      width: `${percent2 - percent1}%`,
+      left: `${left}%`,
+      width: `${right - left}%`,
     };
   };
 
-  const colorLabels = ["FDY", "FLBY", "FBEY", "LY", "FLFY", "FY", "FVY"];
-  const cutLabels = ["Good", "Very Good", "Ideal", "True Hearts"];
+  const handleCaratChange = (index, value) => {
+    const newCarat = [...carat];
+    newCarat[index] = Number(value);
+    // Ensure min is always at least 10 less than max
+    if (index === 0 && newCarat[0] > newCarat[1] - minCaratDifference) {
+      newCarat[0] = newCarat[1] - minCaratDifference;
+    } else if (index === 1 && newCarat[1] < newCarat[0] + minCaratDifference) {
+      newCarat[1] = newCarat[0] + minCaratDifference;
+    }
 
-  // Add z-index logic for overlapping thumbs
-  const getZIndex = (val, min, max) => (val === min ? 5 : 4);
+    setCarat(newCarat);
+  };
+
+  const getCaratTrackStyle = () => {
+    const left = ((carat[0] - minCarat) / (maxCarat - minCarat)) * 100;
+    const right = ((carat[1] - minCarat) / (maxCarat - minCarat)) * 100;
+    return {
+      left: `${left}%`,
+      width: `${right - left}%`,
+    };
+  };
+
 
   return (
-    
-    <div className="filter-container">
-      {/* Price */}
-      <div className="filter-section">
-        <label className="filter-label">By Price</label>
+    <div className="filter-section">
+      <div className="price-slider-container">
+        <label className="price-label">BY PRICE</label>
         <div className="slider-wrapper">
           <div className="slider-track"></div>
-          <div
-            className="slider-active"
-            style={createTrackStyle(0, 60, price)}
-          ></div>
+          <div className="slider-active" style={getPriceTrackStyle()}></div>
+
           <input
             type="range"
-            min="0"
-            max="60"
-            step="10"
+            min={minPrice}
+            max={maxPrice}
             value={price[0]}
-            onChange={(e) => handleRangeChange(e, 0, price, setPrice)}
-            style={{ zIndex: getZIndex(price[0], 0, 60) }}
+            onChange={(e) => handlePriceChange(0, e.target.value)}
           />
           <input
             type="range"
-            min="0"
-            max="60"
-            step="10"
+            min={minPrice}
+            max={maxPrice}
             value={price[1]}
-            onChange={(e) => handleRangeChange(e, 1, price, setPrice)}
-            style={{ zIndex: getZIndex(price[1], 0, 60) }}
+            onChange={(e) => handlePriceChange(1, e.target.value)}
           />
-        </div>        
-        <div className="slider-labels">
-          {colorLabels.map((label, i) => (
-            <span key={i}>{label}</span>
-          ))}
         </div>
-        <div className="range-inputs">
-          <input type="text" readOnly value={colorLabels[price[0] / 10]} />
-          <span className="to-label">to</span>
-          <input type="text" readOnly value={colorLabels[price[1] / 10]} />
+
+        <div className="price-inputs">
+          <input type="text" value={`$${price[0]}`} readOnly />
+          <span>to</span>
+          <input type="text" value={`$${price[1]}`} readOnly />
         </div>
       </div>
 
-      {/* Carat */}
-      <div className="filter-section">
-        <label className="filter-label">Carat</label>
+      {/* carat */}
+
+      <div className="price-slider-container">
+        <label className="price-label">BY CARAT</label>
         <div className="slider-wrapper">
           <div className="slider-track"></div>
-          <div
-            className="slider-active"
-            style={createTrackStyle(100, 500, carat)}
-          ></div>
+          <div className="slider-active" style={getCaratTrackStyle()}></div>
+
           <input
             type="range"
-            min="100"
-            max="500"
-            step="100"
+            min={minCarat}
+            max={maxCarat}
             value={carat[0]}
-            onChange={(e) => handleRangeChange(e, 0, carat, setCarat)}
-            style={{ zIndex: getZIndex(carat[0], 100, 500) }}
+            onChange={(e) => handleCaratChange(0, e.target.value)}
           />
           <input
             type="range"
-            min="100"
-            max="500"
-            step="100"
+            min={minCarat}
+            max={maxCarat}
             value={carat[1]}
-            onChange={(e) => handleRangeChange(e, 1, carat, setCarat)}
-            style={{ zIndex: getZIndex(carat[1], 100, 500) }}
+            onChange={(e) => handleCaratChange(1, e.target.value)}
           />
         </div>
 
-        
-        <div className="slider-labels">
-          {[100, 200, 300, 400, 500].map((val, i) => (
-            <span key={i}>{val}</span>
-          ))}
-        </div>
-        <div className="range-inputs">
-          <input type="text" readOnly value={carat[0]} />
-          <span className="to-label">to</span>
-          <input type="text" readOnly value={carat[1]} />
+        <div className="price-inputs">
+          <input type="text" value={`${carat[0]} Ct.`} readOnly />
+          <span>to</span>
+          <input type="text" value={`${carat[1]} Ct.`} readOnly />
         </div>
       </div>
 
-      {/* Cut */}
-      <div className="filter-section">
-        <label className="filter-label">Cut</label>
+      {/* cut */}
+
+      <div className="price-slider-container">
+        <label className="price-label">BY CUT</label>
         <div className="slider-wrapper">
           <div className="slider-track"></div>
           <div
             className="slider-active"
-            style={createTrackStyle(0, 75, cut)}
+            style={{
+              left: `${(cut[0] / maxCutIndex) * 100}%`,
+              width: `${((cut[1] - cut[0]) / maxCutIndex) * 100}%`,
+            }}
           ></div>
+
           <input
             type="range"
-            min="0"
-            max="75"
-            step="25"
+            min={minCutIndex}
+            max={maxCutIndex}
+            step={1}
             value={cut[0]}
-            onChange={(e) => handleRangeChange(e, 0, cut, setCut)}
-            style={{ zIndex: getZIndex(cut[0], 0, 75) }}
+            onChange={(e) =>
+              setCut([Math.min(Number(e.target.value), cut[1] - 1), cut[1]])
+            }
           />
           <input
             type="range"
-            min="0"
-            max="75"
-            step="25"
+            min={minCutIndex}
+            max={maxCutIndex}
+            step={1}
             value={cut[1]}
-            onChange={(e) => handleRangeChange(e, 1, cut, setCut)}
-            style={{ zIndex: getZIndex(cut[1], 0, 75) }}
+            onChange={(e) =>
+              setCut([cut[0], Math.max(Number(e.target.value), cut[0] + 1)])
+            }
           />
         </div>
-        <div className="slider-labels">
-          {cutLabels.map((label, i) => (
-            <span key={i}>{label}</span>
+
+        <div className="price-inputs">
+          {cutLabels.map((label, index) => (
+            <span key={index} className="cut-label-item">
+              {label}
+            </span>
           ))}
-        </div>
-        <div className="range-inputs">
-          <input type="text" readOnly value={cutLabels[cut[0] / 25]} />
-          <span className="to-label">to</span>
-          <input type="text" readOnly value={cutLabels[cut[1] / 25]} />
         </div>
       </div>
     </div>
