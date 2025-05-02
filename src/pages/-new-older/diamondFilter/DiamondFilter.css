@@ -1,15 +1,16 @@
-.filter-section {
+.filter_section {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: space-between;
   width: 100%;
-  padding: 0 20px;
+  padding: 2px;
   box-sizing: border-box;
 }
 
-.price-slider-container {
-  width: 32%;
+.price-slider-container {  
+ width:32%;
+
 }
 
 .price-label {

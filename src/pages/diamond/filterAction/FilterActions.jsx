@@ -1,19 +1,12 @@
 import React from "react";
 import "./FilterActions.css";
 
-const FilterActions = () => {
+const FilterActions = ({ onReset }) => {
   return (
-    <div className="filter-container">
+    <div className="filter-btn">
       <div className="left-buttons">
-        <button className="wide-button">Show advanced</button>
-        <button className="wide-button">Reset filters</button>
-      </div>
-      <div className="apply-wrapper">
-        <button className="apply-button">
-          <span>Apply</span>
-          <br />
-          <span>filters</span>
-        </button>
+        <button className="custom-btn outlined">SHOW ADVANCED</button>
+        <button className="custom-btn outlined" onClick={onReset}>RESET FILTERS</button>
       </div>
     </div>
   );

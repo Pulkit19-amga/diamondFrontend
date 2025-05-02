@@ -1,0 +1,103 @@
+.filter-container {
+  display: flex;
+  gap: 30px;
+  justify-content: space-between;
+  padding: 20px;
+  background: white;
+}
+
+.filter-section {
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-label {
+  font-weight: 600;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.slider-wrapper {
+  position: relative;
+  height: 30px;
+}
+
+.slider-track {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 6px;
+  background: #ddd;
+  width: 100%;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.slider-active {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 6px;
+  background: #1c2a57;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+.slider-wrapper input[type="range"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: none;
+  pointer-events: all;
+  appearance: none;
+  z-index: 3;
+  height: 30px;
+  transition: all 0.2s ease;
+}
+
+.slider-wrapper input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  background: #1c2a57;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -5px;
+  transition: box-shadow 0.2s ease;
+}
+
+.slider-wrapper input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  background: transparent;
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-top: 6px;
+  color: #333;
+}
+
+.range-inputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.range-inputs input {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.to-label {
+  font-size: 13px;
+  color: #555;
+
+}

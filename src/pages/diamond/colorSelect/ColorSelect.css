@@ -1,28 +1,99 @@
-.color-select-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 1rem;
-  }
-  
-  .color-label {
-    font-size: 14px;
-    color: #333;
-  }
-  
-  .color-select {
-    padding: 8px 12px;
-    font-size: 14px;
-    border: 2px solid #000;
-    border-radius: 6px;
-    outline: none;
-    appearance: none;
-    background-color: white;
-    cursor: pointer;
-    min-width: 150px;
-  }
-  
-  .color-select:focus {
-    border-color: #666;
-  }
-  
+.color-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  width: 100%;
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+.color-slider-container {
+  width: 100%;
+}
+
+.color-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  font-size: 14px;
+  color: #00263a;
+}
+
+.color-subTitle{
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.slider-wrapper {
+  position: relative;
+  height: 30px;
+  margin: 0 0 10px 0;
+}
+
+.slider-wrapper input[type="range"] {
+  position: absolute;
+  width: 100%;
+  height: 30px;
+  pointer-events: none;
+  appearance: none;
+  background: none;
+  z-index: 2;
+}
+
+.slider-wrapper input[type="range"]::-webkit-slider-thumb {
+  pointer-events: all;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #00263a;
+  border: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.slider-track {
+  position: absolute;
+  height: 4px;
+  background: #d3d3d3;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  z-index: 1;
+  border-radius: 2px;
+}
+
+.slider-active {
+  position: absolute;
+  height: 4px;
+  background-color: #00263a;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 2px;
+  z-index: 1;
+}
+
+.color-inputs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-inputs input {
+  width: 100px;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 14px;
+}
+
+.color-inputs span {
+  font-size: 14px;
+}
+
+.color-label-item {
+  flex: 1;
+  text-align: center;
+}
