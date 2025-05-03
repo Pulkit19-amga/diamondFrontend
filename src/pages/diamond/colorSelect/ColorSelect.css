@@ -1,16 +1,11 @@
 .color-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: space-between;
-  width: 100%;
+
+  width: 48%;
   padding: 2px;
   box-sizing: border-box;
 }
 
-.color-slider-container {
-  width: 100%;
-}
+
 
 .color-label {
   font-weight: bold;

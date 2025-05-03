@@ -1,7 +1,7 @@
 .filter-section {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 30px;
   justify-content: space-between;
   width: 100%;
   padding: 0 20px;
@@ -9,7 +9,7 @@
 }
 
 .price-slider-container {
-  width: 32%;
+  width: 30%;
 }
 
 .price-label {

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
+import axiosClient from "../../api/axios"; // Ensure path is correct
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import DiamondFilter from "./diamondFilter/DiamondFilter";
 import ColorSelect from "./colorSelect/ColorSelect";
 import ClaritySlider from "./claritySlider/ClaritySlider";
 import FilterActions from "./filterAction/FilterActions";
+import AdvanceFilter from "./advanceFilter/AdvanceFilter";
 import DiamondHeader from "./diamondHeader/DiamondHeader";
 import DiamondTable from "./diamondTable/DiamondTable";
 import DiamondTabFilter from "./diamondTabFilter/DiamondTabFilter";
-import axiosClient from "../../api/axios"; // Ensure path is correct
 
 const { Range } = Slider;
 const steps = [
@@ -37,6 +38,21 @@ export default function Diamond() {
   // clearity
   const [clarity, setClarity] = useState([0, 6]);
 
+  // advance filter
+  const [polish, setPolish] = useState([0, 4]);
+  const [symmetry, setSymmetry] = useState([0, 4]);
+  const [fluorescence, setFluorescence] = useState([0, 4]);
+  const [ratio, setRatio] = useState([0.9, 2.75]);
+  const [table, setTable] = useState([40, 90]);
+  const [depth, setDepth] = useState([40, 90]);
+
+  // show advance filter
+  const [showAdvanced, setShowAdvanced] = useState(false);
+
+  const toggleAdvanced = () => {
+    setShowAdvanced((prev) => !prev);
+  };
+
   const resetFilters = () => {
     setSelectedShapes([]);
     setPrice([0, 10000]);
@@ -44,6 +60,14 @@ export default function Diamond() {
     setCut([0, 5]);
     setColor([0, 5]);
     setClarity([0, 6]);
+
+    // reset advance
+    setPolish([0, 4]);
+    setSymmetry([0, 4]);
+    setFluorescence([0, 4]);
+    setRatio([0.9, 2.75]);
+    setTable([40, 90]);
+    setDepth([40, 90]);
   };
 
   const handleStepClick = (stepId) => {
@@ -75,7 +99,6 @@ export default function Diamond() {
 
     fetchDiamonds();
   }, []);
-
 
   const filteredDiamonds = (Array.isArray(diamonds) ? diamonds : []).filter(
     (diamond) => {
@@ -200,7 +223,6 @@ export default function Diamond() {
       <DiamondTabFilter onShapeChange={handleShapeChange} />
 
       <DiamondFilter
-        className="p-2"
         price={price}
         setPrice={setPrice}
         carat={carat}
@@ -209,16 +231,37 @@ export default function Diamond() {
         setCut={setCut}
       />
 
-      <div className="second-filter"> 
+      <div className="second-filter">
         <ColorSelect color={color} setColor={setColor} />
         <ClaritySlider clarity={clarity} setClarity={setClarity} />
       </div>
 
-      <FilterActions onReset={resetFilters}/>
+      <div className={`advanced-container ${showAdvanced ? "open" : ""}`}>
+        <AdvanceFilter
+          polish={polish}
+          setPolish={setPolish}
+          symmetry={symmetry}
+          setSymmetry={setSymmetry}
+          fluorescence={fluorescence}
+          setFluorescence={setFluorescence}
+          ratio={ratio}
+          setRatio={setRatio}
+          table={table}
+          setTable={setTable}
+          depth={depth}
+          setDepth={setDepth}
+        />
+      </div>
+
+      <FilterActions
+        onReset={resetFilters}
+        showAdvanced={showAdvanced}
+        toggleAdvanced={toggleAdvanced}
+      />
 
       <DiamondHeader />
 
-      <DiamondTable diamonds={filteredDiamonds} />
+      <DiamondTable diamonds={filteredDiamonds} showAdvanced={showAdvanced} />
     </>
   );
 }

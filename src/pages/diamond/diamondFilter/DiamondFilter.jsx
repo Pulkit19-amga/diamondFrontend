@@ -10,8 +10,6 @@ const DiamondFilter = ({ price, setPrice, carat, setCarat, cut, setCut }) => {
   const maxCarat = 20;
   const minCaratDifference = 1;
 
-
-
   const cutLabels = ["Excellent", "Very Good", "Good", "Ideal", "8X"];
   const minCutIndex = 0;
   const maxCutIndex = cutLabels.length;

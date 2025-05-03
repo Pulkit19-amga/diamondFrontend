@@ -208,7 +208,22 @@
 
 .second-filter {
   display: flex;
-  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
   padding: 0 20px;
   margin-top: 20px;
+}
+
+.advanced-container {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.6s ease, opacity 0.9s ease;
+}
+
+/* When open, expand to accommodate content */
+.advanced-container.open {
+  max-height: 1000px; /* Reasonable limit for content */
+  opacity: 1;
 }
