@@ -112,7 +112,7 @@ export default function Diamond() {
         !diamond.color ||
         !diamond.clarity
       ) {
-        console.log("Invalid diamond skipped:", diamond?.id);
+        console.log("Invalid diamond skipped:", diamond?.diamondid);
         return false;
       }
 
@@ -135,17 +135,39 @@ export default function Diamond() {
 
       // 5. Cut filter (convert slider values to cut indices)
       const cutMatch =
-        diamond.cut > cut[0] && (cut[1] < 4 ? diamond.cut <= cut[1] : true);
+        diamond.cut.id > cut[0] &&
+        (cut[1] < 4 ? diamond.cut.id <= cut[1] : true);
 
       // 6. Color filter
       const colorMatch =
         diamond.color.id > color[0] &&
         (color[1] < 5 ? diamond.color.id < color[1] : true);
 
-      // 6. Color filter
+      // 7. Clarity filter
       const clarityMatch =
         diamond.clarity.id > clarity[0] &&
         (clarity[1] < 6 ? diamond.clarity.id <= clarity[1] : true);
+
+      const polishMatch =
+        diamond.polish.id > polish[0] &&
+        (polish[1] < 6 ? diamond.polish.id <= polish[1] : true);
+
+      const symmetryMatch =
+        diamond.symmetry.id > symmetry[0] &&
+        (symmetry[1] < 6 ? diamond.symmetry.id <= symmetry[1] : true);
+
+      const fluorescenceMatch =
+        diamond.fluorescence.id > fluorescence[0] &&
+        (fluorescence[1] < 6
+          ? diamond.fluorescence.id <= fluorescence[1]
+          : true);
+
+      const [minTable, maxTable] = table.map(Number);
+      const tableMatch =
+        diamond.table_diamond >= minTable && diamond.table_diamond <= maxTable;
+
+      const [minDepth, maxDepth] = depth.map(Number);
+      const depthMatch = diamond.depth >= minDepth && diamond.depth <= maxDepth;
 
       // Debug logging for excluded diamonds
       if (
@@ -154,10 +176,15 @@ export default function Diamond() {
         !caratMatch ||
         !cutMatch ||
         !colorMatch ||
-        !clarityMatch
+        !clarityMatch ||
+        !polishMatch ||
+        !symmetryMatch ||
+        !fluorescenceMatch ||
+        !tableMatch ||
+        !depthMatch
       ) {
         console.log("Diamond excluded:", {
-          id: diamond?.id,
+          id: diamond.diamondid,
           reasons: {
             shape:
               !shapeMatch &&
@@ -170,12 +197,34 @@ export default function Diamond() {
             carat:
               !caratMatch &&
               `Carat ${diamond.carat_weight} not in range ${minCarat}-${maxCarat}`,
-            cut: !cutMatch && `Cut ${diamond.cut} not in range`,
+
+            cut: !cutMatch && `Cut ${diamond.cut.full_name} not in range`,
+
             color:
               !colorMatch && `Color ${diamond.color.id} doesn't match ${color}`,
             clarity:
               !clarityMatch &&
               `Clarity ${diamond.clarity.id} doesn't match ${clarity}`,
+
+            polish:
+              !polishMatch &&
+              `polish ${diamond.polish.full_name} doesn't match ${polish}`,
+
+            symmetry:
+              !symmetryMatch &&
+              `symmetry ${diamond.symmetry.full_name} doesn't match ${symmetry}`,
+
+            fluorescence:
+              !fluorescenceMatch &&
+              `fluorescence ${diamond.fluorescence.full_name} doesn't match ${fluorescence}`,
+
+            table:
+              !tableMatch &&
+              `Table ${diamond.table_diamond} not in range ${minTable}-${maxTable}`,
+
+            depth:
+              !depthMatch &&
+              `Depth ${diamond.depth} not in range ${minDepth}-${maxDepth}`,
           },
         });
         return false;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import "./DiamondTable.css";
 
@@ -6,9 +6,16 @@ const DiamondTable = ({ diamonds, showAdvanced }) => {
   const imageBaseUrl = "images/shapes/";
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedRows, setSelectedRows] = useState([]);
 
   if (loading) return <div>Loading diamonds...</div>;
   if (error) return <div>{error}</div>;
+
+  const toggleSelect = (index) => {
+    setSelectedRows((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
+  };
 
   return (
     <div className="diamond-table">
@@ -21,7 +28,7 @@ const DiamondTable = ({ diamonds, showAdvanced }) => {
         <div>CLARITY ▾</div>
         <div>CUT ▾</div>
         <div>REPORT</div>
-        <div>PRICE ▾</div>
+
         {showAdvanced && (
           <>
             <div>POLISH</div>
@@ -32,6 +39,7 @@ const DiamondTable = ({ diamonds, showAdvanced }) => {
             <div> DEPTH</div>
           </>
         )}
+        <div>PRICE ▾</div>
         <div></div>
       </div>
 
@@ -39,9 +47,18 @@ const DiamondTable = ({ diamonds, showAdvanced }) => {
         <div>No diamonds match your filter criteria.</div>
       ) : (
         diamonds.map((diamond, index) => (
-          <div className="table-row" key={index}>
+          <div
+            className={`table-row ${
+              selectedRows.includes(index) ? "selected-row" : ""
+            }`}
+            key={index}
+          >
             <div>
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                checked={selectedRows.includes(index)}
+                onChange={() => toggleSelect(index)}
+              />
             </div>
             <div>
               <img
@@ -50,40 +67,32 @@ const DiamondTable = ({ diamonds, showAdvanced }) => {
                 className="diamond-img"
               />
             </div>
-            <div>
-              <a href="#">{diamond.shape.name}</a>
-            </div>
-            <div>
-              <a href="#">{diamond.carat_weight}</a>
-            </div>
-            <div>
-              <a href="#">{diamond.color.name}</a>
-            </div>
-            <div>
-              <a href="#">{diamond.clarity.name}</a>
-            </div>
-            <div>
-              <a href="#">{diamond.cut}</a>
-            </div>
-            <div>
-              <a href="#">{diamond.certificate_company.dl_name}</a>
-            </div>
-            <div className="price">{diamond.price}</div>
+            <div>{diamond.shape.name}</div>
+            <div>{diamond.carat_weight}</div>
+            <div>{diamond.color.name}</div>
+            <div>{diamond.clarity.name}</div>
+            <div>{diamond.cut.full_name}</div>
+            <div>{diamond.certificate_company.dl_name}</div>
+
             {showAdvanced && (
               <>
-                <div className="price">{diamond.price}</div>
-                <div className="price">{diamond.price}</div>
-                <div className="price">{diamond.price}</div>
-                <div className="price">{diamond.price}</div>
-                <div className="price">{diamond.price}</div>
-                <div className="price">{diamond.price}</div>
+                <div>{diamond.polish.full_name}</div>
+                <div>{diamond.symmetry.full_name}</div>
+                <div>{diamond.fluorescence.full_name}</div>
+                <div>{diamond.price}</div>
+                <div>{diamond.table_diamond}</div>
+                <div>{diamond.depth}</div>
               </>
             )}
+            <div className="price">{diamond.price}</div>
 
             <div>
-              <a href="#" className="select-link">
+              <button
+                className="select-btn"
+                
+              >
                 SELECT
-              </a>
+              </button>
             </div>
           </div>
         ))
