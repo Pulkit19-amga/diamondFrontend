@@ -12,7 +12,6 @@ import DiamondHeader from "./diamondHeader/DiamondHeader";
 import DiamondTable from "./diamondTable/DiamondTable";
 import DiamondTabFilter from "./diamondTabFilter/DiamondTabFilter";
 
-const { Range } = Slider;
 const steps = [
   { id: 1, label: "CHOOSE A DIAMOND" },
   { id: 2, label: "CHOOSE A SETTING" },
@@ -39,15 +38,31 @@ export default function Diamond() {
   const [clarity, setClarity] = useState([0, 6]);
 
   // advance filter
-  const [polish, setPolish] = useState([0, 4]);
-  const [symmetry, setSymmetry] = useState([0, 4]);
-  const [fluorescence, setFluorescence] = useState([0, 4]);
+  const [polish, setPolish] = useState([0, 6]);
+  const [symmetry, setSymmetry] = useState([0, 6]);
+  const [fluorescence, setFluorescence] = useState([0, 5]);
   const [ratio, setRatio] = useState([0.9, 2.75]);
   const [table, setTable] = useState([40, 90]);
   const [depth, setDepth] = useState([40, 90]);
 
   // show advance filter
   const [showAdvanced, setShowAdvanced] = useState(false);
+
+  // diamond Table headers
+  const [sortBy, setSortBy] = useState("Price (Low to High)");
+  const [certificateQuery, setCertificateQuery] = useState("");
+  const [selectedReport, setSelectedReport] = useState(null);
+  const [featuredDeal, setFeaturedDeal] = useState(false);
+  const [checkedDiamonds, setCheckedDiamonds] = useState([]);
+  const [showOnlyChecked, setShowOnlyChecked] = useState(false);
+
+  const toggleDiamondCheck = (diamondId) => {
+    setCheckedDiamonds((prevChecked) =>
+      prevChecked.includes(diamondId)
+        ? prevChecked.filter((id) => id !== diamondId)
+        : [...prevChecked, diamondId]
+    );
+  };
 
   const toggleAdvanced = () => {
     setShowAdvanced((prev) => !prev);
@@ -100,8 +115,31 @@ export default function Diamond() {
     fetchDiamonds();
   }, []);
 
+  const handleCertificateSearch = (query) => {
+    setCertificateQuery(query);
+  };
+
   const filteredDiamonds = (Array.isArray(diamonds) ? diamonds : []).filter(
     (diamond) => {
+      if (selectedReport && diamond.certificate_company?.dl_name?.toUpperCase() !== selectedReport.toUpperCase()) {
+        return false;
+      }
+
+      // Show only checked diamonds if toggled
+      if (showOnlyChecked && !checkedDiamonds.includes(diamond.diamondid)) {
+        return false;
+      }
+
+      // Certificate Search Filter
+      if (
+        certificateQuery &&
+        !diamond.certificate_number
+          ?.toString()
+          .includes(certificateQuery.toLowerCase())
+      ) {
+        return false;
+      }
+
       // 1. Basic validation
       if (
         !diamond ||
@@ -234,6 +272,35 @@ export default function Diamond() {
     }
   );
 
+
+  const sortedDiamonds = [...filteredDiamonds].sort((a, b) => {
+    switch (sortBy) {
+      case "Price (Low to High)":
+        return a.price - b.price;
+      case "Price (High to Low)":
+        return b.price - a.price;
+      case "Carat (Low to High)":
+        return a.carat_weight - b.carat_weight;
+      case "Carat (High to Low)":
+        return b.carat_weight - a.carat_weight;
+      case "Color (Low to High)":
+        return a.color?.id - b.color?.id;
+      case "Color (High to Low)":
+        return b.color?.id - a.color?.id;
+      case "Clarity (Low to High)":
+        return a.clarity?.id - b.clarity?.id;
+      case "Clarity (High to Low)":
+        return b.clarity?.id - a.clarity?.id;
+      case "Cut (Low to High)":
+        return b.cut?.id - a.cut?.id;
+        case "Cut (High to Low)":
+        return a.cut?.id - b.cut?.id;
+      default:
+        return 0;
+    }
+  });
+  
+
   return (
     <>
       <section className="hero_section_wrapper">
@@ -308,9 +375,29 @@ export default function Diamond() {
         toggleAdvanced={toggleAdvanced}
       />
 
-      <DiamondHeader />
+      <DiamondHeader
+        checkedCount={checkedDiamonds.length}
+        filteredCount={filteredDiamonds.length}
+        totalCount={diamonds.length}
+        selectedSort={sortBy}
+        setSelectedSort={setSortBy}
+        selectedFilter={selectedReport}
+        setSelectedFilter={setSelectedReport}
+        onCertificateSearch={handleCertificateSearch}
+        certificateQuery={certificateQuery}
+        setCertificateQuery={setCertificateQuery}
+        featuredDealChecked={featuredDeal}
+        setFeaturedDealChecked={setFeaturedDeal}
+        showOnlyChecked={showOnlyChecked}
+        setShowOnlyChecked={setShowOnlyChecked}
+      />
 
-      <DiamondTable diamonds={filteredDiamonds} showAdvanced={showAdvanced} />
+      <DiamondTable
+        diamonds={sortedDiamonds}
+        showAdvanced={showAdvanced}
+        checkedDiamonds={checkedDiamonds}
+        onToggleCheck={toggleDiamondCheck}
+      />
     </>
   );
 }

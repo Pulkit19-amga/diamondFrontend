@@ -15,15 +15,15 @@ export default function AdvanceFilter({
   depth,
   setDepth,
 }) {
-  const polishLabels = ["Excellent", "Very Good", "Good", "Fair"];
+  const polishLabels = ["Excellent", "Very Good", "Good", "I", "Fair", "Poor"];
   const minPolishIndex = 0;
   const maxPolishIndex = polishLabels.length;
 
-  const symmetryLabels = ["Excellent", "Very Good", "Good", "Fair"];
+  const symmetryLabels = ["Excellent", "Very Good", "Good", "I", "Fair", "Poor"];
   const minSymmetryIndex = 0;
   const maxSymmetryIndex = symmetryLabels.length;
 
-  const fluorescenceLabels = ["None", "Faint", "Medium", "Strong"];
+  const fluorescenceLabels = ["None", "Faint", "Medium", "Strong", "Very Strong"];
   const minFluorescenceIndex = 0;
   const maxFluorescenceIndex = fluorescenceLabels.length;
 

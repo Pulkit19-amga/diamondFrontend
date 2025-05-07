@@ -97,7 +97,7 @@
 }
 
 .sort-label {
-  margin-left: 20px;
+  margin-left: 30px;
 }
 
 .filter-right {
@@ -112,6 +112,27 @@
 .sort-text {
   cursor: pointer;
   user-select: none;
+}
+
+.filterDropdown {
+  position: absolute;
+  top: 110%;
+  right: 40;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  width: 145px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 10;
+  border-radius: 4px;
+}
+
+.filterDropdown.show {
+  max-height: 400px;
+  opacity: 1;
 }
 
 .dropdown-box {
@@ -154,4 +175,10 @@
 .dropdown-item.selected {
   background-color: #e6f2ff;
   font-weight: 600;
+}
+
+
+.filter-label,
+.filter-text {
+  cursor: pointer;
 }

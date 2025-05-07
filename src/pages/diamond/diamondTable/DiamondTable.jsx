@@ -2,7 +2,8 @@ import React, { useState } from "react";
 
 import "./DiamondTable.css";
 
-const DiamondTable = ({ diamonds, showAdvanced }) => {
+const DiamondTable = ({ diamonds, showAdvanced, checkedDiamonds,
+  onToggleCheck, }) => {
   const imageBaseUrl = "images/shapes/";
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -11,11 +12,6 @@ const DiamondTable = ({ diamonds, showAdvanced }) => {
   if (loading) return <div>Loading diamonds...</div>;
   if (error) return <div>{error}</div>;
 
-  const toggleSelect = (index) => {
-    setSelectedRows((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
-    );
-  };
 
   return (
     <div className="diamond-table">
@@ -54,10 +50,10 @@ const DiamondTable = ({ diamonds, showAdvanced }) => {
             key={index}
           >
             <div>
-              <input
+            <input
                 type="checkbox"
-                checked={selectedRows.includes(index)}
-                onChange={() => toggleSelect(index)}
+                checked={checkedDiamonds.includes(diamond.diamondid)}
+                onChange={() => onToggleCheck(diamond.diamondid)}
               />
             </div>
             <div>
@@ -89,7 +85,6 @@ const DiamondTable = ({ diamonds, showAdvanced }) => {
             <div>
               <button
                 className="select-btn"
-                
               >
                 SELECT
               </button>
