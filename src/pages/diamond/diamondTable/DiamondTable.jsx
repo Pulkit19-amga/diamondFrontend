@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import './DiamondTable.css';
 
 
 const DiamondTable = ({ diamonds }) => {
+  const navigate = useNavigate();
+  
+  const handleSelect = (diamond) => {
+    navigate(`/diamond-details/${diamond.diamondid}`, { state: { diamond } });
+  };  
+  
 
   const imageBaseUrl = 'images/shapes/';
   const [loading, setLoading] = useState(false);
@@ -47,7 +53,15 @@ const DiamondTable = ({ diamonds }) => {
           <div><a href="#">{diamond.cut}</a></div>
           <div><a href="#">{diamond.certificate_company.dl_name}</a></div>
           <div className="price">{diamond.price}</div>
-          <div><a href="#" className="select-link">SELECT</a></div>
+          <div>
+          <button 
+  className="select-link" 
+  onClick={() => handleSelect(diamond)}
+>
+  SELECT
+</button>
+
+              </div>
         </div>
       ))
       )}

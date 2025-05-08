@@ -63,16 +63,16 @@ const SecondHeader = () => {
 
             <div className="logo-wrapper">
               <a className="navbar-brand text-black" href="/">
-                <img src="./images/logo2.png" className="img-fluid" alt="Logo" />
+                <img  src="./images/logo-23.png" className="img-fluid" alt="Logo" />
               </a>
             </div>
 
             <div className="right-side-logo-wrapper">
               <div className="d-flex align-items-center gap-3">
                 <div className="icon phn-icon">
-                  <a href="#" className="text-decoration-none text-black-custom">
+                  <a href="tell: +123456789" className="text-decoration-none text-black-custom">
                     <i className="fa fa-phone"></i>
-                    <span className="small--hide text-black-custom">+123456789</span>
+                    <span className="small--hide text-black-custom">+1 (816) 888-1111</span>
                   </a>
                 </div>
 

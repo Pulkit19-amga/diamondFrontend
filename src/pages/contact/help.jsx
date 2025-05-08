@@ -29,7 +29,7 @@ export default function Help() {
           </div>
           <div className="help-grid absolute-link-wrapper">
             <a
-              href="tel:"
+              href="tel: +1 (816) 888-1111"
               className="button-call US-contact fa-regular fa-phone"
             ></a>
             <p className="help-title">Call</p>

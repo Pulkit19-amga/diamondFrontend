@@ -43,27 +43,35 @@ const navigate = useNavigate();
           </div>
           <div className="right-side-logo-wrapper">
             <div className="d-flex align-items-center gap-3">
-              <div className="icon phn-icon">
-                <a href="#" className="text-decoration-none text-white">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="icon-phone"
-                    viewBox="0 0 23 23"
-                  >
-                    <defs>
-                      {/* <style>.phone-a{fill:#fff;opacity:0;}.phone-b{fill:none;stroke:#14344a;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}</style> */}
-                    </defs>
-                    <g transform="translate(-19 -41)">
-                      <rect
-                        className="phone-a"
-                        transform="translate(19 41)"
-                      ></rect>
-                      {/* <path className="phone-b" d="M11.427,8.938a.374.374,0,0,0-.52-.01S9.843,9.969,9.773,10.035a.222.222,0,0,1-.059.042c-1.107.561-5.1-3.717-4.34-4.521L6.513,4.44a.374.374,0,0,0,0-.528L2.79.112A.37.37,0,0,0,2.528,0a.378.378,0,0,0-.265.107C.4,1.94-2.6,3.782,4.395,10.912c6.9,7.035,8.876,4.369,10.78,2.322a.374.374,0,0,0-.006-.517Z" transform="translate(22.5 44.5)" style="stroke-width: 1.5;"></path> */}
-                    </g>
-                  </svg>
-                  <span className="small--hide text-white">+123456789</span>
-                </a>
-              </div>
+            <div className="icon phn-icon">
+            <div className="icon phn-icon" style={{ pointerEvents: 'none' }}>
+            <div className="icon phn-icon">
+  <a
+    href="tel:+18168881111"
+    className="text-decoration-none text-white d-flex align-items-center"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="icon-phone"
+      viewBox="0 0 23 23"
+    >
+      <g transform="translate(-19 -41)">
+        <rect
+          fill="#fff"
+          opacity="0"
+          transform="translate(19 41)"
+        />
+        {/* You can add the full phone icon path here if needed */}
+      </g>
+    </svg>
+    <span className="small--hide text-white"> +1 (816) 888-1111</span>
+  </a>
+</div>
+
+</div>
+
+</div>
+
               <div className="icon search-icon">
                 <div className="search-box">
                   <i className="fa fa-search"></i>

@@ -34,9 +34,7 @@ export default function App() {
           <Route path="/policy" element={<Policy /> } />
           <Route path="/wedding-brands" element={<Weddingbrands/> } />
           <Route path="/engagement-ring-style" element={<RingStyle />} />
-          <Route path="/diamond-details" element={<DiamondDetails /> } />
-          
-
+          <Route path="/diamond-details/:id" element={<DiamondDetails /> } />
         </Routes>
       </main>
       <Footer />
