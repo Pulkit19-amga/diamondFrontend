@@ -12,6 +12,7 @@ import DiamondHeader from "./diamondHeader/DiamondHeader";
 import DiamondTable from "./diamondTable/DiamondTable";
 import DiamondTabFilter from "./diamondTabFilter/DiamondTabFilter";
 
+
 const steps = [
   { id: 1, label: "CHOOSE A DIAMOND" },
   { id: 2, label: "CHOOSE A SETTING" },
@@ -22,7 +23,7 @@ export default function Diamond() {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedShapes, setSelectedShapes] = useState([]); // select single as well as mutltiple shape
   const [diamonds, setDiamonds] = useState([]); // insert api data
-  const [activeTab, setActiveTab] = useState("lab-diamonds"); // not working this is for tabs
+  const [activeTab, setActiveTab] = useState("lab");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -89,6 +90,12 @@ export default function Diamond() {
     setCurrentStep(stepId);
   };
 
+  const typeMap = {
+    natural: 1,
+    lab: 2,
+    color: 3,
+  };
+
   const handleShapeChange = (shapes) => {
     setSelectedShapes(shapes);
   };
@@ -121,7 +128,11 @@ export default function Diamond() {
 
   const filteredDiamonds = (Array.isArray(diamonds) ? diamonds : []).filter(
     (diamond) => {
-      if (selectedReport && diamond.certificate_company?.dl_name?.toUpperCase() !== selectedReport.toUpperCase()) {
+      if (
+        selectedReport &&
+        diamond.certificate_company?.dl_name?.toUpperCase() !==
+          selectedReport.toUpperCase()
+      ) {
         return false;
       }
 
@@ -130,11 +141,20 @@ export default function Diamond() {
         return false;
       }
 
+      if (featuredDeal && diamond.is_superdeal !== 1) {
+        return false;
+      }
+
+      if (activeTab && diamond.diamond_type !== typeMap[activeTab]) {
+        return false;
+      }
+
       // Certificate Search Filter
       if (
         certificateQuery &&
         !diamond.certificate_number
           ?.toString()
+          .toLowerCase()
           .includes(certificateQuery.toLowerCase())
       ) {
         return false;
@@ -200,6 +220,18 @@ export default function Diamond() {
           ? diamond.fluorescence.id <= fluorescence[1]
           : true);
 
+      const [minRatio, maxRatio] = ratio.map(Number);
+
+      const ratio2 =
+        diamond.measurement_l != null && diamond.measurement_w > 0
+          ? +(diamond.measurement_l / diamond.measurement_w).toFixed(2)
+          : null;
+
+      const ratioMatch =
+        ratio !== null &&
+        (minRatio == null || ratio2 >= minRatio) &&
+        (maxRatio == null || ratio2 <= maxRatio);
+
       const [minTable, maxTable] = table.map(Number);
       const tableMatch =
         diamond.table_diamond >= minTable && diamond.table_diamond <= maxTable;
@@ -219,9 +251,10 @@ export default function Diamond() {
         !symmetryMatch ||
         !fluorescenceMatch ||
         !tableMatch ||
-        !depthMatch
+        !depthMatch ||
+        (ratio2 !== null && ratio2 !== 0 && !ratioMatch)
       ) {
-        console.log("Diamond excluded:", {
+        /* console.log("Diamond excluded:", {
           id: diamond.diamondid,
           reasons: {
             shape:
@@ -264,14 +297,13 @@ export default function Diamond() {
               !depthMatch &&
               `Depth ${diamond.depth} not in range ${minDepth}-${maxDepth}`,
           },
-        });
+        }); */
         return false;
       }
 
       return true;
     }
   );
-
 
   const sortedDiamonds = [...filteredDiamonds].sort((a, b) => {
     switch (sortBy) {
@@ -293,13 +325,12 @@ export default function Diamond() {
         return b.clarity?.id - a.clarity?.id;
       case "Cut (Low to High)":
         return b.cut?.id - a.cut?.id;
-        case "Cut (High to Low)":
+      case "Cut (High to Low)":
         return a.cut?.id - b.cut?.id;
       default:
         return 0;
     }
   });
-  
 
   return (
     <>
@@ -328,15 +359,13 @@ export default function Diamond() {
             </div>
           ))}
         </div>
-
-        {/* <div className="step-content">
-          {currentStep === 1 && <p>🔹 Showing diamond options...</p>}
-          {currentStep === 2 && <p>🔸 Showing setting options...</p>}
-          {currentStep === 3 && <p>💍 Complete your ring!</p>}
-        </div> */}
       </div>
 
-      <DiamondTabFilter onShapeChange={handleShapeChange} />
+      <DiamondTabFilter
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onShapeChange={handleShapeChange}
+      />
 
       <DiamondFilter
         price={price}
@@ -376,6 +405,7 @@ export default function Diamond() {
       />
 
       <DiamondHeader
+        activeTab={activeTab}
         checkedCount={checkedDiamonds.length}
         filteredCount={filteredDiamonds.length}
         totalCount={diamonds.length}
@@ -393,6 +423,7 @@ export default function Diamond() {
       />
 
       <DiamondTable
+        loading={loading}
         diamonds={sortedDiamonds}
         showAdvanced={showAdvanced}
         checkedDiamonds={checkedDiamonds}

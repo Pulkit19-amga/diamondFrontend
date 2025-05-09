@@ -14,8 +14,6 @@ import RingStyle from './pages/engagemnet-ring-style/ringStyle';
 import DiamondDetails from './pages/diamond-detail/diamondDetails/diamondDetails';
 
 
-
-
 export default function App() {
   const location = useLocation();
   const isHome = location.pathname === '/';
@@ -34,9 +32,7 @@ export default function App() {
           <Route path="/policy" element={<Policy /> } />
           <Route path="/wedding-brands" element={<Weddingbrands/> } />
           <Route path="/engagement-ring-style" element={<RingStyle />} />
-          <Route path="/diamond-details" element={<DiamondDetails /> } />
-          
-
+          <Route path="/diamond-details/:id" element={<DiamondDetails /> } />
         </Routes>
       </main>
       <Footer />

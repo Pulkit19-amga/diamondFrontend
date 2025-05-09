@@ -1,17 +1,27 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+import Loader from "../loader/index";
 import "./DiamondTable.css";
 
-const DiamondTable = ({ diamonds, showAdvanced, checkedDiamonds,
-  onToggleCheck, }) => {
+const DiamondTable = ({
+  loading,
+  diamonds,
+  showAdvanced,
+  checkedDiamonds,
+  onToggleCheck,
+}) => {
+  const navigate = useNavigate();
+
+  const handleSelect = (diamond) => {
+    navigate(`/diamond-details/${diamond.diamondid}`, { state: { diamond } });
+  };
+
   const imageBaseUrl = "images/shapes/";
-  const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState(null);
   const [selectedRows, setSelectedRows] = useState([]);
 
-  if (loading) return <div>Loading diamonds...</div>;
   if (error) return <div>{error}</div>;
-
 
   return (
     <div className="diamond-table">
@@ -39,8 +49,12 @@ const DiamondTable = ({ diamonds, showAdvanced, checkedDiamonds,
         <div></div>
       </div>
 
-      {diamonds.length === 0 ? (
-        <div>No diamonds match your filter criteria.</div>
+      {loading ? (
+        <Loader />
+      ) : diamonds.length === 0 ? (
+        <div className="no-diamonds-message">
+          No diamonds match your filter criteria.
+        </div>
       ) : (
         diamonds.map((diamond, index) => (
           <div
@@ -50,13 +64,16 @@ const DiamondTable = ({ diamonds, showAdvanced, checkedDiamonds,
             key={index}
           >
             <div>
-            <input
+              <input
                 type="checkbox"
                 checked={checkedDiamonds.includes(diamond.diamondid)}
                 onChange={() => onToggleCheck(diamond.diamondid)}
               />
             </div>
-            <div>
+            <div className="diamond-card">
+              {diamond.is_superdeal === 1 && (
+                <div className="featured-banner">FEATURED DEAL</div>
+              )}
               <img
                 src={`${imageBaseUrl}${diamond.shape.image}`} // Constructing the full image URL
                 alt={diamond.shape.name}
@@ -75,16 +92,19 @@ const DiamondTable = ({ diamonds, showAdvanced, checkedDiamonds,
                 <div>{diamond.polish.full_name}</div>
                 <div>{diamond.symmetry.full_name}</div>
                 <div>{diamond.fluorescence.full_name}</div>
-                <div>{diamond.price}</div>
+                
+                {diamond.measurement_l != null && diamond.measurement_w > 0
+                  ? (diamond.measurement_l / diamond.measurement_w).toFixed(2)
+                  : "N/A"}
                 <div>{diamond.table_diamond}</div>
                 <div>{diamond.depth}</div>
               </>
             )}
             <div className="price">{diamond.price}</div>
-
             <div>
               <button
                 className="select-btn"
+                onClick={() => handleSelect(diamond)}
               >
                 SELECT
               </button>
