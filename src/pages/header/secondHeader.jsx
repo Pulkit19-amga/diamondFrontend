@@ -37,16 +37,16 @@ const navigate = useNavigate();
       `}</style>
 
       <header className="header-wrapper bg-white text-black">
-      <div className="header-top-wrapper">
-        <div className="container">
-          <p className="m-0 text-center p-2 ">
-            <strong className="text-white">
-              {" "}
-              FREE INSURED SHIPPING & RETURNS | LIFETIME WARRANTY
-            </strong>
-          </p>
+        <div className="header-top-wrapper">
+          <div className="container">
+            <p className="m-0 text-center p-2">
+              <strong className="text-white">
+                {" "}
+                FREE INSURED SHIPPING & RETURNS | LIFETIME WARRANTY
+              </strong>
+            </p>
+          </div>
         </div>
-      </div>
 
         <div className="container py-2">
           <div className="d-flex align-items-center justify-content-between">
@@ -58,13 +58,12 @@ const navigate = useNavigate();
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
                 >
-                <img
-  src="./svg/book-appoinment.svg"
-  height={20}
-  width={20}
-  style={{ filter: "invert(100%)" }} // black color
-/>
-
+                  <img
+                    src="./svg/book-appoinment.svg"
+                    height={20}
+                    width={20}
+                    style={{ filter: "invert(100%)" }} // black color
+                  />
                   Book an Appointment
                 </button>
               </div>
@@ -72,16 +71,20 @@ const navigate = useNavigate();
 
             <div className="logo-wrapper">
               <a className="navbar-brand text-black" href="/">
+
                 <img  src="./images/logo-23.png" className="img-fluid" alt="Logo" />
+
               </a>
             </div>
 
             <div className="right-side-logo-wrapper">
               <div className="d-flex align-items-center gap-3">
                 <div className="icon phn-icon">
+
                   <a href="tell: +123456789" className="text-decoration-none text-black-custom">
                     <i className="fa fa-phone"></i>
                     <span className="small--hide text-black-custom">+1 (816) 888-1111</span>
+
                   </a>
                 </div>
 
@@ -90,6 +93,7 @@ const navigate = useNavigate();
                     <i className="fa fa-search text-black-custom"></i>
                   </div>
                 </div>
+
 
                      <div className="icon login-icon position-relative">
       <button
@@ -109,11 +113,16 @@ const navigate = useNavigate();
       </button>
     </div>
 
+
                 <div className="icon wishlist-icon">
-                  <a className="text-decoration-none text-black-custom" href="#">
+                  <a
+                    className="text-decoration-none text-black-custom"
+                    href="#"
+                  >
                     <i className="fa fa-heart"></i>
                   </a>
                 </div>
+
 
                 <div className="icon cart-icon position-relative">
   <Link
@@ -142,6 +151,7 @@ const navigate = useNavigate();
     )}
   </Link>
 </div>
+
 
               </div>
             </div>
@@ -194,7 +204,6 @@ const navigate = useNavigate();
         </div>
       </header>
       <div className="header-spacer" style={{ height: "172px" }}></div>
-
     </>
   );
 };
