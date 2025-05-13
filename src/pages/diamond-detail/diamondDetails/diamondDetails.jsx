@@ -1,7 +1,7 @@
-// DiamondDetails.jsx
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import DiamondViewer from '../diamondviewer/diamondViewer';
+import "../diamondviewer/DiamondViewer.css";
+import { useCart } from "../../../cart/CartContext";
 
 const steps = [
   { id: 1, label: "CHOOSE A DIAMOND" },
@@ -10,10 +10,37 @@ const steps = [
 ];
 
 export default function DiamondDetails() {
+  const [selectedView, setSelectedView] = useState('image');
   const { state } = useLocation();
   const diamond = state?.diamond;
   const [currentStep, setCurrentStep] = useState(1);
+  const { addToCart } = useCart();
 
+  const handleStepClick = (stepId) => {
+    setCurrentStep(stepId);
+  };
+
+  const handleAddToCart = () => {
+    try {
+      const cartKey = 'cart';
+      const existingCart = JSON.parse(localStorage.getItem(cartKey)) || [];
+
+      const isDuplicate = existingCart.some(item => item.certificate_number === diamond.certificate_number);
+      if (isDuplicate) {
+        alert("This diamond is already in your cart.");
+        return;
+      }
+
+      const updatedCart = [...existingCart, diamond];
+      localStorage.setItem(cartKey, JSON.stringify(updatedCart));
+      addToCart(diamond); // ✅ sync with context
+
+      alert("Diamond added to cart successfully!");
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      alert("Something went wrong. Please try again.");
+    }
+  };
 
   if (!diamond) {
     return <div style={{ padding: '40px' }}>No diamond data available.</div>;
@@ -21,10 +48,9 @@ export default function DiamondDetails() {
 
   return (
     <>
-    
- <section class="hero_section_wrapper">
-        <div class="container-fluid p-0 position-relative ">
-          <img src="/images/Header_Banner.jpg" alt="" class="img-fluid w-100" />
+      <section className="hero_section_wrapper">
+        <div className="container-fluid p-0 position-relative">
+          <img src="/images/Header_Banner.jpg" alt="" className="img-fluid w-100" />
         </div>
       </section>
 
@@ -43,18 +69,74 @@ export default function DiamondDetails() {
             </div>
           ))}
         </div>
-
-        {/* <div className="step-content">
-          {currentStep === 1 && <p>🔹 Showing diamond options...</p>}
-          {currentStep === 2 && <p>🔸 Showing setting options...</p>}
-          {currentStep === 3 && <p>💍 Complete your ring!</p>}
-        </div> */}
       </div>
 
+      <div className="diamond-viewer">
+        <div className="diamond-main-display">
+          {selectedView === 'image' && (
+            <img
+              src="https://dnadiamond.net/diaImages/Images/896797.jpg"
+              alt="Diamond"
+              className="diamond-main-img"
+            />
+          )}
+          {selectedView === 'video' && (
+            <iframe
+              title="Diamond Video"
+              className="diamond-main-img"
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              allowFullScreen
+            ></iframe>
+          )}
+          {selectedView === 'hand' && (
+            <img
+              src="https://cdn.shopify.com/s/files/1/0411/6437/4183/files/loose-diamond-hand-large.jpg?v=1681822779"
+              alt="On Hand"
+              className="diamond-main-img"
+            />
+          )}
+          {selectedView === 'certificate' && (
+            <img
+              src="https://cdn.shopify.com/s/files/1/0757/8851/7659/files/gia_cert.png?v=123456789"
+              alt="Certificate"
+              className="diamond-main-img"
+            />
+          )}
+        </div>
 
-      <DiamondViewer /> 
+        <div className="diamond-thumbnails">
+          <button onClick={() => setSelectedView('image')}>
+            <img
+              src="https://dnadiamond.net/diaImages/Images/896797.jpg"
+              alt="Thumbnail"
+              className={`thumb-img ${selectedView === 'image' ? 'active' : ''}`}
+            />
+          </button>
+          <button onClick={() => setSelectedView('video')}>
+            <img
+              src="https://cdn.shopify.com/s/files/1/0411/6437/4183/files/video_play.png?v=1680007360"
+              alt="Video Icon"
+              className={`thumb-img ${selectedView === 'video' ? 'active' : ''}`}
+            />
+          </button>
+          <button onClick={() => setSelectedView('hand')}>
+            <img
+              src="https://cdn.shopify.com/s/files/1/0411/6437/4183/files/loose-diamond-hand-large.jpg?v=1681822779"
+              alt="Hand View"
+              className={`thumb-img ${selectedView === 'hand' ? 'active' : ''}`}
+            />
+          </button>
+          <button onClick={() => setSelectedView('certificate')}>
+            <img
+              src="https://cdn.shopify.com/s/files/1/0757/8851/7659/files/GIA_Icon_60d07140-6c0d-4f9d-8321-89b0bd69240a.png?v=1684576576"
+              alt="GIA"
+              className={`thumb-img ${selectedView === 'certificate' ? 'active' : ''}`}
+            />
+          </button>
+        </div>
+      </div>
 
-      <div className="grid__item product-single__information medium-up--one-third product-single__description-container"> 
+      <div className="grid__item product-single__information medium-up--one-third product-single__description-container">
         <div style={{ marginLeft: "40px" }} className="product-single__meta">
           <div style={{ padding: '20px', marginLeft: '40px', fontFamily: 'Arial, sans-serif' }}>
             <h1 style={{ fontSize: '24px', fontWeight: 'bold' }}>
@@ -71,7 +153,7 @@ export default function DiamondDetails() {
               <div>
                 <p>Shape: {diamond.shape.name}</p>
                 <p>Carat: {diamond.carat_weight}</p>
-                <p>Cut: {diamond.cut}</p>
+                <p>Cut: {diamond.cut.full_name}</p>
                 <a href="#" style={{ color: '#3c749b', textDecoration: 'underline' }}>MORE DETAILS</a>
               </div>
               <div>
@@ -91,37 +173,55 @@ export default function DiamondDetails() {
               </div>
             </div>
 
+            <button
+              style={{
+                marginTop: "30px",
+                marginBottom: "30px",
+                backgroundColor: "#3c749b",
+                color: "white",
+                padding: "10px 20px",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "16px",
+                borderRadius: "4px"
+              }}
+              onClick={handleAddToCart}
+            >
+              Add to Cart
+            </button>
+
+            {/* Promo Sections (Optional) */}
             <div className="holiday-diamond-event flex align-items_center">
-          <div className="image-wrapper">
-            <img
-              src="https://cdn.shopify.com/s/files/1/0757/8851/7659/files/March-promo_diamond-nacklace_studs.png?v=1741847877"
-              className="d-block"
-              alt="Our Gift to You"
-            />
-          </div>
-          <div className="content">
-            <p className="extra-para-bold"><b>ENDING SOON</b></p>
-            <h3><span>Our Gift to You</span></h3>
-            <p>Enjoy a Free Diamond Necklace with purchases of $1k+, or receive Free Diamond Studs with a spend of $2.5k+</p>
-          </div>
-        </div>
+              <div className="image-wrapper">
+                <img
+                  src="https://cdn.shopify.com/s/files/1/0757/8851/7659/files/March-promo_diamond-nacklace_studs.png?v=1741847877"
+                  className="d-block"
+                  alt="Our Gift to You"
+                />
+              </div>
+              <div className="content">
+                <p className="extra-para-bold"><b>ENDING SOON</b></p>
+                <h3><span>Our Gift to You</span></h3>
+                <p>Enjoy a Free Diamond Necklace with purchases of $1k+, or receive Free Diamond Studs with a spend of $2.5k+</p>
+              </div>
+            </div>
 
-        <div className="holiday-diamond-event pdp-store-appointment-section flex">
-          <div className="image-wrapper">
-            <img
-              src="https://cdn.shopify.com/s/files/1/0757/8851/7659/files/meet-us-in-soho-ny_2x_97b5a6f4-fcaa-4182-886f-764ed9d48693.png?v=1706868175"
-              className="d-block"
-              alt="Meet us in SoHo, NY"
-            />
-          </div>
-          <div className="content">
-            <h3>Meet us in SoHo, NY</h3>
-            <p>Reserve your private in-person appointment at our SoHo Showroom.</p>
-            <span className="store-appointmet-btn">BOOK IN-PERSON APPOINTMENT</span>
-          </div>
-        </div>
+            <div className="holiday-diamond-event pdp-store-appointment-section flex">
+              <div className="image-wrapper">
+                <img
+                  src="https://cdn.shopify.com/s/files/1/0757/8851/7659/files/meet-us-in-soho-ny_2x_97b5a6f4-fcaa-4182-886f-764ed9d48693.png?v=1706868175"
+                  className="d-block"
+                  alt="Meet us in SoHo, NY"
+                />
+              </div>
+              <div className="content">
+                <h3>Meet us in SoHo, NY</h3>
+                <p>Reserve your private in-person appointment at our SoHo Showroom.</p>
+                <span className="store-appointmet-btn">BOOK IN-PERSON APPOINTMENT</span>
+              </div>
+            </div>
 
-        <div style={{marginLeft:"40px" }} className="pdp-black-friday-sale flex hide">
+            <div style={{marginLeft:"40px" }} className="pdp-black-friday-sale flex hide">
   <div className="image-wrapper">
     <img
       src="https://cdn.shopify.com/s/files/1/0757/8851/7659/files/cyber_sale_pdp-banner.png?v=1733128296"
@@ -322,15 +422,31 @@ export default function DiamondDetails() {
   </div>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           </div>
         </div>
-      </div>  
+      </div>
+
+   
+          
 
 
-     
 
 
-        
+
     </>
   );
 }

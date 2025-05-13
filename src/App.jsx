@@ -12,7 +12,9 @@ import Policy from './pages/policy/policy';
 import Weddingbrands from './pages/wedding-brands/weddingBrands';
 import RingStyle from './pages/engagemnet-ring-style/ringStyle';
 import DiamondDetails from './pages/diamond-detail/diamondDetails/diamondDetails';
-
+import CartPage from './cart/CartPage';
+import SignIn from './pages/sign-in/signIn';
+import RegisterPage from './pages/registration/RegisterPage';
 
 
 
@@ -35,6 +37,14 @@ export default function App() {
           <Route path="/wedding-brands" element={<Weddingbrands/> } />
           <Route path="/engagement-ring-style" element={<RingStyle />} />
           <Route path="/diamond-details/:id" element={<DiamondDetails /> } />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/sign-in" element={<SignIn /> } />
+          <Route path="/registration" element={<RegisterPage /> } />
+          
+
+
+
+
         </Routes>
       </main>
       <Footer />
