@@ -2,16 +2,15 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../cart/CartContext"; 
 import { useState } from "react";
-import SignIn from "../sign-in/signIn";
-
-
 
 const Header = () => {
-
- const navigate = useNavigate();
 const { cartItems } = useCart();
-const [showCart, setShowCart] = useState(false);
-const [showSignIn, setShowSignIn] = useState(false);
+ const navigate = useNavigate();
+
+  const handleRedirect = () => {
+    navigate('/signin'); 
+  };
+
 
 
 
@@ -83,29 +82,23 @@ const [showSignIn, setShowSignIn] = useState(false);
                   <i className="fa fa-search"></i>
                 </div>
               </div>
-              <div className="icon login-icon position-relative">
-  <button
-    className="text-decoration-none text-white bg-transparent border-0 d-flex align-items-center"
-    onClick={() => setShowSignIn(prev => !prev)}
-  >
-    <svg
-      aria-hidden="true"
-      focusable="false"
-      role="presentation"
-      className="icon icon-login"
-      viewBox="0 0 28.33 37.68"
-    >
-      <path d="M14.17 14.9a7.45 7.45 0 1 0-7.5-7.45 7.46 7.46 0 0 0 7.5 7.45zm0-10.91a3.45 3.45 0 1 1-3.5 3.46A3.46 3.46 0 0 1 14.17 4zM14.17 16.47A14.18 14.18 0 0 0 0 30.68c0 1.41.66 4 5.11 5.66a27.17 27.17 0 0 0 9.06 1.34c6.54 0 14.17-1.84 14.17-7a14.18 14.18 0 0 0-14.17-14.21zm0 17.21c-6.3 0-10.17-1.77-10.17-3a10.17 10.17 0 1 1 20.33 0c.01 1.23-3.86 3-10.16 3z" />
-    </svg>
-    <span className="text-white">SIGN IN / UP</span>
-  </button>
-
-  {showSignIn && (
-   
-   <SignIn />
-   
-  )}
-</div>
+           <div className="icon login-icon position-relative">
+      <button
+        className="text-decoration-none text-white bg-transparent border-0 d-flex align-items-center"
+        onClick={handleRedirect}
+      >
+        <svg
+          aria-hidden="true"
+          focusable="false"
+          role="presentation"
+          className="icon icon-login"
+          viewBox="0 0 28.33 37.68"
+        >
+          <path d="M14.17 14.9a7.45 7.45 0 1 0-7.5-7.45 7.46 7.46 0 0 0 7.5 7.45zm0-10.91a3.45 3.45 0 1 1-3.5 3.46A3.46 3.46 0 0 1 14.17 4zM14.17 16.47A14.18 14.18 0 0 0 0 30.68c0 1.41.66 4 5.11 5.66a27.17 27.17 0 0 0 9.06 1.34c6.54 0 14.17-1.84 14.17-7a14.18 14.18 0 0 0-14.17-14.21zm0 17.21c-6.3 0-10.17-1.77-10.17-3a10.17 10.17 0 1 1 20.33 0c.01 1.23-3.86 3-10.16 3z" />
+        </svg>
+        <span className="text-white">SIGN IN / UP</span>
+      </button>
+    </div>
 
               <div className="icon wishlist-icon">
                 <a className="text-decoration-none text-white" href="#">

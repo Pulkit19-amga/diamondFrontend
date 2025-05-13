@@ -1,0 +1,21 @@
+/* Set all icons to black */
+.icon-black svg,
+.icon-black i,
+.icon-black span {
+  color: black !important;
+  fill: black !important;
+  stroke: black !important;
+}
+
+/* Hover effect for menu buttons */
+.menu-button {
+  color: black;
+  background-color: transparent;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.menu-button:hover {
+  color: white !important;
+  background-color: black !important;
+}

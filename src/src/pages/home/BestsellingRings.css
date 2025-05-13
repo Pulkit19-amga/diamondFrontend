@@ -1,0 +1,67 @@
+.exclusive-wrapper {
+  padding: 60px 0;
+  background-color: #fff;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: #000;
+}
+
+.tab-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 30px;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: #aaa;
+  position: relative;
+  padding: 5px 10px;
+}
+
+.tab-btn.active {
+  color: #000;
+  font-weight: 600;
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: #000;
+  bottom: 0;
+  left: 0;
+}
+
+.ring-slider .slick-slide {
+  padding: 0 10px;
+}
+
+.ring-card {
+  background: transparent;
+  padding: 15px;
+}
+
+.ring-img {
+  max-width: 100%;
+  margin-bottom: 10px;
+}
+
+.ring-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+}
+
