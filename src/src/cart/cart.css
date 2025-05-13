@@ -1,0 +1,158 @@
+.cart-container {
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+    font-family: 'Georgia', serif;
+    background: #fff;
+    color: #1a2a36;
+  }
+  
+  .cart-left {
+    flex: 2;
+  }
+  
+  .cart-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .promo-banner {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .promo-banner img {
+    width: 100px;
+    object-fit: cover;
+  }
+  
+  .almost-there {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .product-card {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 20px 0;
+    margin-bottom: 20px;
+  }
+  
+  .product-top {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .product-img {
+    width: 80px;
+  }
+  
+  .product-details p {
+    margin: 4px 0;
+  }
+  
+  .shipping-note {
+    font-size: 13px;
+    color: #555;
+  }
+  
+  .quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+  }
+  
+  .quantity-control button {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .protection-btn {
+    margin-top: 10px;
+    padding: 8px 12px;
+    border: 1px solid #000;
+    background: #fff;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  
+  .addon-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    padding: 15px 0;
+  }
+  
+  .add-btn {
+    padding: 6px 12px;
+    background-color: #0c2d48;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .summary-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+  }
+  
+  .subtotal {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .tax-info {
+    font-size: 13px;
+    color: #555;
+  }
+  
+  .checkout-btn {
+    margin: 10px 0;
+    padding: 12px;
+    background-color: #0c2d48;
+    color: #fff;
+    border: none;
+    width: 100%;
+    font-weight: bold;
+  }
+  
+  .discount-note {
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  
+  .summary-features p {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  
+  .verify-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+  }
+  
+  .verify-text {
+    font-size: 13px;
+    color: #333;
+  }
+  
+  .verify-btn {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background-color: #eee;
+    border: 1px solid #000;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .remove-btn {
+    margin-left: 20px;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #0c2d48;
+  }

@@ -1,0 +1,9 @@
+.react-datepicker-wrapper {
+  all: unset; 
+}
+
+.react-datepicker-wrapper {
+  display: inline !important;
+  padding: 0 !important;
+  border: none !important;
+}

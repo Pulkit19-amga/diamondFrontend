@@ -1,0 +1,60 @@
+/* Reset unwanted margin/padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .diamond-viewer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Increase the size and keep all media consistent */
+  .diamond-main-display {
+    width: 500px;
+    height: 500px;
+    background-color: #fff;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .diamond-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border: none;
+  }
+  
+  /* Thumbnails section */
+  .diamond-thumbnails {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  
+  .diamond-thumbnails button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  .thumb-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 2px solid transparent;
+    transition: border 0.2s ease;
+    border: 1px solid #000;
+  }
+  
+  .thumb-img.active {
+    border: 1px solid #007bff;
+    border-radius: 4px;
+  }
+  
