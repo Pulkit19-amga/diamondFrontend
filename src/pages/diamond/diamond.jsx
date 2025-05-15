@@ -42,9 +42,9 @@ export default function Diamond() {
   const [clarity, setClarity] = useState([1, 7]);
 
   // advance filter
-  const [polish, setPolish] = useState([0, 6]);
-  const [symmetry, setSymmetry] = useState([0, 6]);
-  const [fluorescence, setFluorescence] = useState([0, 5]);
+  const [polish, setPolish] = useState([1, 7]);
+  const [symmetry, setSymmetry] = useState([1, 7]);
+  const [fluorescence, setFluorescence] = useState([1, 6]);
   const [ratio, setRatio] = useState([0.9, 2.75]);
   const [table, setTable] = useState([40, 90]);
   const [depth, setDepth] = useState([40, 90]);
@@ -60,13 +60,46 @@ export default function Diamond() {
   const [checkedDiamonds, setCheckedDiamonds] = useState([]);
   const [showOnlyChecked, setShowOnlyChecked] = useState(false);
 
+
+
   const toggleDiamondCheck = (diamondId) => {
-    setCheckedDiamonds((prevChecked) =>
-      prevChecked.includes(diamondId)
-        ? prevChecked.filter((id) => id !== diamondId)
-        : [...prevChecked, diamondId]
-    );
-  };
+  setCheckedDiamonds((prevChecked) => {
+    let updatedChecked;
+    if (prevChecked.includes(diamondId)) {
+      updatedChecked = prevChecked.filter((id) => id !== diamondId);
+    } else {
+      updatedChecked = [...prevChecked, diamondId];
+    }
+
+    // Trigger API only if showOnlyChecked is true
+    if (showOnlyChecked) {
+      fetchFilteredDiamonds({
+        price,
+        carat,
+        cut,
+        color,
+        clarity,
+        polish,
+        symmetry,
+        fluorescence,
+        ratio,
+        table,
+        depth,
+        selectedShapes,
+        certificateQuery,
+        featuredDeal,
+        checkedDiamonds: updatedChecked, // send updated list
+        showOnlyChecked,
+        activeTab,
+        sortBy,
+        page,
+        per_page: 20,
+      });
+    }
+
+    return updatedChecked;
+  });
+};
 
   const toggleAdvanced = () => {
     setShowAdvanced((prev) => !prev);
@@ -81,12 +114,15 @@ export default function Diamond() {
     setClarity([1, 7]);
 
     // reset advance
-    setPolish([0, 6]);
-    setSymmetry([0, 6]);
-    setFluorescence([0, 5]);
+    setPolish([1, 7]);
+    setSymmetry([1, 7]);
+    setFluorescence([1, 6]);
     setRatio([0.9, 2.75]);
     setTable([40, 90]);
     setDepth([40, 90]);
+
+    setCheckedDiamonds([]);
+    setShowOnlyChecked(false);
   };
 
   const handleStepClick = (stepId) => {
@@ -108,6 +144,11 @@ export default function Diamond() {
   };
 
   const debouncedFilterRef = useRef(null);
+  useEffect(() => {
+    if (showOnlyChecked) {
+      setPage(1);
+    }
+  }, [showOnlyChecked]);
 
   useEffect(() => {
     if (!debouncedFilterRef.current) {
@@ -131,6 +172,8 @@ export default function Diamond() {
       selectedShapes,
       certificateQuery,
       featuredDeal,
+      checkedDiamonds,
+      showOnlyChecked,
       activeTab,
       sortBy,
       page,
@@ -138,7 +181,6 @@ export default function Diamond() {
     };
 
     debouncedFilterRef.current(params);
-    console.log("Selected shapes updated:", selectedShapes);
 
     return () => {
       debouncedFilterRef.current.cancel();
@@ -158,6 +200,7 @@ export default function Diamond() {
     selectedShapes,
     certificateQuery,
     featuredDeal,
+    showOnlyChecked,
     activeTab,
     sortBy,
     page,
@@ -179,6 +222,8 @@ export default function Diamond() {
       selectedShapes,
       certificateQuery,
       featuredDeal,
+      checkedDiamonds,
+      showOnlyChecked,
       activeTab,
       sortBy,
       page,
@@ -200,6 +245,8 @@ export default function Diamond() {
       shapes: selectedShapes.map((s) => s.id),
       certificate: certificateQuery,
       featured: featuredDeal,
+      checkedDiamonds,
+      showOnlyChecked,
       active_tab: typeMap[activeTab],
       sort_by: sortBy,
       page,

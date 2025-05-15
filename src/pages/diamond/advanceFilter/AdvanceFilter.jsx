@@ -16,16 +16,29 @@ export default function AdvanceFilter({
   setDepth,
 }) {
   const polishLabels = ["Excellent", "Very Good", "Good", "I", "Fair", "Poor"];
-  const minPolishIndex = 0;
-  const maxPolishIndex = polishLabels.length;
+  const minPolishIndex = 1;
+  const maxPolishIndex = polishLabels.length + 1;
 
-  const symmetryLabels = ["Excellent", "Very Good", "Good", "I", "Fair", "Poor"];
-  const minSymmetryIndex = 0;
-  const maxSymmetryIndex = symmetryLabels.length;
+  const symmetryLabels = [
+    "Excellent",
+    "Very Good",
+    "Good",
+    "Fair",
+    "Poor",
+    "I",
+  ];
+  const minSymmetryIndex = 1;
+  const maxSymmetryIndex = symmetryLabels.length + 1;
 
-  const fluorescenceLabels = ["None", "Faint", "Medium", "Strong", "Very Strong"];
-  const minFluorescenceIndex = 0;
-  const maxFluorescenceIndex = fluorescenceLabels.length;
+  const fluorescenceLabels = [
+    "None",
+    "Faint",
+    "Medium",
+    "Strong",
+    "Very Strong",
+  ];
+  const minFluorescenceIndex = 1;
+  const maxFluorescenceIndex = fluorescenceLabels.length + 1;
 
   const minRatio = 0.9;
   const maxRatio = 2.75;
@@ -127,8 +140,15 @@ export default function AdvanceFilter({
           <div
             className="slider-active"
             style={{
-              left: `${(polish[0] / maxPolishIndex) * 100}%`,
-              width: `${((polish[1] - polish[0]) / maxPolishIndex) * 100}%`,
+              left: `${
+                ((polish[0] - minPolishIndex) /
+                  (maxPolishIndex - minPolishIndex)) *
+                100
+              }%`,
+              width: `${
+                ((polish[1] - polish[0]) / (maxPolishIndex - minPolishIndex)) *
+                100
+              }%`,
             }}
           ></div>
 
@@ -177,9 +197,15 @@ export default function AdvanceFilter({
           <div
             className="slider-active"
             style={{
-              left: `${(symmetry[0] / maxSymmetryIndex) * 100}%`,
+              left: `${
+                ((symmetry[0] - minSymmetryIndex) /
+                  (maxSymmetryIndex - minSymmetryIndex)) *
+                100
+              }%`,
               width: `${
-                ((symmetry[1] - symmetry[0]) / maxSymmetryIndex) * 100
+                ((symmetry[1] - symmetry[0]) /
+                  (maxSymmetryIndex - minSymmetryIndex)) *
+                100
               }%`,
             }}
           ></div>
@@ -229,9 +255,14 @@ export default function AdvanceFilter({
           <div
             className="slider-active"
             style={{
-              left: `${(fluorescence[0] / maxFluorescenceIndex) * 100}%`,
+              left: `${
+                ((fluorescence[0] - minFluorescenceIndex) /
+                  (maxFluorescenceIndex - minFluorescenceIndex)) *
+                100
+              }%`,
               width: `${
-                ((fluorescence[1] - fluorescence[0]) / maxFluorescenceIndex) *
+                ((fluorescence[1] - fluorescence[0]) /
+                  (maxFluorescenceIndex - minFluorescenceIndex)) *
                 100
               }%`,
             }}
