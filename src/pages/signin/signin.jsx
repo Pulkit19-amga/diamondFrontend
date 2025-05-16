@@ -94,9 +94,11 @@ const Signin = () => {
                   />
                 </div>
 
-                <div className="form__actions d-flex justify-content-between login-account mb-2">
-                  <span>Forgot your password?</span>
-                </div>
+               <div className="form__actions d-flex justify-content-between login-account mb-2">
+  <Link to="/resetpassword" className="text-decoration-none text-primary fw-bold">
+    Forgot your password?
+  </Link>
+</div>
 
                 <div className="form__submission">
                   <button
