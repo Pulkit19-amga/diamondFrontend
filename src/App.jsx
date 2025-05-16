@@ -19,8 +19,6 @@ import ResetPassword from './pages/resetpassword/reset';
 
 
 
-
-
 export default function App() {
   const location = useLocation();
   const isHome = location.pathname === '/';
@@ -40,6 +38,7 @@ export default function App() {
           <Route path="/wedding-brands" element={<Weddingbrands/> } />
           <Route path="/engagement-ring-style" element={<RingStyle />} />
           <Route path="/diamond-details/:id" element={<DiamondDetails /> } />
+
           <Route path="/cart" element={<CartPage />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
@@ -47,7 +46,7 @@ export default function App() {
           
           
 
-  
+
         </Routes>
       </main>
       <Footer />

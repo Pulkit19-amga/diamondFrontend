@@ -11,8 +11,8 @@ const DiamondFilter = ({ price, setPrice, carat, setCarat, cut, setCut }) => {
   const minCaratDifference = 1;
 
   const cutLabels = ["Excellent", "Very Good", "Good", "Ideal", "8X"];
-  const minCutIndex = 0;
-  const maxCutIndex = cutLabels.length;
+  const minCutIndex = 1;
+  const maxCutIndex = cutLabels.length + 1;
 
   const handlePriceChange = (index, value) => {
     const newPrice = [...price];
@@ -57,7 +57,6 @@ const DiamondFilter = ({ price, setPrice, carat, setCarat, cut, setCut }) => {
       width: `${right - left}%`,
     };
   };
-
 
   return (
     <div className="filter-section">
@@ -130,8 +129,12 @@ const DiamondFilter = ({ price, setPrice, carat, setCarat, cut, setCut }) => {
           <div
             className="slider-active"
             style={{
-              left: `${(cut[0] / maxCutIndex) * 100}%`,
-              width: `${((cut[1] - cut[0]) / maxCutIndex) * 100}%`,
+              left: `${
+                ((cut[0] - minCutIndex) / (maxCutIndex - minCutIndex)) * 100
+              }%`,
+              width: `${
+                ((cut[1] - cut[0]) / (maxCutIndex - minCutIndex)) * 100
+              }%`,
             }}
           ></div>
 

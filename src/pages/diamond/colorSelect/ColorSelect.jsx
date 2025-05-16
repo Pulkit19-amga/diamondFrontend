@@ -3,8 +3,8 @@ import "./ColorSelect.css";
 
 export default function ColorSlider({ color, setColor }) {
   const colorLabels = ["D", "E", "F", "G", "H"];
-  const minColorIndex = 0;
-  const maxColorIndex = colorLabels.length;
+  const minColorIndex = 1;
+  const maxColorIndex = colorLabels.length+1;
 
   return (
     <div className="color-section">
@@ -19,8 +19,8 @@ export default function ColorSlider({ color, setColor }) {
           <div
             className="slider-active"
             style={{
-              left: `${(color[0] / maxColorIndex) * 100}%`,
-              width: `${((color[1] - color[0]) / maxColorIndex) * 100}%`,
+              left: `${((color[0] - minColorIndex) / (maxColorIndex - minColorIndex)) * 100}%`,
+              width: `${((color[1] - color[0]) / (maxColorIndex - minColorIndex)) * 100}%`,
             }}
           ></div>
 

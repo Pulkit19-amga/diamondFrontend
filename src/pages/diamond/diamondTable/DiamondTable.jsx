@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Loader from "../loader";
+import Loader from "../loader/index";
 import "./DiamondTable.css";
 
 const DiamondTable = ({
@@ -27,7 +27,7 @@ const DiamondTable = ({
     <div className="diamond-table">
       <div className="table-header">
         <div>COMPARE</div>
-        <div>VIEW</div>
+        <div className="diamond-img">VIEW</div>
         <div>SHAPE ▾</div>
         <div>CARAT ▾</div>
         <div>COLOR ▾</div>
@@ -80,24 +80,30 @@ const DiamondTable = ({
                 className="diamond-img"
               />
             </div>
-            <div>{diamond.shape.name}</div>
-            <div>{diamond.carat_weight}</div>
-            <div>{diamond.color.name}</div>
-            <div>{diamond.clarity.name}</div>
-            <div>{diamond.cut.full_name}</div>
+            <div>{diamond.shape?.name || "NA"}</div>
+            <div>
+              {diamond.carat_weight
+                ? parseFloat(diamond.carat_weight).toFixed(2)
+                : "00"}
+            </div>
+            <div>{diamond.color?.name || "NA"}</div>
+            <div>{diamond.clarity?.name || "NA"}</div>
+            <div>{diamond.cut?.full_name || "NA"}</div>
             <div>{diamond.certificate_company.dl_name}</div>
 
             {showAdvanced && (
               <>
-                <div>{diamond.polish.full_name}</div>
-                <div>{diamond.symmetry.full_name}</div>
-                <div>{diamond.fluorescence.full_name}</div>
-                
+                <div>{diamond.polish?.full_name || "NA"}</div>
+                <div>{diamond.symmetry?.full_name || "NA"}</div>
+                <div>{diamond.fluorescence?.full_name || "NA"}</div>
+
                 {diamond.measurement_l != null && diamond.measurement_w > 0
                   ? (diamond.measurement_l / diamond.measurement_w).toFixed(2)
                   : "N/A"}
-                <div>{diamond.table_diamond}</div>
-                <div>{diamond.depth}</div>
+                <div>
+                  {diamond.table_diamond ? diamond.table_diamond : "NA"}
+                </div>
+                <div>{diamond.depth ? diamond.depth : "NA"}</div>
               </>
             )}
             <div className="price">{diamond.price}</div>
