@@ -48,7 +48,7 @@ display: none;
   position: Unset;
 }
 .logo-wrapper a.navbar-brand img.img-fluid {
-  max-width: 250px;
+  max-width: 300px;
 }
 header.header-wrapper.position-realtive {
   position: relative;

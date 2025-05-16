@@ -37,10 +37,10 @@ const Footer = () => {
                   <a href="#" className="text-white">Affiliate Program</a>
                 </li>
                 <li className="site-footer__linklist-item">
-                  <a href="/terms" className="text-white">Terms of Use</a>
+                <Link to="/terms" className="text-white">Terms of Use</Link>
                 </li>
                 <li className="site-footer__linklist-item">
-                  <a href="/policy" className="text-white">Privacy Policy</a>
+                <Link to="/policy" className="text-white">Privacy Policy</Link>
                 </li>
                 <li className="site-footer__linklist-item">
                   <a href="#" className="text-white">Site Map</a>
@@ -90,7 +90,7 @@ const Footer = () => {
     <ul className="site-footer__linklist acc-content p-0">
   {[
     { label: "Diamonds", link: "/diamond" },
-    { label: "Engagement rings", link: "/engagement-rings" },
+    { label: "Engagement rings", link: "/engagement-ring-style" },
     { label: "Bands for him", link: "/bands-for-him" },
     { label: "Bands for her", link: "/bands-for-her" },
     { label: "Home preview", link: "/home-preview" },
@@ -100,10 +100,11 @@ const Footer = () => {
     { label: "Fine jewelry", link: "/fine-jewelry" },
   ].map((item, i) => (
     <li key={i} className="site-footer__linklist-item">
-      <a href={item.link}>{item.label}</a>
+      <Link to={item.link} className="text-white">{item.label}</Link>
     </li>
   ))}
 </ul>
+
 
   </div>
 </div>
