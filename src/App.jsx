@@ -15,6 +15,7 @@ import DiamondDetails from './pages/diamond-detail/diamondDetails/diamondDetails
 import CartPage from './cart/CartPage';
 import Signin from './pages/signin/signin';
 import Signup from './pages/signup/signup';
+import ResetPassword from './pages/resetpassword/reset';
 
 
 
@@ -42,6 +43,8 @@ export default function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/resetpassword" element={<ResetPassword />} />
+          
           
 
   

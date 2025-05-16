@@ -42,10 +42,9 @@ export default function RingStyle() {
                 <ul className="education-menu default-slick-slider d-flex list-style-none flex-md justify-content_center text-center">
                   <li className="active">
                     <a
-                      href="/pages/engagement-ring-style"
+                      href="#"
                       className=""
                       data-uw-rm-brl="PR"
-                      data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-style"
                     >
                       Engagement Rings
                     </a>
@@ -55,7 +54,6 @@ export default function RingStyle() {
                       href="/pages/diamonds-4cs"
                       className=""
                       data-uw-rm-brl="PR"
-                      data-uw-original-href="https://www.withclarity.com/pages/diamonds-4cs"
                     >
                       Diamonds
                     </a>
@@ -65,7 +63,6 @@ export default function RingStyle() {
                       href="/pages/wedding-band-styles"
                       className=""
                       data-uw-rm-brl="PR"
-                      data-uw-original-href="https://www.withclarity.com/pages/wedding-band-styles"
                     >
                       Wedding Bands
                     </a>
@@ -75,7 +72,6 @@ export default function RingStyle() {
                       href="/pages/fine-jewelry-earrings"
                       className=""
                       data-uw-rm-brl="PR"
-                      data-uw-original-href="https://www.withclarity.com/pages/fine-jewelry-earrings"
                     >
                       Fine Jewelry
                     </a>
@@ -85,7 +81,6 @@ export default function RingStyle() {
                       href="/pages/gemstones-types-guide"
                       className=""
                       data-uw-rm-brl="PR"
-                      data-uw-original-href="https://www.withclarity.com/pages/gemstones-types-guide"
                     >
                       Gemstone
                     </a>
@@ -100,7 +95,6 @@ export default function RingStyle() {
                         <a
                           href="/pages/engagement-ring-style"
                           data-uw-rm-brl="PR"
-                          data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-style"
                         >
                           Style
                         </a>
@@ -110,7 +104,6 @@ export default function RingStyle() {
                         <a
                           href="/pages/engagement-ring-settings"
                           data-uw-rm-brl="PR"
-                          data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-settings"
                         >
                           Settings
                         </a>
@@ -120,7 +113,6 @@ export default function RingStyle() {
                         <a
                           href="/pages/engagement-ring-diamond-types"
                           data-uw-rm-brl="PR"
-                          data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-diamond-types"
                         >
                           Diamond Types
                         </a>
@@ -130,7 +122,6 @@ export default function RingStyle() {
                         <a
                           href="/pages/engagement-ring-diamond-shapes"
                           data-uw-rm-brl="PR"
-                          data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-diamond-shapes"
                         >
                           Diamond Shapes
                         </a>
@@ -140,7 +131,6 @@ export default function RingStyle() {
                         <a
                           href="/pages/engagement-ring-metal"
                           data-uw-rm-brl="PR"
-                          data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-metal"
                         >
                           Metal
                         </a>
@@ -150,7 +140,6 @@ export default function RingStyle() {
                         <a
                           href="/pages/engagement-ring-sizing"
                           data-uw-rm-brl="PR"
-                          data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-sizing"
                         >
                           Ring Sizing
                         </a>
@@ -160,7 +149,6 @@ export default function RingStyle() {
                         <a
                           href="/pages/engagement-ring-budgeting"
                           data-uw-rm-brl="PR"
-                          data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-budgeting"
                         >
                           Budgeting
                         </a>
@@ -182,18 +170,17 @@ export default function RingStyle() {
                               <div className="image-wrapper">
                                 <img
                                   className="d-block ls-is-cached lazyloaded"
-                                  data-src="//www.withclarity.com/cdn/shop/files/Edu_Solitaire-Style.jpg?v=1717482329"
+                             
                                   alt="SHOP SOLITAIRE RINGS"
-                                  src="//www.withclarity.com/cdn/shop/files/Edu_Solitaire-Style.jpg?v=1717482329"
+                                  src="/images/product.webp"
                                   data-uw-rm-alt-original=""
                                   data-uw-rm-alt="CT"
                                 />
                               </div>
                               <a
-                                href="https://www.withclarity.com/collections/engagement-rings"
+                                href="#"
                                 className="text-link small--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/collections/engagement-rings"
                               >
                                 SHOP SOLITAIRE RINGS
                               </a>
@@ -214,10 +201,9 @@ export default function RingStyle() {
                                 diamond engagement ring is waiting for you.
                               </p>
                               <a
-                                href="https://www.withclarity.com/collections/engagement-rings"
+                                href="#"
                                 className="text-link medium-up--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/collections/engagement-rings"
                               >
                                 SHOP SOLITAIRE RINGS
                               </a>
@@ -228,29 +214,26 @@ export default function RingStyle() {
                                 </h4>
                                 <div className="education-related-articles">
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/halo-vs-solitaire-which-engagement-ring-style-should-you-pick/"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/halo-vs-solitaire-which-engagement-ring-style-should-you-pick/"
                                   >
                                     Halo vs. Solitaire – Which engagement ring
                                     style should you pick?
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/solitaire-engagement-rings"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/solitaire-engagement-rings"
                                   >
                                     Solitaire Engagement Rings
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/which-finger-is-the-engagement-ring-worn-on"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/which-finger-is-the-engagement-ring-worn-on"
                                   >
                                     Which Hand Does the Engagement Ring Go On?
                                   </a>
@@ -267,19 +250,18 @@ export default function RingStyle() {
                               <div className="image-wrapper">
                                 <img
                                   className="d-block ls-is-cached lazyloaded"
-                                  data-src="//www.withclarity.com/cdn/shop/files/Edu_Halo-Style.jpg?v=1717482329"
+                                 
                                   alt="SHOP HALLO RINGS"
-                                  src="//www.withclarity.com/cdn/shop/files/Edu_Halo-Style.jpg?v=1717482329"
+                                  src="/images/product.webp"
                                   data-uw-rm-alt-original=""
                                   data-uw-rm-alt="CT"
                                 />
                               </div>
 
                               <a
-                                href="https://www.withclarity.com/collections/halo-diamond-engagement-rings?q=Halo"
+                                href="#"
                                 className="text-link small--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/collections/halo-diamond-engagement-rings?q=Halo"
                               >
                                 SHOP HALLO RINGS
                               </a>
@@ -301,10 +283,9 @@ export default function RingStyle() {
                                 diamond engagement ring.
                               </p>
                               <a
-                                href="https://www.withclarity.com/collections/halo-diamond-engagement-rings?q=Halo"
+                                href="#"
                                 className="text-link medium-up--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/collections/halo-diamond-engagement-rings?q=Halo"
                               >
                                 SHOP HALLO RINGS
                               </a>
@@ -315,29 +296,26 @@ export default function RingStyle() {
                                 </h4>
                                 <div className="education-related-articles">
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/halo-engagement-rings"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/halo-engagement-rings"
                                   >
                                     About Halo Diamond Engagement Rings
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/cushion-halo-ring"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/cushion-halo-ring"
                                   >
                                     What Is a Cushion Halo Ring? Is It The Same
                                     As a Cushion Cut Ring?
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/best-vintage-halo-diamond-engagement-rings/"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/best-vintage-halo-diamond-engagement-rings/"
                                   >
                                     Best Vintage Halo Diamond Engagement Rings
                                   </a>
@@ -354,19 +332,18 @@ export default function RingStyle() {
                               <div className="image-wrapper">
                                 <img
                                   className="d-block ls-is-cached lazyloaded"
-                                  data-src="//www.withclarity.com/cdn/shop/files/Edu_Vitage-Style.jpg?v=1717482329"
+                                  
                                   alt="SHOP VINTAGE RINGS"
-                                  src="//www.withclarity.com/cdn/shop/files/Edu_Vitage-Style.jpg?v=1717482329"
+                                  src="/images/solitaire_540x.webp"
                                   data-uw-rm-alt-original=""
                                   data-uw-rm-alt="CT"
                                 />
                               </div>
 
                               <a
-                                href="https://www.withclarity.com/collections/vintage-diamond-engagement-rings?q=Vintage"
+                                href="#"
                                 className="text-link small--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/collections/vintage-diamond-engagement-rings?q=Vintage"
                               >
                                 SHOP VINTAGE RINGS
                               </a>
@@ -388,10 +365,9 @@ export default function RingStyle() {
                                 individuality upon their wearers.
                               </p>
                               <a
-                                href="https://www.withclarity.com/collections/vintage-diamond-engagement-rings?q=Vintage"
+                                href="#"
                                 className="text-link medium-up--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/collections/vintage-diamond-engagement-rings?q=Vintage"
                               >
                                 SHOP VINTAGE RINGS
                               </a>
@@ -402,28 +378,25 @@ export default function RingStyle() {
                                 </h4>
                                 <div className="education-related-articles">
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/unique-vintage-diamond-engagement-rings"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/unique-vintage-diamond-engagement-rings"
                                   >
                                     Unique Vintage Diamond Engagement Rings
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/best-vintage-oval-engagement-rings/"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/best-vintage-oval-engagement-rings/"
                                   >
                                     Best Vintage Oval Engagement Rings
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/best-vintage-halo-diamond-engagement-rings/"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/best-vintage-halo-diamond-engagement-rings/"
                                   >
                                     Best Vintage Halo Diamond Engagement Rings
                                   </a>
@@ -440,19 +413,18 @@ export default function RingStyle() {
                               <div className="image-wrapper">
                                 <img
                                   className="d-block ls-is-cached lazyloaded"
-                                  data-src="//www.withclarity.com/cdn/shop/files/Edu_Side-Stone-Style.jpg?v=1717482329"
+                             
                                   alt="SHOP SIDE STONE RINGS"
-                                  src="//www.withclarity.com/cdn/shop/files/Edu_Side-Stone-Style.jpg?v=1717482329"
+                                  src="/images/STUDS.webp"
                                   data-uw-rm-alt-original=""
                                   data-uw-rm-alt="CT"
                                 />
                               </div>
 
                               <a
-                                href="https://www.withclarity.com/collections/side-stone-diamond-engagement-rings?q=Side_Stone"
+                                href="#"
                                 className="text-link small--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/collections/side-stone-diamond-engagement-rings?q=Side_Stone"
                               >
                                 SHOP SIDE STONE RINGS
                               </a>
@@ -474,10 +446,9 @@ export default function RingStyle() {
                                 ring.
                               </p>
                               <a
-                                href="https://www.withclarity.com/collections/side-stone-diamond-engagement-rings?q=Side_Stone"
+                                href="#"
                                 className="text-link medium-up--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/collections/side-stone-diamond-engagement-rings?q=Side_Stone"
                               >
                                 SHOP SIDE STONE RINGS
                               </a>
@@ -488,28 +459,25 @@ export default function RingStyle() {
                                 </h4>
                                 <div className="education-related-articles">
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/all-about-grace-kellys-engagement-ring"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/all-about-grace-kellys-engagement-ring"
                                   >
                                     All About Grace Kelly’s Engagement Ring
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/all-about-jessica-biels-engagement-ring"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/all-about-jessica-biels-engagement-ring"
                                   >
                                     All About Jessica Biel’s Engagement Ring
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/buying-guide/how-much-should-an-engagement-ring-cost"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/buying-guide/how-much-should-an-engagement-ring-cost"
                                   >
                                     How Much Should An Engagement Ring Cost?
                                     (Hint: The Old Rule Is Outdated)
@@ -527,9 +495,9 @@ export default function RingStyle() {
                               <div className="image-wrapper">
                                 <img
                                   className="d-block ls-is-cached lazyloaded"
-                                  data-src="//www.withclarity.com/cdn/shop/files/Edu_Three-Stone-Style.jpg?v=1717482329"
+                               
                                   alt="RELATED POSTS"
-                                  src="//www.withclarity.com/cdn/shop/files/Edu_Three-Stone-Style.jpg?v=1717482329"
+                                 src="/images/solitaire_540x.webp"
                                   data-uw-rm-alt-original=""
                                   data-uw-rm-alt="CT"
                                 />
@@ -539,7 +507,6 @@ export default function RingStyle() {
                                 href="#"
                                 className="text-link small--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-style"
                                 aria-label="Open this option"
                                 data-uw-rm-empty-ctrl=""
                               ></a>
@@ -563,7 +530,6 @@ export default function RingStyle() {
                                 href="#"
                                 className="text-link medium-up--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-style"
                                 aria-label="Open this option"
                                 data-uw-rm-empty-ctrl=""
                               ></a>
@@ -574,29 +540,26 @@ export default function RingStyle() {
                                 </h4>
                                 <div className="education-related-articles">
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/three-stone-rings"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/three-stone-rings"
                                   >
                                     Three Stone Engagement Rings
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/top-princess-cut-three-stone-engagement-rings"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/top-princess-cut-three-stone-engagement-rings"
                                   >
                                     Princess Cut Three Stone Engagement Rings
                                     That Celebrate This Angular Beauty
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/top-cushion-cut-three-stone-engagement-rings"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/top-cushion-cut-three-stone-engagement-rings"
                                   >
                                     Make Your Lifelong Commitment Crystal Clear
                                     with a Cushion Cut Three Stone Engagement
@@ -615,9 +578,9 @@ export default function RingStyle() {
                               <div className="image-wrapper">
                                 <img
                                   className="d-block ls-is-cached lazyloaded"
-                                  data-src="//www.withclarity.com/cdn/shop/files/Edu_Pave-Style.jpg?v=1717482329"
+                                
                                   alt="RELATED POSTS"
-                                  src="//www.withclarity.com/cdn/shop/files/Edu_Pave-Style.jpg?v=1717482329"
+                                  src="/images/product.webp"
                                   data-uw-rm-alt-original=""
                                   data-uw-rm-alt="CT"
                                 />
@@ -627,7 +590,6 @@ export default function RingStyle() {
                                 href="#"
                                 className="text-link small--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-style"
                                 aria-label="Open this option"
                                 data-uw-rm-empty-ctrl=""
                               ></a>
@@ -651,7 +613,6 @@ export default function RingStyle() {
                                 href="#"
                                 className="text-link medium-up--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-style"
                                 aria-label="Open this option"
                                 data-uw-rm-empty-ctrl=""
                               ></a>
@@ -662,29 +623,26 @@ export default function RingStyle() {
                                 </h4>
                                 <div className="education-related-articles">
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/pave-and-micropave-diamond-engagement-rings"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/pave-and-micropave-diamond-engagement-rings"
                                   >
                                     Pave and Micro-Pave Diamond Engagement Rings
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/top-pave-engagement-rings/"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/top-pave-engagement-rings/"
                                   >
                                     Pave Engagement Rings That Bring the Extra
                                     Sparkle
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/what-is-a-pave-setting"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/what-is-a-pave-setting"
                                   >
                                     Here's What You Need to Know Before Buying a
                                     Pave Setting
@@ -702,9 +660,9 @@ export default function RingStyle() {
                               <div className="image-wrapper">
                                 <img
                                   className="d-block ls-is-cached lazyloaded"
-                                  data-src="//www.withclarity.com/cdn/shop/files/Edu_Hidden-Halo-Style.jpg?v=1717482329"
+                                 
                                   alt="RELATED POSTS"
-                                  src="//www.withclarity.com/cdn/shop/files/Edu_Hidden-Halo-Style.jpg?v=1717482329"
+                                  src="/images/solitaire_540x.webp"
                                   data-uw-rm-alt-original=""
                                   data-uw-rm-alt="CT"
                                 />
@@ -714,7 +672,6 @@ export default function RingStyle() {
                                 href="#"
                                 className="text-link small--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-style"
                                 aria-label="Open this option"
                                 data-uw-rm-empty-ctrl=""
                               ></a>
@@ -738,7 +695,6 @@ export default function RingStyle() {
                                 href="#"
                                 className="text-link medium-up--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-style"
                                 aria-label="Open this option"
                                 data-uw-rm-empty-ctrl=""
                               ></a>
@@ -749,28 +705,25 @@ export default function RingStyle() {
                                 </h4>
                                 <div className="education-related-articles">
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/the-secret-glamour-of-the-hidden-halo/"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/the-secret-glamour-of-the-hidden-halo/"
                                   >
                                     The Secret Glamour of the Hidden Halo
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/buying-guide/hidden-accent-engagement-ring-guide"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/buying-guide/hidden-accent-engagement-ring-guide"
                                   >
                                     Hidden Accent Engagement Ring Guide
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/guide-to-hidden-halo-engagement-rings"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/guide-to-hidden-halo-engagement-rings"
                                   >
                                     Guide to Hidden Halo Engagement Rings
                                   </a>
@@ -787,9 +740,9 @@ export default function RingStyle() {
                               <div className="image-wrapper">
                                 <img
                                   className="d-block ls-is-cached lazyloaded"
-                                  data-src="//www.withclarity.com/cdn/shop/files/Edu_Something-Blue-Style.jpg?v=1717482329"
+                                 
                                   alt="RELATED POSTS"
-                                  src="//www.withclarity.com/cdn/shop/files/Edu_Something-Blue-Style.jpg?v=1717482329"
+                                  src="/images/product.webp"
                                   data-uw-rm-alt-original=""
                                   data-uw-rm-alt="CT"
                                 />
@@ -799,7 +752,6 @@ export default function RingStyle() {
                                 href="#"
                                 className="text-link small--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-style"
                                 aria-label="Open this option"
                                 data-uw-rm-empty-ctrl=""
                               ></a>
@@ -823,7 +775,6 @@ export default function RingStyle() {
                                 href="#"
                                 className="text-link medium-up--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-style"
                                 aria-label="Open this option"
                                 data-uw-rm-empty-ctrl=""
                               ></a>
@@ -834,20 +785,18 @@ export default function RingStyle() {
                                 </h4>
                                 <div className="education-related-articles">
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/how-to-integrate-something-blue-into-your-engagement-ring"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/how-to-integrate-something-blue-into-your-engagement-ring"
                                   >
                                     How to Integrate Something Blue into Your
                                     Engagement Ring
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/make-your-something-blue-truly-special-with-blue-sapphire-accents-in-your-diamond-engagement-ring"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/make-your-something-blue-truly-special-with-blue-sapphire-accents-in-your-diamond-engagement-ring"
                                   >
                                     Make your ‘something blue’ Truly Special
                                     with Blue Sapphire Accents in your Diamond
@@ -855,10 +804,9 @@ export default function RingStyle() {
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/buying-guide/something-blue-something-borrowed-jewelry-guide"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/buying-guide/something-blue-something-borrowed-jewelry-guide"
                                   >
                                     Something Blue, Something Borrowed Jewelry
                                     Guide
@@ -876,9 +824,9 @@ export default function RingStyle() {
                               <div className="image-wrapper">
                                 <img
                                   className="d-block ls-is-cached lazyloaded"
-                                  data-src="//www.withclarity.com/cdn/shop/files/Edu_Luxe-Style.jpg?v=1717482330"
+                                 
                                   alt="RELATED POSTS"
-                                  src="//www.withclarity.com/cdn/shop/files/Edu_Luxe-Style.jpg?v=1717482330"
+                                  src="/images/STUDS.webp"
                                   data-uw-rm-alt-original=""
                                   data-uw-rm-alt="CT"
                                 />
@@ -888,7 +836,6 @@ export default function RingStyle() {
                                 href="#"
                                 className="text-link small--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-style"
                                 aria-label="Open this option"
                                 data-uw-rm-empty-ctrl=""
                               ></a>
@@ -912,7 +859,6 @@ export default function RingStyle() {
                                 href="#"
                                 className="text-link medium-up--hide text-uppercase"
                                 data-uw-rm-brl="PR"
-                                data-uw-original-href="https://www.withclarity.com/pages/engagement-ring-style"
                                 aria-label="Open this option"
                                 data-uw-rm-empty-ctrl=""
                               ></a>
@@ -923,30 +869,27 @@ export default function RingStyle() {
                                 </h4>
                                 <div className="education-related-articles">
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/the-luxe-collection-by-with-clarity-its-big-its-bold-and-its-new"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/the-luxe-collection-by-with-clarity-its-big-its-bold-and-its-new"
                                   >
-                                    The Luxe Collection by With Clarity - it's
+                                    The Luxe Collection by With The Caratcasa - it's
                                     Big, it's Bold and it's New
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/what-to-say-when-you-propose"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/what-to-say-when-you-propose"
                                   >
                                     Getting Nervous? Here's What to Say When You
                                     Propose
                                   </a>
 
                                   <a
-                                    href="https://www.withclarity.com/blogs/engagement-ring/how-long-before-a-proposal-should-you-buy-the-ring"
+                                    href="#"
                                     className="article__link"
                                     data-uw-rm-brl="PR"
-                                    data-uw-original-href="https://www.withclarity.com/blogs/engagement-ring/how-long-before-a-proposal-should-you-buy-the-ring"
                                   >
                                     How Long Before a Proposal Should You Buy
                                     the Ring?
