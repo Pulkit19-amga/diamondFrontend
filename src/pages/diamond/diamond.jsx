@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import "./index.css";
 import axiosClient from "../../api/axios";
 import debounce from "lodash.debounce";
+import Loader from "./loader/index";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import DiamondFilter from "./diamondFilter/DiamondFilter";
@@ -29,6 +30,7 @@ export default function Diamond() {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(20);
   const [total, setTotal] = useState(0);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
 
   // diamond filter 2nd component
   const [price, setPrice] = useState([0, 10000]);
@@ -60,46 +62,44 @@ export default function Diamond() {
   const [checkedDiamonds, setCheckedDiamonds] = useState([]);
   const [showOnlyChecked, setShowOnlyChecked] = useState(false);
 
-
-
   const toggleDiamondCheck = (diamondId) => {
-  setCheckedDiamonds((prevChecked) => {
-    let updatedChecked;
-    if (prevChecked.includes(diamondId)) {
-      updatedChecked = prevChecked.filter((id) => id !== diamondId);
-    } else {
-      updatedChecked = [...prevChecked, diamondId];
-    }
+    setCheckedDiamonds((prevChecked) => {
+      let updatedChecked;
+      if (prevChecked.includes(diamondId)) {
+        updatedChecked = prevChecked.filter((id) => id !== diamondId);
+      } else {
+        updatedChecked = [...prevChecked, diamondId];
+      }
 
-    // Trigger API only if showOnlyChecked is true
-    if (showOnlyChecked) {
-      fetchFilteredDiamonds({
-        price,
-        carat,
-        cut,
-        color,
-        clarity,
-        polish,
-        symmetry,
-        fluorescence,
-        ratio,
-        table,
-        depth,
-        selectedShapes,
-        certificateQuery,
-        featuredDeal,
-        checkedDiamonds: updatedChecked, // send updated list
-        showOnlyChecked,
-        activeTab,
-        sortBy,
-        page,
-        per_page: 20,
-      });
-    }
+      // Trigger API only if showOnlyChecked is true
+      if (showOnlyChecked) {
+        fetchFilteredDiamonds({
+          price,
+          carat,
+          cut,
+          color,
+          clarity,
+          polish,
+          symmetry,
+          fluorescence,
+          ratio,
+          table,
+          depth,
+          selectedShapes,
+          certificateQuery,
+          featuredDeal,
+          checkedDiamonds: updatedChecked, // send updated list
+          showOnlyChecked,
+          activeTab,
+          selectedReport,
+          page,
+          per_page: perPage,
+        });
+      }
 
-    return updatedChecked;
-  });
-};
+      return updatedChecked;
+    });
+  };
 
   const toggleAdvanced = () => {
     setShowAdvanced((prev) => !prev);
@@ -135,6 +135,13 @@ export default function Diamond() {
     color: 3,
   };
 
+  const reportMap = {
+    all: 0,
+    gia: 1,
+    igi: 2,
+  };
+  const normalizedReport = selectedReport?.toLowerCase() || "all";
+
   const handleShapeChange = (shapes) => {
     setSelectedShapes(shapes);
   };
@@ -143,94 +150,44 @@ export default function Diamond() {
     setCertificateQuery(query);
   };
 
-  const debouncedFilterRef = useRef(null);
-  useEffect(() => {
-    if (showOnlyChecked) {
-      setPage(1);
-    }
-  }, [showOnlyChecked]);
+  const totalPages = Math.ceil(total / perPage);
 
+  const loaderRef = useRef(null);
+  const debouncedFilterRef = useRef(null);
+
+  const fetchFilteredDiamonds = async (params) => {
+    console.log("🔍 Requesting diamonds with params:", params);
+    const isInitialLoad = params.page === 1;
+    if (isInitialLoad) setLoading(true);
+    else setIsFetchingMore(true);
+
+    try {
+      const response = await axiosClient.get("/api/get-all-diamonds", {
+        params,
+      });
+
+      if (isInitialLoad) {
+        setDiamonds(response.data.data || []);
+      } else {
+        setDiamonds((prev) => [...prev, ...(response.data.data || [])]);
+      }
+
+      setTotal(response.data.total || 0);
+    } catch (error) {
+      console.error("Fetch failed", error);
+    } finally {
+      if (isInitialLoad) setLoading(false);
+      else setIsFetchingMore(false);
+    }
+  };
+
+  // Debounced filter fetch on filter change
   useEffect(() => {
     if (!debouncedFilterRef.current) {
-      debouncedFilterRef.current = debounce((params) => {
-        fetchFilteredDiamonds(params);
-      }, 600);
+      debouncedFilterRef.current = debounce(fetchFilteredDiamonds, 600);
     }
 
     const params = {
-      price,
-      carat,
-      cut,
-      color,
-      clarity,
-      polish,
-      symmetry,
-      fluorescence,
-      ratio,
-      table,
-      depth,
-      selectedShapes,
-      certificateQuery,
-      featuredDeal,
-      checkedDiamonds,
-      showOnlyChecked,
-      activeTab,
-      sortBy,
-      page,
-      per_page: 20,
-    };
-
-    debouncedFilterRef.current(params);
-
-    return () => {
-      debouncedFilterRef.current.cancel();
-    };
-  }, [
-    price,
-    carat,
-    cut,
-    color,
-    clarity,
-    polish,
-    symmetry,
-    fluorescence,
-    ratio,
-    table,
-    depth,
-    selectedShapes,
-    certificateQuery,
-    featuredDeal,
-    showOnlyChecked,
-    activeTab,
-    sortBy,
-    page,
-  ]);
-
-  const fetchFilteredDiamonds = async (params) => {
-    const {
-      price,
-      carat,
-      cut,
-      color,
-      clarity,
-      polish,
-      symmetry,
-      fluorescence,
-      ratio,
-      table,
-      depth,
-      selectedShapes,
-      certificateQuery,
-      featuredDeal,
-      checkedDiamonds,
-      showOnlyChecked,
-      activeTab,
-      sortBy,
-      page,
-      per_page,
-    } = params;
-
-    const requestParams = {
       price,
       carat,
       cut,
@@ -248,31 +205,84 @@ export default function Diamond() {
       checkedDiamonds,
       showOnlyChecked,
       active_tab: typeMap[activeTab],
-      sort_by: sortBy,
-      page,
-      per_page,
+      selectedReport: reportMap[normalizedReport],
+      page: 1,
+      per_page: perPage,
     };
 
-    console.log("Request params:", requestParams);
+    setPage(1); // reset page for fresh filter
+    debouncedFilterRef.current(params);
 
-    setLoading(true);
-    try {
-      const response = await axiosClient.get("/api/get-all-diamonds", {
-        params: requestParams,
-      });
+    return () => debouncedFilterRef.current.cancel();
+  }, [
+    price,
+    carat,
+    cut,
+    color,
+    clarity,
+    polish,
+    symmetry,
+    fluorescence,
+    ratio,
+    table,
+    depth,
+    selectedShapes,
+    certificateQuery,
+    featuredDeal,
+    showOnlyChecked,
+    activeTab,
+    selectedReport,
+  ]);
 
-      setDiamonds(response.data.data || []);
-      setTotal(response.data.total || 0);
-    } catch (error) {
-      console.error("Failed to fetch diamonds:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Fetch next page when page increases
+  useEffect(() => {
+    if (page === 1) return; // already fetched in filter effect
 
-  // console.log(diamonds);
+    const params = {
+      price,
+      carat,
+      cut,
+      color,
+      clarity,
+      polish,
+      symmetry,
+      fluorescence,
+      ratio,
+      table,
+      depth,
+      shapes: selectedShapes.map((s) => s.id),
+      certificate: certificateQuery,
+      featured: featuredDeal,
+      checkedDiamonds,
+      showOnlyChecked,
+      active_tab: typeMap[activeTab],
+      selectedReport: reportMap[normalizedReport],
+      page,
+      per_page: perPage,
+    };
 
-  const totalPages = Math.ceil(total / perPage);
+    fetchFilteredDiamonds(params);
+  }, [page]);
+
+  // Infinite scroll observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (first.isIntersecting && !isFetchingMore && page < totalPages) {
+          setPage((prev) => prev + 1);
+        }
+      },
+      { threshold: 1 }
+    );
+
+    const currentLoader = loaderRef.current;
+    if (currentLoader) observer.observe(currentLoader);
+
+    return () => {
+      if (currentLoader) observer.unobserve(currentLoader);
+    };
+  }, [isFetchingMore, totalPages]);
 
   const sortedDiamonds = [...diamonds].sort((a, b) => {
     switch (sortBy) {
@@ -400,23 +410,9 @@ export default function Diamond() {
       />
 
       {/* Pagination Controls */}
-      <div className="pagination-controls">
-        <button
-          disabled={page === 1}
-          onClick={() => setPage((prev) => prev - 1)}
-        >
-          Previous
-        </button>
-        <span>
-          Page {page} of {totalPages}
-        </span>
-        <button
-          disabled={page === totalPages}
-          onClick={() => setPage((prev) => prev + 1)}
-        >
-          Next
-        </button>
-      </div>
+
+      {isFetchingMore && <Loader />}
+      <div ref={loaderRef} style={{ height: 50 }} />
     </>
   );
 }
