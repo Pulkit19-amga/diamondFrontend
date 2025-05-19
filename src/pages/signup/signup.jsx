@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
+import axiosClient from "../../api/axios";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
 import "./index.css";
@@ -14,25 +15,49 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Simulate a successful form submission
-    setSuccessMessage("Registration successful!");
+    const formData = {
+      title,
+      name: `${firstName} ${lastName}`,
+      email,
+      birth_date: birthDate ? birthDate.toISOString().split("T")[0] : null,
+      anniversary_date: anniversaryDate
+        ? anniversaryDate.toISOString().split("T")[0]
+        : null,
+      password,
+    };
 
-    // Reset form fields
-    setTitle("");
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setBirthDate(null);
-    setAnniversaryDate(null);
-    setPassword("");
+    try {
+      const response = await axiosClient.post("api/register", formData);
+      if (response.status === 201) {
+        setSuccessMessage("Registration successful!");
+        console.log("Server response:", response.data);
 
-    // Optionally hide the message after 3 seconds
-    setTimeout(() => {
-      setSuccessMessage("");
-    }, 3000);
+        setSuccessMessage("Registration successful!");
+        // Reset form fields
+        setTitle("");
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setBirthDate(null);
+        setAnniversaryDate(null);
+        setPassword("");
+
+        // Optionally hide success message
+        setTimeout(() => setSuccessMessage(""), 3000);
+      } else {
+        alert(data.message || "Registration failed.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      if (error.response?.data?.message) {
+        alert(error.response.data.message);
+      } else {
+        alert("An error occurred. Please try again.");
+      }
+    }
   };
 
   return (
@@ -111,7 +136,7 @@ const SignUp = () => {
                 <div className="input__group my-3">
                   <input
                     type="email"
-                    className="w-100 px-3 py-2 text-capitalize"
+                    className="w-100 px-3 py-2 "
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -147,7 +172,7 @@ const SignUp = () => {
                 <div className="input__group my-3">
                   <input
                     type="password"
-                    className="w-100 px-3 py-2 text-capitalize"
+                    className="w-100 px-3 py-2 "
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
