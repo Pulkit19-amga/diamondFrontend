@@ -2,11 +2,11 @@
   background-color: #e3ebee;
   padding: 40px 20px;
   text-align: center;
+  margin-bottom: 40px;
 }
 
 .dealbreakers-title {
-  font-size: 20px;
-  font-weight: 600;
+  font-weight: 500;
   color: #1a2b49;
   margin-bottom: 30px;
 }
@@ -29,8 +29,9 @@
   width: 150px;
 }
 
-.dealbreaker-icon {
-  font-size: 30px;
+.dealbreaker-icon img, svg{
+  
+  font-size: 40px !important;
   margin-bottom: 10px;
 }
 
@@ -42,4 +43,9 @@
   width: 1px;
   height: 60px;
   background-color: #1a2b49;
+}
+
+.discount-banner{
+  margin-top: 50px;
+  width: 100%;
 }
