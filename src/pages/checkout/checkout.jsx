@@ -1,5 +1,6 @@
 
 import React, {useState} from 'react'
+import { useLocation } from 'react-router-dom';
 import './checkout.css'
 
 const Checkout = () => {
@@ -12,7 +13,8 @@ const Checkout = () => {
 
   const isVisible = (id) => selectedMethod === id ? '' : 'd-none';
 
-
+ const { state } = useLocation();
+  const { cartItems = [], subtotal = 0 } = state || {};
 
 
   return (
@@ -315,35 +317,44 @@ const Checkout = () => {
     </div>
           </div>
 
-  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-12 co-sm-12 col-12">
+    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-12 co-sm-12 col-12">
       <div className="container my-5" style={{ maxWidth: '600px' }}>
         <div className="product-summary">
 
-          {/* Product Row */}
-          <div className="d-flex align-items-start mb-3">
-            <div className="me-3 position-relative">
-              <img
-                src="https://cdn.shopify.com/s/files/1/0628/0490/7113/files/diamond-round.jpg?v=1649386574"
-                alt="Diamond"
-                className="product-img"
-              />
-              <span
-                className="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-dark"
-                style={{ fontSize: '0.75rem' }}
-              >
-                1
-              </span>
-            </div>
-            <div className="product-info flex-grow-1">
-              <strong>0.3 Carat Round Lab Diamond</strong><br />
-              <small>Color: D</small><br />
-              <small>Clarity: VVS1</small><br />
-              <small>Lab: GIA</small>
-            </div>
-            <div className="text-end">
-              <strong>$424.00</strong>
-            </div>
-          </div>
+          {/* Loop over cartItems */}
+          {cartItems.map((item, index) => {
+            const totalItemPrice = (item.price * item.quantity).toFixed(2);
+            return (
+              <div className="d-flex align-items-start mb-3" key={index}>
+                <div className="me-3 position-relative">
+                  <img
+                    src={`/images/shapes/${item.shape?.image || "placeholder.png"}`}
+                    alt={item.shape?.name || "Diamond"}
+                    className="product-img"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/images/placeholder.png";
+                    }}
+                  />
+                  <span
+                    className="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-dark"
+                    style={{ fontSize: '0.75rem' }}
+                  >
+                    {item.quantity}
+                  </span>
+                </div>
+                <div className="product-info flex-grow-1">
+                  <strong>{item.carat_weight} Carat {item.shape?.name} Lab Diamond</strong><br />
+                  <small>Color: {item.color?.name}</small><br />
+                  <small>Clarity: {item.clarity?.name}</small><br />
+                  <small>Cut: {item.cut?.full_name}</small>
+                </div>
+                <div className="text-end">
+                  <strong>${totalItemPrice}</strong>
+                </div>
+              </div>
+            );
+          })}
 
           {/* Discount Code */}
           <div className="discount-box input-group mb-4">
@@ -360,7 +371,7 @@ const Checkout = () => {
           {/* Subtotal */}
           <div className="d-flex justify-content-between mb-2">
             <div className="text-gray">Subtotal</div>
-            <div>$424.00</div>
+            <div>${subtotal.toFixed(2)}</div>
           </div>
 
           {/* Shipping */}
@@ -376,7 +387,7 @@ const Checkout = () => {
             <div><strong>Total</strong></div>
             <div>
               <span className="currency">USD</span>{' '}
-              <span className="total-price">$424.00</span>
+              <span className="total-price">${subtotal.toFixed(2)}</span>
             </div>
           </div>
 
