@@ -12,6 +12,8 @@ const features = [
 
 const NoDealbreakers = () => {
   return (
+    <>
+    <img src='/images/discount_banner.jpg' alt='discount- banner' className='discount-banner' />
     <div className="dealbreakers-section">
       <h3 className="dealbreakers-title">NO DEALBREAKERS</h3>
       <div className="dealbreakers-list">
@@ -26,6 +28,7 @@ const NoDealbreakers = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 
