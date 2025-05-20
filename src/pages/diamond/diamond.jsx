@@ -156,7 +156,7 @@ export default function Diamond() {
   const debouncedFilterRef = useRef(null);
 
   const fetchFilteredDiamonds = async (params) => {
-    console.log("🔍 Requesting diamonds with params:", params);
+    console.log(" Requesting diamonds with params:", params);
     const isInitialLoad = params.page === 1;
     if (isInitialLoad) setLoading(true);
     else setIsFetchingMore(true);

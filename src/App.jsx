@@ -16,6 +16,10 @@ import CartPage from './cart/CartPage';
 import Signin from './pages/signin/signin';
 import Signup from './pages/signup/signup';
 import ResetPassword from './pages/resetpassword/reset';
+
+import ResetPasswordForm from './pages/resetpassword/ResetPasswordForm';
+
+
 import Profile from './pages/profile/profile';
 import Checkout from './pages/checkout/checkout';
 
@@ -45,8 +49,12 @@ export default function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
+
+          <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
+
           <Route path="/profile"  element={<Profile />  } />
           <Route path='/checkout' element={<Checkout /> } />
+
 
 
         </Routes>
