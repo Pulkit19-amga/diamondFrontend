@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import './DiamondDetails.css';
 import { useCart } from "../../../cart/CartContext";
 import NoDealbreakers from "./nobrokrage/NoDealbreakers";
+import Help from "../../contact/help";
 
 const steps = [
   { id: 1, label: "CHOOSE A DIAMOND" },
@@ -17,6 +18,12 @@ export default function DiamondDetails() {
   const [currentStep, setCurrentStep] = useState(1);
   const { addToCart } = useCart();
   const [openSection, setOpenSection] = useState(null);
+ const navigate = useNavigate();
+const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
+  const [alreadyExists, setAlreadyExists] = useState(false);
+
+
 
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? null : section);
@@ -26,35 +33,62 @@ export default function DiamondDetails() {
     setCurrentStep(stepId);
   };
 
-  const handleAddToCart = () => {
-    try {
-      const cartKey = 'cart';
-      const existingCart = JSON.parse(localStorage.getItem(cartKey)) || [];
+  // const handleAddToCart = () => {
+  //   try {
+  //     const cartKey = 'cart';
+  //     const existingCart = JSON.parse(localStorage.getItem(cartKey)) || [];
 
-      const isDuplicate = existingCart.some(item => item.certificate_number === diamond.certificate_number);
-      if (isDuplicate) {
-        alert("This diamond is already in your cart.");
-        return;
-      }
+  //     const isDuplicate = existingCart.some(item => item.certificate_number === diamond.certificate_number);
+  //     if (isDuplicate) {
+  //       alert("This diamond is already in your cart.");
+  //       return;
+  //     }
 
-      const updatedCart = [...existingCart, diamond];
-      localStorage.setItem(cartKey, JSON.stringify(updatedCart));
-      addToCart(diamond); // ✅ sync with context
+  //     const updatedCart = [...existingCart, diamond];
+  //     localStorage.setItem(cartKey, JSON.stringify(updatedCart));
+  //     addToCart(diamond); // ✅ sync with context
 
-      alert("Diamond added to cart successfully!");
-    } catch (error) {
-      console.error("Error adding to cart:", error);
-      alert("Something went wrong. Please try again.");
+  //     alert("Diamond added to cart successfully!");
+  //   } catch (error) {
+  //     console.error("Error adding to cart:", error);
+  //     alert("Something went wrong. Please try again.");
+  //   }
+  // }; 
+
+const handleAddToCart = () => {
+    const cartKey = 'cart';
+    const existingCart = JSON.parse(localStorage.getItem(cartKey)) || [];
+
+    const isDuplicate = existingCart.some(
+      item => item.certificate_number === diamond.certificate_number
+    );
+
+    if (isDuplicate) {
+      setAlreadyExists(true);
+      setTimeout(() => setAlreadyExists(false), 5000);
+      return;
     }
+
+    setLoading(true);
+
+    setTimeout(() => {
+      try {
+        const updatedCart = [...existingCart, diamond];
+        localStorage.setItem(cartKey, JSON.stringify(updatedCart));
+        addToCart(diamond);
+        navigate('/cart');
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+      } finally {
+        setLoading(false);
+      }
+    }, 500);
   };
+
 
   if (!diamond) {
     return <div style={{ padding: '40px' }}>No diamond data available.</div>;
   }
-
-  
-
-
 
   return (
     <>
@@ -75,7 +109,7 @@ export default function DiamondDetails() {
             >
               <span className="step-number">{step.id}</span>
               <span className="step-label">{step.label}</span>
-              {index < steps.length - 1 && <span className="divider">|</span>}
+              {index < steps.length - 1 && <span className="or-divider">|</span>}
             </div>
           ))}
         </div>
@@ -195,9 +229,19 @@ export default function DiamondDetails() {
 </div>
  
 
-  <button className="add-to-cart-btn" onClick={handleAddToCart}>
-  Add to Cart
-</button>
+   {loading && (
+        <div className="overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
+
+      <button className="add-to-cart-btn" onClick={handleAddToCart} disabled={loading}>
+        {loading ? 'Processing...' : 'Add to Cart'}
+      </button>
+
+      {alreadyExists && (
+        <p className="exists-msg">This diamond is already in your cart.</p>
+      )}
 
 
     <div style={{ borderTop: "1px solid #dcdcdc" }}>
@@ -250,6 +294,7 @@ export default function DiamondDetails() {
 
 <NoDealbreakers />
 
+<Help />
 
 
 

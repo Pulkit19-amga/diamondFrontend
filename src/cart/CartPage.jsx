@@ -2,8 +2,20 @@ import React, { useState, useEffect } from "react";
 import { useCart } from "../cart/CartContext";
 import "./cart.css";
 import Help from "../pages/contact/help";
+import { useNavigate } from "react-router-dom";
 
 export default function CartPage() {
+   const navigate = useNavigate();
+
+const handleCheckout = () => {
+  navigate('/checkout', {
+    state: {
+      cartItems,
+      subtotal
+    }
+  });
+};
+
   const { cartItems, removeFromCart, clearCart, updateCartItem } = useCart();
 
   const [quantities, setQuantities] = useState({});
@@ -16,12 +28,14 @@ export default function CartPage() {
     setQuantities(initialQuantities);
   }, [cartItems]);
 
-  const handleQuantityChange = (certificate_number, delta) => {
-    setQuantities((prev) => {
-      const newQuantity = Math.max(1, (prev[certificate_number] || 1) + delta);
-      return { ...prev, [certificate_number]: newQuantity };
-    });
-  };
+ const handleQuantityChange = (certificate_number, delta) => {
+  setQuantities((prev) => {
+    const newQuantity = Math.max(1, (prev[certificate_number] || 1) + delta);
+    updateCartItem(certificate_number, newQuantity); // 👈 Sync with context
+    return { ...prev, [certificate_number]: newQuantity };
+  });
+};
+
 
   const subtotal = cartItems.reduce((total, item) => {
     const qty = quantities[item.certificate_number] || 1;
@@ -110,7 +124,9 @@ export default function CartPage() {
         <div className="summary-card">
           <p className="subtotal">Subtotal : ${subtotal.toFixed(2)}</p>
           <p className="tax-info">Taxes and shipping calculated at checkout</p>
-          <button className="checkout-btn">CHECKOUT</button>
+        <button className="checkout-btn" onClick={handleCheckout}>
+      CHECKOUT
+    </button>
           <p className="discount-note">
             GET50 - Get $50 off on orders above $1000 on checkout
           </p>
