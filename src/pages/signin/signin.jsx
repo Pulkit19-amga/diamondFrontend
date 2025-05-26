@@ -6,6 +6,7 @@ import "./index.css";
 const Signin = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const redirectPath = location.state?.from || "/";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,7 @@ const Signin = () => {
 
     try {
       await login({ email, password });
-      navigate("/");
+      navigate(redirectPath);
     } catch (err) {
       console.error(err);
       setError("Invalid email or password.");
