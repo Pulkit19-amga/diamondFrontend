@@ -120,10 +120,8 @@ const SecondHeader = () => {
                         style={{ fill: "black" }}
                       />
                     </svg>
-                    <span style={{color: "black"}}>
-                      {user
-                        ? `Hi, ${user.name || "User"}`
-                        : "SIGN IN / UP"}
+                    <span style={{ color: "black" }}>
+                      {user ? `Hi, ${user.name || "User"}` : "SIGN IN / UP"}
                     </span>
                   </button>
                 </div>
