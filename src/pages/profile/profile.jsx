@@ -1,5 +1,6 @@
 import React from 'react'
 import './profile.css'
+import MyOrders from '../order/myOrders'
 
 const Profile = () => {
   return (
@@ -107,8 +108,9 @@ const Profile = () => {
         <div className="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
   <div className="tab-content" id="v-pills-tabContent" style={{alignItems:'start !important'}}>
     <div className="tab-pane fade show active" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order_history">
-      1
-    </div>
+  <MyOrders />
+</div>
+
 
     <div className="tab-pane fade" id="v-pills-account" role="tabpanel" aria-labelledby="v-pills-account_details">
       <div className="grid__item grid__account-details">
