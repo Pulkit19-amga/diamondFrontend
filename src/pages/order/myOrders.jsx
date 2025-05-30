@@ -1,48 +1,96 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosClient from "../../api/axios";
 import "./MyOrders.css";
 
 const MyOrders = () => {
   const navigate = useNavigate();
+  const [orders, setOrders] = useState([]);
 
-  const handleOrderClick = () => {
-    navigate("/order-details"); // Adjust path as needed
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axiosClient.get("/api/orders-auth");
+        const data = Array.isArray(response.data.data) ? response.data.data : [];
+        setOrders(data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  const handleOrderClick = (userId, nthIndex) => {
+    navigate(`/order-details/${userId}/${nthIndex + 1}`); // nth is 1-based
   };
 
   return (
-    <div className="order-container">
-      <div className="order-item" onClick={handleOrderClick}>
-        {/* Left Column: Image + Info */}
-        <div className="order-left">
-          <div className="order-image">
-            <img
-              src="https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTt9qaxU5aRwIhwASlOqdBhM3rRO7EvnAPYlbHsmoT1zz-njsvY1FDuqbaA80nHnqc5kENAVGii9xm29aRPUAMgx8bBynx7-Ji_B72wr-7rnUjmQWtdfrcfWFg"
-              alt="Flip Flops"
-            />
-          </div>
-          <div className="order-info">
-            <div className="order-title">Cloker Men Flip Flops</div>
-            <div className="order-meta">Color: White &nbsp; Size: 8</div>
-          </div>
-        </div>
+    <div className="order-containers">
+      {orders.length > 0 ? (
+        orders.map((order, index) => {
+          let items = [];
+          try {
+            items = JSON.parse(order.item_details);
+          } catch (e) {
+            console.warn("Invalid item_details JSON", e);
+          }
 
-        {/* Center Column: Price */}
-        <div className="order-center">
-          <div className="order-price">₹234</div>
-        </div>
+          return (
+            <div
+              className="order-item"
+              key={order.id}
+              onClick={() => handleOrderClick(order.user_id, index)}
+            >
+              <div className="order-left">
+                <div className="order-image">
+                  <img
+                    src={"https://via.placeholder.com/100"}
+                    alt={"Order"}
+                  />
+                </div>
+                <div className="order-info">
+                  <div className="order-title">Order #{order.order_id}</div>
+                  <div className="order-meta">
+                    Items: {items.length}
+                    {items.length > 0 && (
+                      <ul className="order-items-list">
+                        {items.map((item, idx) => (
+                          <li key={idx}>
+                            ID: {item.id}, Qty: {item.quantity}, ₹{item.price}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              </div>
 
-        {/* Right Column: Cancel Status */}
-        <div className="order-right">
-          <div className="order-status-row">
-            <span className="status-dot"></span>
-            <span className="cancelled-text">Cancelled on May 20</span>
-          </div>
-          <div className="order-reason">
-            You requested a cancellation because you wanted it in another
-            size/colour.
-          </div>
-        </div>
-      </div>
+              <div className="order-center">
+                <div className="order-price">₹{order.total_price}</div>
+              </div>
+
+              <div className="order-right">
+                <div className="order-status-row">
+                  <span className="status-dot"></span>
+                  <span className="cancelled-text">
+                    {order.order_status || "Unknown"} on{" "}
+                    {order.updated_at
+                      ? new Date(order.updated_at).toLocaleDateString()
+                      : "Unknown Date"}
+                  </span>
+                </div>
+                <div className="order-reason">
+                  Payment: {order.payment_mode || "N/A"} (
+                  {order.payment_status || "Pending"})
+                </div>
+              </div>
+            </div>
+          );
+        })
+      ) : (
+        <p>No orders found.</p>
+      )}
     </div>
   );
 };

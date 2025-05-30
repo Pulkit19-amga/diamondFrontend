@@ -93,7 +93,7 @@ export default function Diamond() {
           activeTab,
           selectedReport,
           page,
-          per_page: perPage,
+          per_page: 20,
         });
       }
 
@@ -134,7 +134,6 @@ export default function Diamond() {
     lab: 2,
     color: 3,
   };
-
   const reportMap = {
     all: 0,
     gia: 1,
@@ -156,7 +155,6 @@ export default function Diamond() {
   const debouncedFilterRef = useRef(null);
 
   const fetchFilteredDiamonds = async (params) => {
-    console.log(" Requesting diamonds with params:", params);
     const isInitialLoad = params.page === 1;
     if (isInitialLoad) setLoading(true);
     else setIsFetchingMore(true);

@@ -212,7 +212,7 @@ const Footer = () => {
     <li className="social-icons__item">
       <a
         className="social-icons__link"
-        href="https://www.instagram.com/withclarityofficial/"
+        href="https://www.instagram.com/thecaratcasa/#"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -220,19 +220,23 @@ const Footer = () => {
       </a>
     </li>
     <li className="social-icons__item">
-      <a
-        className="social-icons__link"
-        href="https://www.tiktok.com/@withclarityofficial"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <i className="fa-brands fa-2x fa-tiktok icon icon-tiktok" style={{ fontSize: '30px' }}></i>
-      </a>
+     <a
+  className="social-icons__link"
+  href="/"
+  onClick={(e) => e.preventDefault()}
+  rel="noopener noreferrer"
+>
+  <i
+    className="fa-brands fa-2x fa-tiktok icon icon-tiktok"
+    style={{ fontSize: '30px' }}
+  ></i>
+</a>
+
     </li>
     <li className="social-icons__item">
       <a
         className="social-icons__link"
-        href="https://www.facebook.com/withclarityofficial"
+        href="https://www.facebook.com/share/194gTHJY21/?mibextid=wwXIfr"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -240,34 +244,46 @@ const Footer = () => {
       </a>
     </li>
     <li className="social-icons__item">
-      <a
-        className="social-icons__link"
-        href="https://twitter.com/withclarity"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <i className="fa-brands fa-2x fa-twitter icon icon-twitter" style={{ fontSize: '30px' }}></i>
-      </a>
+     <a
+  className="social-icons__link"
+  href="/"
+  onClick={(e) => e.preventDefault()}
+  rel="noopener noreferrer"
+>
+  <i
+    className="fa-brands fa-2x fa-twitter icon icon-twitter"
+    style={{ fontSize: '30px' }}
+  ></i>
+</a>
+
+    </li>
+    <li className="social-icons__item">
+     <a
+  className="social-icons__link"
+  href="/"
+  onClick={(e) => e.preventDefault()}
+  rel="noopener noreferrer"
+>
+  <i
+    className="fa-brands fa-2x fa-youtube icon icon-youtube"
+    style={{ fontSize: '30px' }}
+  ></i>
+</a>
+
     </li>
     <li className="social-icons__item">
       <a
-        className="social-icons__link"
-        href="https://www.youtube.com/withclarityofficial"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <i className="fa-brands fa-2x fa-youtube icon icon-youtube" style={{ fontSize: '30px' }}></i>
-      </a>
-    </li>
-    <li className="social-icons__item">
-      <a
-        className="social-icons__link"
-        href="https://www.pinterest.com/withclarityofficial/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <i className="fa-brands fa-2x fa-pinterest-p icon icon-pinterest" style={{ fontSize: '30px' }}></i>
-      </a>
+  className="social-icons__link"
+  href="/"
+  onClick={(e) => e.preventDefault()}
+  rel="noopener noreferrer"
+>
+  <i
+    className="fa-brands fa-2x fa-pinterest-p icon icon-pinterest"
+    style={{ fontSize: '30px' }}
+  ></i>
+</a>
+
     </li>
   </ul>
 </div>

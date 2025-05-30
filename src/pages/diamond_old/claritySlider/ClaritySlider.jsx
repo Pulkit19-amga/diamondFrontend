@@ -11,8 +11,8 @@ const ClaritySlider = ({clarity, setClarity }) => {
     "SI1",
 
   ];
-  const minClarityIndex = 0;
-  const maxClarityIndex = clarityLabels.length;
+  const minClarityIndex = 1;
+  const maxClarityIndex = clarityLabels.length+1;
 
   return (
     <div className="clarity-section">
@@ -27,8 +27,8 @@ const ClaritySlider = ({clarity, setClarity }) => {
           <div
             className="slider-active"
             style={{
-              left: `${(clarity[0] / maxClarityIndex) * 100}%`,
-              width: `${((clarity[1] - clarity[0]) / maxClarityIndex) * 100}%`,
+              left: `${((clarity[0] - minClarityIndex) / (maxClarityIndex - minClarityIndex)) * 100}%`,
+              width: `${((clarity[1] - clarity[0]) / (maxClarityIndex - minClarityIndex)) * 100}%`,
             }}
           ></div>
 

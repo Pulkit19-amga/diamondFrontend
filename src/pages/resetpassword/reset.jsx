@@ -71,11 +71,12 @@ const ResetPassword = () => {
                   {successMsg}
                 </div>
               )}
+
               <form onSubmit={handleSubmit} id="ResetPasswordForm">
                 <div className="input__group my-3">
                   <input
                     type="email"
-                    className="w-100 px-3 py-2 text-capitalize"
+                    className="w-100 px-3 py-2"
                     name="email"
                     id="ResetPasswordForm-email"
                     placeholder="Email"
@@ -90,14 +91,14 @@ const ResetPassword = () => {
                   disabled={loading}
                   className="submit-btn w-100 text-uppercase text-white border-button border my-2 p-2 rounded-0 fw-bold border-dark"
                 >
-                  {loading ? "Submitting..." : "Submit"}
+                  {loading ? 'Submitting...' : 'Submit'}
                 </button>
 
                 <button
                   type="button"
                   onClick={handleCancel}
-                  disabled={loading}
                   style={{ background: "#dc3545" }}
+                  disabled={loading}
                   className="submit-btn w-100 text-uppercase text-white border-button border my-2 p-2 rounded-0 fw-bold border-dark"
                 >
                   Cancel

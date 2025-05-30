@@ -47,7 +47,8 @@
   }
   
   .product-img {
-    width: 250px;
+    width: 150px !important;
+    height: 150px !important;
   }
   
   .product-details p {
@@ -150,9 +151,26 @@
     font-weight: bold;
   }
   
-  .remove-btn {
-    margin-left: 20px;
-    padding: 10px 20px;
-    color: #fff;
-    background-color: #0c2d48;
-  }
+.remove-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 30px;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.remove-btn:hover {
+  color: red;
+}
+
+.product-details {
+  position: relative;
+}
+
+
+

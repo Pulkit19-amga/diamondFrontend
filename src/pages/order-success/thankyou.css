@@ -1,0 +1,97 @@
+.thankyou-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f3f3f3;
+}
+
+.thankyou-card {
+  background: #fff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+.thankyou-icon {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.checkmark {
+  background: linear-gradient(to right, #ff7e2d, #ff953f);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  color: white;
+  font-size: 40px;
+  line-height: 80px;
+  text-align: center;
+  font-weight: bold;
+  z-index: 1;
+  position: relative;
+  box-shadow: 0 0 15px rgba(255, 120, 40, 0.5);
+}
+
+.particles::before {
+  content: "";
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(255, 120, 40, 0.5) 1px, transparent 1px);
+  background-size: 20px 20px;
+  top: -30px;
+  left: -30px;
+  z-index: 0;
+}
+
+h2 {
+  margin: 10px 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+}
+
+p {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 30px;
+}
+
+.thankyou-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn-outline {
+  padding: 10px 20px;
+  border: 2px solid #ccc;
+  background: white;
+  color: #333;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-outline:hover {
+  background: #f2f2f2;
+}
+
+.btn-filled {
+  padding: 10px 20px;
+  background: linear-gradient(to right, #ff7e2d, #ff953f);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-filled:hover {
+  background: linear-gradient(to right, #ff953f, #ff7e2d);
+}
