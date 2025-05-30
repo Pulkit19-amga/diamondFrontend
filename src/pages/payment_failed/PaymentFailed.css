@@ -1,0 +1,81 @@
+/* Background */
+.payment-wrapper {
+  background-color: #f44336; /* red */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Card */
+.payment-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  max-width: 400px;
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Icon */
+.payment-icon {
+  background-color: black;
+  color: white;
+  width: 48px;
+  height: 48px;
+  font-size: 28px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+/* Title */
+.payment-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 0 1rem;
+}
+
+/* Message */
+.payment-message {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+/* Button */
+.update-button {
+  background-color: black;
+  color: white;
+  font-weight: 600;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 1rem;
+  transition: background 0.2s ease;
+}
+
+.update-button:hover {
+  background-color: #333;
+}
+
+/* Support Text */
+.support-text {
+  font-size: 14px;
+  color: #555;
+}
+
+.support-link {
+  color: #3b82f6; /* blue */
+  text-decoration: none;
+}
+
+.support-link:hover {
+  text-decoration: underline;
+}

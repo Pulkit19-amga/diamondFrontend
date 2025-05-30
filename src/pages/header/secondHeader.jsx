@@ -11,7 +11,7 @@ const SecondHeader = () => {
 
   const handleRedirect = () => {
     if (user) {
-      // navigate("/account");
+      navigate("/profile");
     } else {
       navigate("/signin");
     }
@@ -43,7 +43,7 @@ const SecondHeader = () => {
       <header className="header-wrapper bg-white text-black">
         <div className="header-top-wrapper">
           <div className="container">
-            <p className="m-0 text-center p-2">
+            <p className="m-0 text-center p-2 ">
               <strong className="text-white">
                 {" "}
                 FREE INSURED SHIPPING & RETURNS | LIFETIME WARRANTY
@@ -121,7 +121,9 @@ const SecondHeader = () => {
                       />
                     </svg>
                     <span style={{ color: "black" }}>
-                      {user ? `Hi, ${user.name || "User"}` : "SIGN IN / UP"}
+                      {user
+                        ? `Hi, ${user.name || "User"}`
+                        : "SIGN IN / UP"}
                     </span>
                   </button>
                 </div>

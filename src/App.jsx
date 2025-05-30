@@ -17,10 +17,10 @@ import Signin from "./pages/signin/signin";
 import Signup from "./pages/signup/signup";
 import ResetPassword from "./pages/resetpassword/reset";
 import ResetPasswordForm from "./pages/resetpassword/ResetPasswordForm";
-// import ThankYou from "./pages/order-success/thankyou";
-
 import Profile from "./pages/profile/profile";
 import Checkout from "./pages/checkout/checkout";
+import ThankYou from "./pages/order-success/thankyou";
+import PaymentFailed from "./pages/payment_failed/PaymentFailed";
 import OrderDetails from "./pages/order_details/OrderDetails";
 
 export default function App() {
@@ -42,23 +42,20 @@ export default function App() {
           <Route path="/wedding-brands" element={<Weddingbrands />} />
           <Route path="/engagement-ring-style" element={<RingStyle />} />
           <Route path="/diamond-details/:id" element={<DiamondDetails />} />
-
           <Route path="/cart" element={<CartPage />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
-
           <Route
             path="/reset-password/:token"
             element={<ResetPasswordForm />}
           />
-
           <Route path="/profile" element={<Profile />} />
           <Route path="/checkout" element={<Checkout />} />
-          {/* <Route path="/thankyou" element={<ThankYou />} /> */}
-          <Route path="/order-details" element={<OrderDetails />} />
-
-
+          <Route path="/thankyou" element={<ThankYou />} />
+          <Route path="/paymnet-failed" element={<PaymentFailed />} />
+          <Route path="/order-details/:userId/:nth" element={<OrderDetails /> } />
+          
         </Routes>
       </main>
       <Footer />

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./index.css";
-import axiosClient from "../../api/axios"; // Ensure path is correct
+import axiosClient from "../../api/axios";
+import debounce from "lodash.debounce";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import DiamondFilter from "./diamondFilter/DiamondFilter";
@@ -22,20 +23,23 @@ export default function Diamond() {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedShapes, setSelectedShapes] = useState([]); // select single as well as mutltiple shape
   const [diamonds, setDiamonds] = useState([]); // insert api data
-  const [activeTab, setActiveTab] = useState("lab-diamonds"); // not working this is for tabs
+  const [activeTab, setActiveTab] = useState("lab");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(20);
+  const [total, setTotal] = useState(0);
 
   // diamond filter 2nd component
   const [price, setPrice] = useState([0, 10000]);
   const [carat, setCarat] = useState([0, 20]);
-  const [cut, setCut] = useState([0, 5]);
+  const [cut, setCut] = useState([1, 6]);
 
   // color filter
-  const [color, setColor] = useState([0, 5]);
+  const [color, setColor] = useState([1, 6]);
 
   // clearity
-  const [clarity, setClarity] = useState([0, 6]);
+  const [clarity, setClarity] = useState([1, 7]);
 
   // advance filter
   const [polish, setPolish] = useState([0, 6]);
@@ -72,14 +76,14 @@ export default function Diamond() {
     setSelectedShapes([]);
     setPrice([0, 10000]);
     setCarat([0, 20]);
-    setCut([0, 5]);
-    setColor([0, 5]);
-    setClarity([0, 6]);
+    setCut([1, 6]);
+    setColor([1, 6]);
+    setClarity([1, 7]);
 
     // reset advance
-    setPolish([0, 4]);
-    setSymmetry([0, 4]);
-    setFluorescence([0, 4]);
+    setPolish([0, 6]);
+    setSymmetry([0, 6]);
+    setFluorescence([0, 5]);
     setRatio([0.9, 2.75]);
     setTable([40, 90]);
     setDepth([40, 90]);
@@ -89,191 +93,141 @@ export default function Diamond() {
     setCurrentStep(stepId);
   };
 
+  const typeMap = {
+    natural: 1,
+    lab: 2,
+    color: 3,
+  };
+
   const handleShapeChange = (shapes) => {
     setSelectedShapes(shapes);
   };
-
-  useEffect(() => {
-    const fetchDiamonds = async () => {
-      try {
-        setLoading(true);
-        setError("");
-        const response = await axiosClient.get("/api/get-all-diamonds");
-
-        // Handle different possible response structures
-        const responseData = response.data?.data || response.data || [];
-        setDiamonds(Array.isArray(responseData) ? responseData : []);
-      } catch (err) {
-        setError("Failed to fetch diamonds. Please try again later.");
-        console.error("Fetch error:", err);
-        setDiamonds([]); // Ensure diamonds is always an array
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDiamonds();
-  }, []);
 
   const handleCertificateSearch = (query) => {
     setCertificateQuery(query);
   };
 
-  const filteredDiamonds = (Array.isArray(diamonds) ? diamonds : []).filter(
-    (diamond) => {
-      if (selectedReport && diamond.certificate_company?.dl_name?.toUpperCase() !== selectedReport.toUpperCase()) {
-        return false;
-      }
+  const debouncedFilterRef = useRef(null);
 
-      // Show only checked diamonds if toggled
-      if (showOnlyChecked && !checkedDiamonds.includes(diamond.diamondid)) {
-        return false;
-      }
-
-      // Certificate Search Filter
-      if (
-        certificateQuery &&
-        !diamond.certificate_number
-          ?.toString()
-          .includes(certificateQuery.toLowerCase())
-      ) {
-        return false;
-      }
-
-      // 1. Basic validation
-      if (
-        !diamond ||
-        !diamond.shape ||
-        !diamond.price ||
-        !diamond.carat_weight ||
-        !diamond.cut ||
-        !diamond.color ||
-        !diamond.clarity
-      ) {
-        console.log("Invalid diamond skipped:", diamond?.diamondid);
-        return false;
-      }
-
-      // 2. Shape filter
-      const shapeMatch =
-        selectedShapes.length === 0 ||
-        selectedShapes.some(
-          (shape) =>
-            shape.name.toLowerCase() === diamond.shape.name.toLowerCase()
-        );
-
-      // 3. Price filter (convert from thousands to actual price)
-      const [minPrice, maxPrice] = price.map(Number);
-      const priceMatch = diamond.price >= minPrice && diamond.price <= maxPrice;
-
-      // 4. Carat filter (assuming carat is stored as points, convert to carats)
-      const [minCarat, maxCarat] = carat.map(Number);
-      const caratMatch =
-        diamond.carat_weight >= minCarat && diamond.carat_weight <= maxCarat;
-
-      // 5. Cut filter (convert slider values to cut indices)
-      const cutMatch =
-        diamond.cut.id > cut[0] &&
-        (cut[1] < 4 ? diamond.cut.id <= cut[1] : true);
-
-      // 6. Color filter
-      const colorMatch =
-        diamond.color.id > color[0] &&
-        (color[1] < 5 ? diamond.color.id < color[1] : true);
-
-      // 7. Clarity filter
-      const clarityMatch =
-        diamond.clarity.id > clarity[0] &&
-        (clarity[1] < 6 ? diamond.clarity.id <= clarity[1] : true);
-
-      const polishMatch =
-        diamond.polish.id > polish[0] &&
-        (polish[1] < 6 ? diamond.polish.id <= polish[1] : true);
-
-      const symmetryMatch =
-        diamond.symmetry.id > symmetry[0] &&
-        (symmetry[1] < 6 ? diamond.symmetry.id <= symmetry[1] : true);
-
-      const fluorescenceMatch =
-        diamond.fluorescence.id > fluorescence[0] &&
-        (fluorescence[1] < 6
-          ? diamond.fluorescence.id <= fluorescence[1]
-          : true);
-
-      const [minTable, maxTable] = table.map(Number);
-      const tableMatch =
-        diamond.table_diamond >= minTable && diamond.table_diamond <= maxTable;
-
-      const [minDepth, maxDepth] = depth.map(Number);
-      const depthMatch = diamond.depth >= minDepth && diamond.depth <= maxDepth;
-
-      // Debug logging for excluded diamonds
-      if (
-        !shapeMatch ||
-        !priceMatch ||
-        !caratMatch ||
-        !cutMatch ||
-        !colorMatch ||
-        !clarityMatch ||
-        !polishMatch ||
-        !symmetryMatch ||
-        !fluorescenceMatch ||
-        !tableMatch ||
-        !depthMatch
-      ) {
-        console.log("Diamond excluded:", {
-          id: diamond.diamondid,
-          reasons: {
-            shape:
-              !shapeMatch &&
-              `Not in selected shapes (${selectedShapes
-                .map((s) => s.name)
-                .join(", ")})`,
-            price:
-              !priceMatch &&
-              `Price $${diamond.price} not in range $${minPrice}-$${maxPrice}`,
-            carat:
-              !caratMatch &&
-              `Carat ${diamond.carat_weight} not in range ${minCarat}-${maxCarat}`,
-
-            cut: !cutMatch && `Cut ${diamond.cut.full_name} not in range`,
-
-            color:
-              !colorMatch && `Color ${diamond.color.id} doesn't match ${color}`,
-            clarity:
-              !clarityMatch &&
-              `Clarity ${diamond.clarity.id} doesn't match ${clarity}`,
-
-            polish:
-              !polishMatch &&
-              `polish ${diamond.polish.full_name} doesn't match ${polish}`,
-
-            symmetry:
-              !symmetryMatch &&
-              `symmetry ${diamond.symmetry.full_name} doesn't match ${symmetry}`,
-
-            fluorescence:
-              !fluorescenceMatch &&
-              `fluorescence ${diamond.fluorescence.full_name} doesn't match ${fluorescence}`,
-
-            table:
-              !tableMatch &&
-              `Table ${diamond.table_diamond} not in range ${minTable}-${maxTable}`,
-
-            depth:
-              !depthMatch &&
-              `Depth ${diamond.depth} not in range ${minDepth}-${maxDepth}`,
-          },
-        });
-        return false;
-      }
-
-      return true;
+  useEffect(() => {
+    if (!debouncedFilterRef.current) {
+      debouncedFilterRef.current = debounce((params) => {
+        fetchFilteredDiamonds(params);
+      }, 600);
     }
-  );
 
+    const params = {
+      price,
+      carat,
+      cut,
+      color,
+      clarity,
+      polish,
+      symmetry,
+      fluorescence,
+      ratio,
+      table,
+      depth,
+      selectedShapes,
+      certificateQuery,
+      featuredDeal,
+      activeTab,
+      sortBy,
+      page,
+      per_page: 20,
+    };
 
-  const sortedDiamonds = [...filteredDiamonds].sort((a, b) => {
+    debouncedFilterRef.current(params);
+    console.log("Selected shapes updated:", selectedShapes);
+
+    return () => {
+      debouncedFilterRef.current.cancel();
+    };
+  }, [
+    price,
+    carat,
+    cut,
+    color,
+    clarity,
+    polish,
+    symmetry,
+    fluorescence,
+    ratio,
+    table,
+    depth,
+    selectedShapes,
+    certificateQuery,
+    featuredDeal,
+    activeTab,
+    sortBy,
+    page,
+  ]);
+
+  const fetchFilteredDiamonds = async (params) => {
+    const {
+      price,
+      carat,
+      cut,
+      color,
+      clarity,
+      polish,
+      symmetry,
+      fluorescence,
+      ratio,
+      table,
+      depth,
+      selectedShapes,
+      certificateQuery,
+      featuredDeal,
+      activeTab,
+      sortBy,
+      page,
+      per_page,
+    } = params;
+
+    const requestParams = {
+      price,
+      carat,
+      cut,
+      color,
+      clarity,
+      polish,
+      symmetry,
+      fluorescence,
+      ratio,
+      table,
+      depth,
+      shapes: selectedShapes.map((s) => s.id),
+      certificate: certificateQuery,
+      featured: featuredDeal,
+      active_tab: activeTab,
+      sort_by: sortBy,
+      page,
+      per_page,
+    };
+
+    console.log("Request params:", requestParams);
+
+    setLoading(true);
+    try {
+      const response = await axiosClient.get("/api/get-all-diamonds", {
+        params: requestParams,
+      });
+
+      setDiamonds(response.data.data || []);
+      setTotal(response.data.total || 0);
+    } catch (error) {
+      console.error("Failed to fetch diamonds:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // console.log(diamonds);
+  
+  const totalPages = Math.ceil(total / perPage);
+
+  const sortedDiamonds = [...diamonds].sort((a, b) => {
     switch (sortBy) {
       case "Price (Low to High)":
         return a.price - b.price;
@@ -293,13 +247,12 @@ export default function Diamond() {
         return b.clarity?.id - a.clarity?.id;
       case "Cut (Low to High)":
         return b.cut?.id - a.cut?.id;
-        case "Cut (High to Low)":
+      case "Cut (High to Low)":
         return a.cut?.id - b.cut?.id;
       default:
         return 0;
     }
   });
-  
 
   return (
     <>
@@ -328,15 +281,13 @@ export default function Diamond() {
             </div>
           ))}
         </div>
-
-        {/* <div className="step-content">
-          {currentStep === 1 && <p>🔹 Showing diamond options...</p>}
-          {currentStep === 2 && <p>🔸 Showing setting options...</p>}
-          {currentStep === 3 && <p>💍 Complete your ring!</p>}
-        </div> */}
       </div>
 
-      <DiamondTabFilter onShapeChange={handleShapeChange} />
+      <DiamondTabFilter
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onShapeChange={handleShapeChange}
+      />
 
       <DiamondFilter
         price={price}
@@ -376,8 +327,9 @@ export default function Diamond() {
       />
 
       <DiamondHeader
+        activeTab={activeTab}
         checkedCount={checkedDiamonds.length}
-        filteredCount={filteredDiamonds.length}
+        filteredCount={sortedDiamonds.length}
         totalCount={diamonds.length}
         selectedSort={sortBy}
         setSelectedSort={setSortBy}
@@ -393,11 +345,31 @@ export default function Diamond() {
       />
 
       <DiamondTable
+        loading={loading}
         diamonds={sortedDiamonds}
         showAdvanced={showAdvanced}
         checkedDiamonds={checkedDiamonds}
         onToggleCheck={toggleDiamondCheck}
       />
+
+      {/* Pagination Controls */}
+      <div className="pagination-controls">
+        <button
+          disabled={page === 1}
+          onClick={() => setPage((prev) => prev - 1)}
+        >
+          Previous
+        </button>
+        <span>
+          Page {page} of {totalPages}
+        </span>
+        <button
+          disabled={page === totalPages}
+          onClick={() => setPage((prev) => prev + 1)}
+        >
+          Next
+        </button>
+      </div>
     </>
   );
 }

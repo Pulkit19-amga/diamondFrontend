@@ -97,10 +97,14 @@ const Checkout = () => {
         // User not logged in — save form data and redirect to signin
         localStorage.setItem(
           "pendingAddress",
-          JSON.stringify({ formData, selectedMethod })
+          JSON.stringify({ formData, selectedMethod, cartItems })
         );
         navigate("/signin", { state: { from: "/checkout" } });
       } else {
+        localStorage.setItem(
+          "pendingAddress",
+          JSON.stringify({ formData, selectedMethod, cartItems })
+        );
         // User is logged in — submit to address API
         const itemDetailsObject = cartItems.reduce((acc, item) => {
           acc[item.diamondid] = {
@@ -119,7 +123,6 @@ const Checkout = () => {
           zip: formData.zip_code,
           country: formData.country,
         };
-
         try {
           const response = await axiosClient.post("/api/store-addresses", {
             user_id: user.id,
@@ -183,44 +186,6 @@ const Checkout = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchAddress = async () => {
-  //     if (user) {
-  //       try {
-  //         const res = await axiosClient.get(`/api/user-address/${user.id}`);
-  //         const addr = res.data;
-
-  //         if (addr) {
-  //           setFormData((prev) => ({
-  //             ...prev,
-  //             first_name: addr.first_name,
-  //             last_name: addr.last_name,
-  //             country: addr.country,
-  //             apartment: addr.address?.apartment || "",
-  //             address: addr.address?.street || "",
-  //             city: addr.address?.city || "",
-  //             zip_code: addr.address?.zip || "",
-  //             phone: addr.phone_number,
-  //             smsOffers: addr.is_get_offer === 1,
-  //           }));
-  //         }
-  //       } catch (err) {
-  //         console.error("No existing address found.");
-  //       }
-  //     }
-  //   };
-
-  //   fetchAddress();
-
-  //   const savedData = localStorage.getItem("pendingAddress");
-  //   if (savedData) {
-  //     const { formData, selectedMethod } = JSON.parse(savedData);
-  //     setFormData(formData);
-  //     setSelectedMethod(selectedMethod);
-  //     localStorage.removeItem("pendingAddress");
-  //   }
-  // }, [user]);
-
   useEffect(() => {
     const fetchAddress = async () => {
       if (user) {
@@ -252,6 +217,7 @@ const Checkout = () => {
 
     const params = new URLSearchParams(location.search);
     const paypalStatus = params.get("paypal_status");
+    const paypalOrderId = params.get("paypal_order_id");
 
     console.log("PayPal status:", paypalStatus);
 
@@ -260,23 +226,52 @@ const Checkout = () => {
       alert("You cancelled the PayPal payment. Your order was not placed.");
       localStorage.removeItem("pendingAddress");
       // Optionally redirect or reset state
-      navigate("/");
+      navigate("/paymnet-failed", {
+        state: {
+          orderId: params.get("paypal_order_id"),
+        },
+      });
       return;
     }
 
     if (paypalStatus === "success" && user) {
-      const saved = localStorage.getItem("pendingAddress");
-      console.log("hello");
-      
-
-      if (!saved) {
-        console.warn("No pending address found after PayPal redirect.");
+      const savedData = localStorage.getItem("pendingAddress");
+      if (!savedData) {
+        alert("Order data missing. Please try again.");
+        navigate("/paymnet-failed", {
+          state: {
+            orderId: params.get("paypal_order_id"),
+          },
+        });
         return;
       }
 
-      const { formData, selectedMethod } = JSON.parse(saved);
+      const {
+        formData: savedFormData,
+        selectedMethod: savedMethod,
+        cartItems: savedCartItems,
+      } = JSON.parse(savedData);
+      console.log("Is cartItems an array?", Array.isArray(cartItems));
+      console.log("Is cartItems empty?", cartItems?.length === 0);
 
-      const itemDetailsObject = cartItems.reduce((acc, item) => {
+      // Validate saved data exists
+      if (
+        !savedFormData.first_name ||
+        !savedFormData.last_name ||
+        !savedFormData.phone ||
+        !Array.isArray(savedCartItems) ||
+        savedCartItems.length === 0
+      ) {
+        alert("Incomplete order data. Please try ordering again.");
+        navigate("/paymnet-failed", {
+          state: {
+            orderId: params.get("paypal_order_id"),
+          },
+        });
+        return;
+      }
+
+      const itemDetailsObject = savedCartItems.reduce((acc, item) => {
         acc[item.diamondid] = {
           type: item.type,
           price: item.price,
@@ -287,31 +282,34 @@ const Checkout = () => {
       }, {});
 
       const addressObject = {
-        apartment: formData.apartment,
-        street: formData.address,
-        city: formData.city,
-        zip: formData.zip_code,
-        country: formData.country,
+        apartment: savedFormData.apartment,
+        street: savedFormData.address,
+        city: savedFormData.city,
+        zip: savedFormData.zip_code,
+        country: savedFormData.country,
       };
 
       const finalizeOrder = async () => {
         try {
           const orderResponse = await axiosClient.post("/api/store-order", {
-            user_id: user?.id,
-            user_name: `${formData.first_name} ${formData.last_name}`,
-            contact_number: formData.phone,
-            items_id: cartItems.map((item) => item.diamondid),
+            user_id: user.id,
+            user_name: `${savedFormData.first_name} ${savedFormData.last_name}`,
+            contact_number: savedFormData.phone,
+            items_id: savedCartItems.map((item) => item.diamondid),
             item_details: JSON.stringify(itemDetailsObject),
-            total_price: calculateTotal(cartItems),
+            total_price: calculateTotal(savedCartItems),
             address: JSON.stringify(addressObject),
             order_status: "confirmed",
-            payment_mode: selectedMethod,
+            payment_mode: savedMethod,
             payment_status: "paid",
-            is_gift: formData.isGift || false,
-            notes: formData.notes || "",
+            is_gift: savedFormData.isGift || false,
+            payment_id: paypalOrderId ?? null,
+            notes: savedFormData.notes || "",
+
           });
 
           clearCart();
+          localStorage.removeItem("pendingOrderData");
           localStorage.removeItem("pendingAddress");
 
           navigate("/thankyou", { state: { order: orderResponse.data } });
@@ -323,7 +321,6 @@ const Checkout = () => {
 
       finalizeOrder();
     }
-
     // Restore form if coming back from /signin (no paypal status)
     const savedData = localStorage.getItem("pendingAddress");
     if (savedData && !paypalStatus) {
@@ -332,8 +329,9 @@ const Checkout = () => {
       setSelectedMethod(selectedMethod);
       // Don't remove it yet — only after successful final order
     }
-  }, [user, cartItems, navigate, location]);
+  }, [user, navigate, location]);
 
+ 
   return (
     <>
       <section className="sign_up">
@@ -604,16 +602,14 @@ const Checkout = () => {
                 <div className="payment-option">
                   <div className="d-flex justify-content-between align-items-center mb-2">
                     <div>
-                      <label htmlFor="pay-credit">
-                        <input
-                          type="radio"
-                          name="payment-method"
-                          id="pay-credit"
-                          checked={selectedMethod === "pay-credit"}
-                          onChange={handleMethodChange}
-                        />
-                        <span className="input-span">Credit card </span>
-                      </label>
+                      <input
+                        type="radio"
+                        name="payment-method"
+                        id="pay-credit"
+                        checked={selectedMethod === "pay-credit"}
+                        onChange={handleMethodChange}
+                      />
+                      <strong> Credit card </strong>
                     </div>
                     <div className="card-icons">
                       <img
@@ -684,16 +680,15 @@ const Checkout = () => {
 
                 {/* PayPal */}
                 <div className="payment-option">
-                  <label htmlFor="pay-paypal">
-                    <input
-                      type="radio"
-                      name="payment-method"
-                      id="pay-paypal"
-                      checked={selectedMethod === "pay-paypal"}
-                      onChange={handleMethodChange}
-                    />
-                    <span className="input-span">PayPal</span>
-                  </label>
+                  <input
+                    type="radio"
+                    name="payment-method"
+                    id="pay-paypal"
+                    checked={selectedMethod === "pay-paypal"}
+                    onChange={handleMethodChange}
+                  />
+                  <span className="input-span">PayPal</span>
+
                   <div className={`payment-box ${isVisible("pay-paypal")}`}>
                     <p className="mt-2">You’ll be redirected to PayPal.</p>
                   </div>
@@ -759,6 +754,7 @@ const Checkout = () => {
                   </div>
                 </div>
 
+                {/* Wire Transfer */}
                 <div className="payment-option">
                   <div>
                     <input

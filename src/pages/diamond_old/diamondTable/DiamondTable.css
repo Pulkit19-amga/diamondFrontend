@@ -75,7 +75,7 @@
 }
 
 .diamond-img {
-  width: 90px;
+  width: 110px;
   height: auto;
 }
 
@@ -106,3 +106,22 @@
 .selected-row {
   background-color: #f0f8ff;
 }
+
+
+.featured-banner {
+  width: 110px;
+  font-size: 14px;
+}
+.no-diamonds-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px; /* or use 100% if parent has fixed height */
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #555;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  text-align: center;
+}
+

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./DiamondHeader.css";
 
 const DiamondHeader = ({
+  activeTab,
   checkedCount,
   filteredCount,
   totalCount,
@@ -85,9 +86,14 @@ const DiamondHeader = ({
       <div className="diamond-header-wrapper">
         <hr className="top-line" />
         <h2 className="main-heading">
-          Showing Natural Diamonds
+        {activeTab === "lab"
+          ? "Showing Lab Diamonds"
+          : activeTab === "natural"
+          ? "Showing Natural Diamonds"
+          : "Showing Color Diamonds"}
+
+          {/* Showing Natural Diamonds */}
           <span className="sub-count">
-            {" "}
             ({filteredCount} of {totalCount})
           </span>
         </h2>
@@ -112,7 +118,11 @@ const DiamondHeader = ({
       <div className="filter-bar">
         <div className="filter-left">
           <label className="checkbox-group">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={featuredDealChecked}
+              onChange={(e) => setFeaturedDealChecked(e.target.checked)}
+            />
             <span>
               <strong>Featured Deal Diamonds</strong>
             </span>
