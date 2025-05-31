@@ -11,7 +11,9 @@ const MyOrders = () => {
     const fetchOrders = async () => {
       try {
         const response = await axiosClient.get("/api/get-orders");
-        const data = Array.isArray(response.data.data) ? response.data.data : [];
+        const data = Array.isArray(response.data.data)
+          ? response.data.data
+          : [];
         setOrders(data);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -40,14 +42,11 @@ const MyOrders = () => {
             <div
               className="order-item"
               key={order.id}
-             onClick={() => handleOrderClick(order)}
+              onClick={() => handleOrderClick(order)}
             >
               <div className="order-left">
                 <div className="order-image">
-                  <img
-                    src={"https://via.placeholder.com/100"}
-                    alt={"Order"}
-                  />
+                  <img src={"https://via.placeholder.com/100"} alt={"Order"} />
                 </div>
                 <div className="order-info">
                   <div className="order-title">Order #{order.order_id}</div>
