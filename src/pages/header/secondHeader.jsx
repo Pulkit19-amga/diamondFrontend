@@ -11,7 +11,7 @@ const SecondHeader = () => {
 
   const handleRedirect = () => {
     if (user) {
-      // navigate("/account");
+      navigate("/profile");
     } else {
       navigate("/signin");
     }

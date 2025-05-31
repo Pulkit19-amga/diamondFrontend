@@ -91,7 +91,7 @@ const Checkout = () => {
   const handleSubmit = async () => {
     if (validate()) {
       // Form is valid — do your submit logic here
-      console.log("Submitting:", { formData, selectedMethod });
+      // console.log("Submitting:", { formData, selectedMethod });
       // alert("Form submitted successfully!");
       if (!user) {
         // User not logged in — save form data and redirect to signin
@@ -136,7 +136,7 @@ const Checkout = () => {
             is_get_offer: formData.smsOffers ? 1 : 0,
           });
 
-          console.log("Address saved:", response.data);
+          /* console.log("Address saved:", response.data); */
           // alert("Address saved successfully!");
 
           // If user selected PayPal, create PayPal order and redirect
@@ -252,22 +252,23 @@ const Checkout = () => {
 
     const params = new URLSearchParams(location.search);
     const paypalStatus = params.get("paypal_status");
-
-    console.log("PayPal status:", paypalStatus);
+    const paypalOrderId = searchParams.get("paypal_order_id");
 
     if (paypalStatus === "cancelled") {
       // 🟥 Handle PayPal cancellation
       alert("You cancelled the PayPal payment. Your order was not placed.");
       localStorage.removeItem("pendingAddress");
       // Optionally redirect or reset state
-      navigate("/");
+      navigate("/paymnet-failed", {
+        state: {
+          orderId: searchParams.get("paypal_order_id"),
+        },
+      });
       return;
     }
 
     if (paypalStatus === "success" && user) {
       const saved = localStorage.getItem("pendingAddress");
-      console.log("hello");
-      
 
       if (!saved) {
         console.warn("No pending address found after PayPal redirect.");
@@ -304,10 +305,11 @@ const Checkout = () => {
             item_details: JSON.stringify(itemDetailsObject),
             total_price: calculateTotal(cartItems),
             address: JSON.stringify(addressObject),
-            order_status: "confirmed",
+            order_status: "Pending",
             payment_mode: selectedMethod,
             payment_status: "paid",
             is_gift: formData.isGift || false,
+            payment_id: paypalOrderId ?? null,
             notes: formData.notes || "",
           });
 

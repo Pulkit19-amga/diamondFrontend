@@ -17,10 +17,10 @@ import Signin from "./pages/signin/signin";
 import Signup from "./pages/signup/signup";
 import ResetPassword from "./pages/resetpassword/reset";
 import ResetPasswordForm from "./pages/resetpassword/ResetPasswordForm";
-import ThankYou from "./pages/order-success/thankyou";
-
 import Profile from "./pages/profile/profile";
 import Checkout from "./pages/checkout/checkout";
+import ThankYou from "./pages/order-success/thankyou";
+import PaymentFailed from "./pages/payment_failed/PaymentFailed";
 
 export default function App() {
   const location = useLocation();
@@ -55,7 +55,7 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/thankyou" element={<ThankYou />} />
-          
+          <Route path="/paymnet-failed" element={<PaymentFailed /> } />
         </Routes>
       </main>
       <Footer />

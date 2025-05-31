@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
 import "./index.css";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Signin = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const redirectPath = location.state?.from || "/";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,8 +27,6 @@ const Signin = () => {
     } finally {
       setLoading(false);
     }
-
-    // Simulate form submission
   };
 
   return (
@@ -58,7 +57,7 @@ const Signin = () => {
               <div className="sl-vertical social-wrap oxi_icon_right">
                 <a
                   className="social_login google w-100 bg-danger d-block p-2 px-3 text-capitalize text-decoration-none text-white my-2"
-                  href="#"
+                  href=""
                   aria-label="Google"
                 >
                   <span>Sign in with Google</span>
@@ -120,7 +119,6 @@ const Signin = () => {
                   <button
                     type="submit"
                     className="submit-btn w-100 text-uppercase text-white border-button border my-2 p-2 rounded-0 fw-bold border-dark"
-                    disabled={loading}
                   >
                     {loading ? "Signing in..." : "Sign in"}
                   </button>
