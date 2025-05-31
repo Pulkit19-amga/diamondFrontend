@@ -21,10 +21,8 @@ import Profile from "./pages/profile/profile";
 import Checkout from "./pages/checkout/checkout";
 import ThankYou from "./pages/order-success/thankyou";
 import PaymentFailed from "./pages/payment_failed/PaymentFailed";
-<<<<<<< HEAD
 import OrderDetails from "./pages/order_details/OrderDetails";
-=======
->>>>>>> orderHistory
+
 
 export default function App() {
   const location = useLocation();
