@@ -69,7 +69,8 @@
 
 /* Right: Cancel Info */
 .order-right {
-  /* flex: 3; */
+
+  flex: 3;
   display: flex;
   flex-direction: column;
   justify-content: center;

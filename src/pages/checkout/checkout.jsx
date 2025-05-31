@@ -91,7 +91,7 @@ const Checkout = () => {
   const handleSubmit = async () => {
     if (validate()) {
       // Form is valid — do your submit logic here
-      console.log("Submitting:", { formData, selectedMethod });
+      // console.log("Submitting:", { formData, selectedMethod });
       // alert("Form submitted successfully!");
       if (!user) {
         // User not logged in — save form data and redirect to signin
@@ -139,7 +139,7 @@ const Checkout = () => {
             is_get_offer: formData.smsOffers ? 1 : 0,
           });
 
-          console.log("Address saved:", response.data);
+          /* console.log("Address saved:", response.data); */
           // alert("Address saved successfully!");
 
           // If user selected PayPal, create PayPal order and redirect
@@ -217,9 +217,9 @@ const Checkout = () => {
 
     const params = new URLSearchParams(location.search);
     const paypalStatus = params.get("paypal_status");
+
     const paypalOrderId = params.get("paypal_order_id");
 
-    console.log("PayPal status:", paypalStatus);
 
     if (paypalStatus === "cancelled") {
       // 🟥 Handle PayPal cancellation
@@ -229,20 +229,18 @@ const Checkout = () => {
       navigate("/paymnet-failed", {
         state: {
           orderId: params.get("paypal_order_id"),
+
         },
       });
       return;
     }
 
     if (paypalStatus === "success" && user) {
-      const savedData = localStorage.getItem("pendingAddress");
-      if (!savedData) {
-        alert("Order data missing. Please try again.");
-        navigate("/paymnet-failed", {
-          state: {
-            orderId: params.get("paypal_order_id"),
-          },
-        });
+
+      const saved = localStorage.getItem("pendingAddress");
+
+      if (!saved) {
+        console.warn("No pending address found after PayPal redirect.");
         return;
       }
 
@@ -299,12 +297,12 @@ const Checkout = () => {
             item_details: JSON.stringify(itemDetailsObject),
             total_price: calculateTotal(savedCartItems),
             address: JSON.stringify(addressObject),
-            order_status: "confirmed",
-            payment_mode: savedMethod,
+            order_status: "Pending",
+            payment_mode: selectedMethod,
             payment_status: "paid",
-            is_gift: savedFormData.isGift || false,
+            is_gift: formData.isGift || false,
             payment_id: paypalOrderId ?? null,
-            notes: savedFormData.notes || "",
+            notes: formData.notes || "",
 
           });
 

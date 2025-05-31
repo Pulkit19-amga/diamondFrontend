@@ -10,8 +10,11 @@ const MyOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axiosClient.get("/api/orders-auth");
-        const data = Array.isArray(response.data.data) ? response.data.data : [];
+
+        const response = await axiosClient.get("/api/get-orders");
+        const data = Array.isArray(response.data.data)
+          ? response.data.data
+          : [];
         setOrders(data);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -22,7 +25,9 @@ const MyOrders = () => {
   }, []);
 
   const handleOrderClick = (userId, nthIndex) => {
+
     navigate(`/order-details/${userId}/${nthIndex + 1}`); // nth is 1-based
+
   };
 
   return (
@@ -40,6 +45,7 @@ const MyOrders = () => {
             <div
               className="order-item"
               key={order.id}
+
               onClick={() => handleOrderClick(order.user_id, index)}
             >
               <div className="order-left">
@@ -48,6 +54,7 @@ const MyOrders = () => {
                     src={"https://via.placeholder.com/100"}
                     alt={"Order"}
                   />
+
                 </div>
                 <div className="order-info">
                   <div className="order-title">Order #{order.order_id}</div>
