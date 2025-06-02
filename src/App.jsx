@@ -22,6 +22,7 @@ import Checkout from "./pages/checkout/checkout";
 import ThankYou from "./pages/order-success/thankyou";
 import PaymentFailed from "./pages/payment_failed/PaymentFailed";
 import OrderDetails from "./pages/order_details/OrderDetails";
+import JewelryList from "./pages/jewellary_list/JewelryList";
 
 
 export default function App() {
@@ -57,6 +58,7 @@ export default function App() {
 
           <Route path="/paymnet-failed" element={<PaymentFailed />} />
           <Route path="/order-details/:userId/:nth" element={<OrderDetails /> } />
+          <Route path="/jewelry-list" element={<JewelryList /> } />
           
 
         </Routes>

@@ -10,12 +10,12 @@ const MyOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-
         const response = await axiosClient.get("/api/get-orders");
         const data = Array.isArray(response.data.data)
           ? response.data.data
           : [];
         setOrders(data);
+        // console.log("Fetched Orders:", data);
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
@@ -24,17 +24,15 @@ const MyOrders = () => {
     fetchOrders();
   }, []);
 
-  const handleOrderClick = (userId, nthIndex) => {
-
-    navigate(`/order-details/${userId}/${nthIndex + 1}`); // nth is 1-based
-
+  const handleOrderClick = (order) => {
+    navigate(`/order-details/${order.id}`, { state: { order } });
   };
 
   return (
     <div className="order-containers">
       {orders.length > 0 ? (
         orders.map((order, index) => {
-          let items = [];
+          let items = {};
           try {
             items = JSON.parse(order.item_details);
           } catch (e) {
@@ -45,36 +43,22 @@ const MyOrders = () => {
             <div
               className="order-item"
               key={order.id}
-
-              onClick={() => handleOrderClick(order.user_id, index)}
+              onClick={() => handleOrderClick(order)}
             >
               <div className="order-left">
                 <div className="order-image">
-                  <img
-                    src={"https://via.placeholder.com/100"}
-                    alt={"Order"}
-                  />
-
+                  <img src={"https://via.placeholder.com/100"} alt={"Order"} />
                 </div>
                 <div className="order-info">
-                  <div className="order-title">Order #{order.order_id}</div>
+                  <div className="order-title">Order Id : {order.order_id}</div>
                   <div className="order-meta">
-                    Items: {items.length}
-                    {items.length > 0 && (
-                      <ul className="order-items-list">
-                        {items.map((item, idx) => (
-                          <li key={idx}>
-                            ID: {item.id}, Qty: {item.quantity}, ₹{item.price}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    Items: {Object.keys(items).length}
                   </div>
                 </div>
               </div>
 
               <div className="order-center">
-                <div className="order-price">₹{order.total_price}</div>
+                <div className="order-price">${order.total_price}</div>
               </div>
 
               <div className="order-right">

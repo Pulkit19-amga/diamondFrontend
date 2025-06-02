@@ -222,6 +222,7 @@ const Header = () => {
                       type="button"
                       className="btn text-uppercase  dropdown-toggle text-white"
                       data-bs-toggle="dropdown"
+                      onClick={() => navigate("/jewelry-list")}
                     >
                       jewelry
                     </button>
