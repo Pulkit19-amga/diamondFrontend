@@ -12,8 +12,17 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Try to get user on mount (if session cookie exists)
-    axiosClient.get("/api/user")
+    const token = localStorage.getItem("auth_token");
+
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
+    axiosClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axiosClient
+      .get("/sanctum/csrf-cookie")
+      .then(() => axiosClient.get("/api/user"))
       .then(({ data }) => setUser(data))
       .catch(() => setUser(null))
       .finally(() => setLoading(false));
@@ -25,6 +34,7 @@ export function AuthProvider({ children }) {
       const response = await axiosClient.post("/api/login", credentials);
 
       const token = response.data.token;
+
 
       // Save token to localStorage
       localStorage.setItem("auth_token", token);
@@ -42,12 +52,21 @@ export function AuthProvider({ children }) {
     }
   };
 
+
+     
   const logout = async () => {
-    await axiosClient.post("/api/logout"); // Laravel invalidates session
+    await axiosClient.post("/api/logout");
+    localStorage.removeItem("auth_token");
+    delete axiosClient.defaults.headers.common["Authorization"];
     setUser(null);
   };
 
-  const value = { user, loading, login, logout };
+  const value = {
+    user,
+    loading,
+    login,
+    logout,
+  };
 
   return (
     <AuthContext.Provider value={value}>

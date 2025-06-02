@@ -21,6 +21,9 @@ import Profile from "./pages/profile/profile";
 import Checkout from "./pages/checkout/checkout";
 import ThankYou from "./pages/order-success/thankyou";
 import PaymentFailed from "./pages/payment_failed/PaymentFailed";
+import OrderDetails from "./pages/order_details/OrderDetails";
+import JewelryList from "./pages/jewellary_list/JewelryList";
+
 
 export default function App() {
   const location = useLocation();
@@ -41,21 +44,23 @@ export default function App() {
           <Route path="/wedding-brands" element={<Weddingbrands />} />
           <Route path="/engagement-ring-style" element={<RingStyle />} />
           <Route path="/diamond-details/:id" element={<DiamondDetails />} />
-
           <Route path="/cart" element={<CartPage />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
-
           <Route
             path="/reset-password/:token"
             element={<ResetPasswordForm />}
           />
-
           <Route path="/profile" element={<Profile />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/thankyou" element={<ThankYou />} />
-          <Route path="/paymnet-failed" element={<PaymentFailed /> } />
+
+          <Route path="/paymnet-failed" element={<PaymentFailed />} />
+          <Route path="/order-details/:userId/:nth" element={<OrderDetails /> } />
+          <Route path="/jewelry-list" element={<JewelryList /> } />
+          
+
         </Routes>
       </main>
       <Footer />

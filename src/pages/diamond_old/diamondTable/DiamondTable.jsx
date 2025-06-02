@@ -27,7 +27,7 @@ const DiamondTable = ({
     <div className="diamond-table">
       <div className="table-header">
         <div>COMPARE</div>
-        <div className="diamond-img">VIEW</div>
+        <div>VIEW</div>
         <div>SHAPE ▾</div>
         <div>CARAT ▾</div>
         <div>COLOR ▾</div>

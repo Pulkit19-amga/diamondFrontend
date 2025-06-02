@@ -5,7 +5,6 @@ import { BrowserRouter } from "react-router-dom";
 import { CartProvider } from "./cart/CartContext";
 import { AuthProvider } from "./context/AuthContext.jsx";
 
-
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

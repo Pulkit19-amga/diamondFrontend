@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./index.css";
 import axiosClient from "../../api/axios";
 import debounce from "lodash.debounce";
-import Loader from "./loader/index";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import DiamondFilter from "./diamondFilter/DiamondFilter";
@@ -30,7 +29,6 @@ export default function Diamond() {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(20);
   const [total, setTotal] = useState(0);
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
 
   // diamond filter 2nd component
   const [price, setPrice] = useState([0, 10000]);
@@ -44,9 +42,9 @@ export default function Diamond() {
   const [clarity, setClarity] = useState([1, 7]);
 
   // advance filter
-  const [polish, setPolish] = useState([1, 7]);
-  const [symmetry, setSymmetry] = useState([1, 7]);
-  const [fluorescence, setFluorescence] = useState([1, 6]);
+  const [polish, setPolish] = useState([0, 6]);
+  const [symmetry, setSymmetry] = useState([0, 6]);
+  const [fluorescence, setFluorescence] = useState([0, 5]);
   const [ratio, setRatio] = useState([0.9, 2.75]);
   const [table, setTable] = useState([40, 90]);
   const [depth, setDepth] = useState([40, 90]);
@@ -63,42 +61,11 @@ export default function Diamond() {
   const [showOnlyChecked, setShowOnlyChecked] = useState(false);
 
   const toggleDiamondCheck = (diamondId) => {
-    setCheckedDiamonds((prevChecked) => {
-      let updatedChecked;
-      if (prevChecked.includes(diamondId)) {
-        updatedChecked = prevChecked.filter((id) => id !== diamondId);
-      } else {
-        updatedChecked = [...prevChecked, diamondId];
-      }
-
-      // Trigger API only if showOnlyChecked is true
-      if (showOnlyChecked) {
-        fetchFilteredDiamonds({
-          price,
-          carat,
-          cut,
-          color,
-          clarity,
-          polish,
-          symmetry,
-          fluorescence,
-          ratio,
-          table,
-          depth,
-          selectedShapes,
-          certificateQuery,
-          featuredDeal,
-          checkedDiamonds: updatedChecked, // send updated list
-          showOnlyChecked,
-          activeTab,
-          selectedReport,
-          page,
-          per_page: 20,
-        });
-      }
-
-      return updatedChecked;
-    });
+    setCheckedDiamonds((prevChecked) =>
+      prevChecked.includes(diamondId)
+        ? prevChecked.filter((id) => id !== diamondId)
+        : [...prevChecked, diamondId]
+    );
   };
 
   const toggleAdvanced = () => {
@@ -114,15 +81,12 @@ export default function Diamond() {
     setClarity([1, 7]);
 
     // reset advance
-    setPolish([1, 7]);
-    setSymmetry([1, 7]);
-    setFluorescence([1, 6]);
+    setPolish([0, 6]);
+    setSymmetry([0, 6]);
+    setFluorescence([0, 5]);
     setRatio([0.9, 2.75]);
     setTable([40, 90]);
     setDepth([40, 90]);
-
-    setCheckedDiamonds([]);
-    setShowOnlyChecked(false);
   };
 
   const handleStepClick = (stepId) => {
@@ -134,12 +98,6 @@ export default function Diamond() {
     lab: 2,
     color: 3,
   };
-  const reportMap = {
-    all: 0,
-    gia: 1,
-    igi: 2,
-  };
-  const normalizedReport = selectedReport?.toLowerCase() || "all";
 
   const handleShapeChange = (shapes) => {
     setSelectedShapes(shapes);
@@ -149,40 +107,13 @@ export default function Diamond() {
     setCertificateQuery(query);
   };
 
-  const totalPages = Math.ceil(total / perPage);
-
-  const loaderRef = useRef(null);
   const debouncedFilterRef = useRef(null);
 
-  const fetchFilteredDiamonds = async (params) => {
-    const isInitialLoad = params.page === 1;
-    if (isInitialLoad) setLoading(true);
-    else setIsFetchingMore(true);
-
-    try {
-      const response = await axiosClient.get("/api/get-all-diamonds", {
-        params,
-      });
-
-      if (isInitialLoad) {
-        setDiamonds(response.data.data || []);
-      } else {
-        setDiamonds((prev) => [...prev, ...(response.data.data || [])]);
-      }
-
-      setTotal(response.data.total || 0);
-    } catch (error) {
-      console.error("Fetch failed", error);
-    } finally {
-      if (isInitialLoad) setLoading(false);
-      else setIsFetchingMore(false);
-    }
-  };
-
-  // Debounced filter fetch on filter change
   useEffect(() => {
     if (!debouncedFilterRef.current) {
-      debouncedFilterRef.current = debounce(fetchFilteredDiamonds, 600);
+      debouncedFilterRef.current = debounce((params) => {
+        fetchFilteredDiamonds(params);
+      }, 600);
     }
 
     const params = {
@@ -197,21 +128,21 @@ export default function Diamond() {
       ratio,
       table,
       depth,
-      shapes: selectedShapes.map((s) => s.id),
-      certificate: certificateQuery,
-      featured: featuredDeal,
-      checkedDiamonds,
-      showOnlyChecked,
-      active_tab: typeMap[activeTab],
-      selectedReport: reportMap[normalizedReport],
-      page: 1,
-      per_page: perPage,
+      selectedShapes,
+      certificateQuery,
+      featuredDeal,
+      activeTab,
+      sortBy,
+      page,
+      per_page: 20,
     };
 
-    setPage(1); // reset page for fresh filter
     debouncedFilterRef.current(params);
+    console.log("Selected shapes updated:", selectedShapes);
 
-    return () => debouncedFilterRef.current.cancel();
+    return () => {
+      debouncedFilterRef.current.cancel();
+    };
   }, [
     price,
     carat,
@@ -227,16 +158,34 @@ export default function Diamond() {
     selectedShapes,
     certificateQuery,
     featuredDeal,
-    showOnlyChecked,
     activeTab,
-    selectedReport,
+    sortBy,
+    page,
   ]);
 
-  // Fetch next page when page increases
-  useEffect(() => {
-    if (page === 1) return; // already fetched in filter effect
+  const fetchFilteredDiamonds = async (params) => {
+    const {
+      price,
+      carat,
+      cut,
+      color,
+      clarity,
+      polish,
+      symmetry,
+      fluorescence,
+      ratio,
+      table,
+      depth,
+      selectedShapes,
+      certificateQuery,
+      featuredDeal,
+      activeTab,
+      sortBy,
+      page,
+      per_page,
+    } = params;
 
-    const params = {
+    const requestParams = {
       price,
       carat,
       cut,
@@ -251,36 +200,32 @@ export default function Diamond() {
       shapes: selectedShapes.map((s) => s.id),
       certificate: certificateQuery,
       featured: featuredDeal,
-      checkedDiamonds,
-      showOnlyChecked,
-      active_tab: typeMap[activeTab],
-      selectedReport: reportMap[normalizedReport],
+      active_tab: activeTab,
+      sort_by: sortBy,
       page,
-      per_page: perPage,
+      per_page,
     };
 
-    fetchFilteredDiamonds(params);
-  }, [page]);
+    console.log("Request params:", requestParams);
 
-  // Infinite scroll observer
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const first = entries[0];
-        if (first.isIntersecting && !isFetchingMore && page < totalPages) {
-          setPage((prev) => prev + 1);
-        }
-      },
-      { threshold: 1 }
-    );
+    setLoading(true);
+    try {
+      const response = await axiosClient.get("/api/get-all-diamonds", {
+        params: requestParams,
+      });
 
-    const currentLoader = loaderRef.current;
-    if (currentLoader) observer.observe(currentLoader);
+      setDiamonds(response.data.data || []);
+      setTotal(response.data.total || 0);
+    } catch (error) {
+      console.error("Failed to fetch diamonds:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return () => {
-      if (currentLoader) observer.unobserve(currentLoader);
-    };
-  }, [isFetchingMore, totalPages]);
+  // console.log(diamonds);
+  
+  const totalPages = Math.ceil(total / perPage);
 
   const sortedDiamonds = [...diamonds].sort((a, b) => {
     switch (sortBy) {
@@ -385,7 +330,7 @@ export default function Diamond() {
         activeTab={activeTab}
         checkedCount={checkedDiamonds.length}
         filteredCount={sortedDiamonds.length}
-        totalCount={total}
+        totalCount={diamonds.length}
         selectedSort={sortBy}
         setSelectedSort={setSortBy}
         selectedFilter={selectedReport}
@@ -408,9 +353,23 @@ export default function Diamond() {
       />
 
       {/* Pagination Controls */}
-
-      {isFetchingMore && <Loader />}
-      <div ref={loaderRef} style={{ height: 50 }} />
+      <div className="pagination-controls">
+        <button
+          disabled={page === 1}
+          onClick={() => setPage((prev) => prev - 1)}
+        >
+          Previous
+        </button>
+        <span>
+          Page {page} of {totalPages}
+        </span>
+        <button
+          disabled={page === totalPages}
+          onClick={() => setPage((prev) => prev + 1)}
+        >
+          Next
+        </button>
+      </div>
     </>
   );
 }

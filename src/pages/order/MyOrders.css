@@ -1,4 +1,4 @@
-.order-container {
+.order-containers {
   padding: 1rem;
   max-width: 100%;
   width: 100%;
@@ -69,6 +69,7 @@
 
 /* Right: Cancel Info */
 .order-right {
+
   flex: 3;
   display: flex;
   flex-direction: column;

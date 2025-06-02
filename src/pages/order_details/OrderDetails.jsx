@@ -2,7 +2,6 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-
 import "./OrderDetails.css";
 
 const OrderDetails = () => {

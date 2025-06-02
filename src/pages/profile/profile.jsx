@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import MyOrders from '../order/myOrders'
+import MyOrders from "../order/myOrders";
 import "./profile.css";
 
 const Profile = () => {
@@ -13,6 +13,7 @@ const Profile = () => {
     setLogoutLoading(true);
     try {
       await logout();
+
       navigate("/signin");
     } catch (error) {
       console.error("Logout failed:", error);
@@ -164,14 +165,6 @@ const Profile = () => {
                 id="v-pills-tabContent"
                 style={{ alignItems: "start !important" }}
               >
-                {/* <div
-                  className="tab-pane fade show active"
-                  id="v-pills-order"
-                  role="tabpanel"
-                  aria-labelledby="v-pills-order_history"
-                >
-                  1
-                </div> */}
                 <div
                   className="tab-pane fade show active"
                   id="v-pills-order"
