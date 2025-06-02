@@ -35,6 +35,7 @@ export function AuthProvider({ children }) {
 
       const token = response.data.token;
 
+
       // Save token to localStorage
       localStorage.setItem("auth_token", token);
 
@@ -44,9 +45,15 @@ export function AuthProvider({ children }) {
       const { data } = await axiosClient.get("/api/user");
       setUser(data);
     } catch (error) {
+      if (error.response && error.response.status === 403) {
+        throw new Error("Please verify your email before logging in.");
+      }
       throw error; // Let the component catch and show errors
     }
   };
+
+
+     
   const logout = async () => {
     await axiosClient.post("/api/logout");
     localStorage.removeItem("auth_token");

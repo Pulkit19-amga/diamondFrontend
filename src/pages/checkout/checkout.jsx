@@ -10,8 +10,7 @@ const Checkout = () => {
   const navigate = useNavigate();
   const [selectedMethod, setSelectedMethod] = useState("");
   const [errors, setErrors] = useState({});
-  // const { state } = useLocation();
-  // const { cartItems = [], subtotal = 0 } = state || {};
+
 
   const location = useLocation();
   const { cartItems: contextCartItems, clearCart } = useCart();
@@ -139,7 +138,7 @@ const Checkout = () => {
             is_get_offer: formData.smsOffers ? 1 : 0,
           });
 
-          /* console.log("Address saved:", response.data); */
+          console.log("Address saved:", response.data);
           // alert("Address saved successfully!");
 
           // If user selected PayPal, create PayPal order and redirect
@@ -297,10 +296,10 @@ const Checkout = () => {
             item_details: JSON.stringify(itemDetailsObject),
             total_price: calculateTotal(savedCartItems),
             address: JSON.stringify(addressObject),
-            order_status: "Pending",
-            payment_mode: selectedMethod,
+            order_status: "confirmed",
+            payment_mode: savedMethod,
             payment_status: "paid",
-            is_gift: formData.isGift || false,
+            is_gift: savedFormData.isGift || false,
             payment_id: paypalOrderId ?? null,
             notes: formData.notes || "",
 
