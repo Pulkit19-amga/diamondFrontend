@@ -20,10 +20,26 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (credentials) => {
-    await axiosClient.get("/sanctum/csrf-cookie"); // Get CSRF cookie first
-    const response = await axiosClient.post("/api/login", credentials); // Login, session cookie set here
-    const { user } = response.data;
-    setUser(user);
+    try {
+      await axiosClient.get("/sanctum/csrf-cookie");
+      const response = await axiosClient.post("/api/login", credentials);
+
+      const token = response.data.token;
+
+      // Save token to localStorage
+      localStorage.setItem("auth_token", token);
+
+      // Set token as default header for future requests
+      axiosClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+      const { data } = await axiosClient.get("/api/user");
+      setUser(data);
+    } catch (error) {
+      if (error.response && error.response.status === 403) {
+        throw new Error("Please verify your email before logging in.");
+      }
+      throw error; // Let the component catch and show errors
+    }
   };
 
   const logout = async () => {

@@ -15,6 +15,7 @@ const MyOrders = () => {
           ? response.data.data
           : [];
         setOrders(data);
+        // console.log("Fetched Orders:", data);
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
@@ -23,7 +24,7 @@ const MyOrders = () => {
     fetchOrders();
   }, []);
 
-  const handleOrderClick = (userId, nthIndex) => {
+  const handleOrderClick = (order) => {
     navigate(`/order-details/${order.id}`, { state: { order } });
   };
 
@@ -31,7 +32,7 @@ const MyOrders = () => {
     <div className="order-containers">
       {orders.length > 0 ? (
         orders.map((order, index) => {
-          let items = [];
+          let items = {};
           try {
             items = JSON.parse(order.item_details);
           } catch (e) {
@@ -49,24 +50,15 @@ const MyOrders = () => {
                   <img src={"https://via.placeholder.com/100"} alt={"Order"} />
                 </div>
                 <div className="order-info">
-                  <div className="order-title">Order #{order.order_id}</div>
+                  <div className="order-title">Order Id : {order.order_id}</div>
                   <div className="order-meta">
-                    Items: {items.length}
-                    {items.length > 0 && (
-                      <ul className="order-items-list">
-                        {items.map((item, idx) => (
-                          <li key={idx}>
-                            ID: {item.id}, Qty: {item.quantity}, ₹{item.price}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    Items: {Object.keys(items).length}
                   </div>
                 </div>
               </div>
 
               <div className="order-center">
-                <div className="order-price">₹{order.total_price}</div>
+                <div className="order-price">${order.total_price}</div>
               </div>
 
               <div className="order-right">

@@ -10,8 +10,7 @@ const Checkout = () => {
   const navigate = useNavigate();
   const [selectedMethod, setSelectedMethod] = useState("");
   const [errors, setErrors] = useState({});
-  // const { state } = useLocation();
-  // const { cartItems = [], subtotal = 0 } = state || {};
+
 
   const location = useLocation();
   const { cartItems: contextCartItems, clearCart } = useCart();
@@ -136,7 +135,7 @@ const Checkout = () => {
             is_get_offer: formData.smsOffers ? 1 : 0,
           });
 
-          /* console.log("Address saved:", response.data); */
+          console.log("Address saved:", response.data);
           // alert("Address saved successfully!");
 
           // If user selected PayPal, create PayPal order and redirect
@@ -252,7 +251,9 @@ const Checkout = () => {
 
     const params = new URLSearchParams(location.search);
     const paypalStatus = params.get("paypal_status");
-    const paypalOrderId = searchParams.get("paypal_order_id");
+
+    const paypalOrderId = params.get("paypal_order_id");
+
 
     if (paypalStatus === "cancelled") {
       // 🟥 Handle PayPal cancellation
@@ -261,13 +262,15 @@ const Checkout = () => {
       // Optionally redirect or reset state
       navigate("/paymnet-failed", {
         state: {
-          orderId: searchParams.get("paypal_order_id"),
+          orderId: params.get("paypal_order_id"),
+
         },
       });
       return;
     }
 
     if (paypalStatus === "success" && user) {
+
       const saved = localStorage.getItem("pendingAddress");
 
       if (!saved) {
@@ -305,12 +308,13 @@ const Checkout = () => {
             item_details: JSON.stringify(itemDetailsObject),
             total_price: calculateTotal(cartItems),
             address: JSON.stringify(addressObject),
-            order_status: "Pending",
-            payment_mode: selectedMethod,
+            order_status: "confirmed",
+            payment_mode: savedMethod,
             payment_status: "paid",
-            is_gift: formData.isGift || false,
+            is_gift: savedFormData.isGift || false,
             payment_id: paypalOrderId ?? null,
             notes: formData.notes || "",
+
           });
 
           clearCart();
@@ -334,8 +338,9 @@ const Checkout = () => {
       setSelectedMethod(selectedMethod);
       // Don't remove it yet — only after successful final order
     }
-  }, [user, cartItems, navigate, location]);
+  }, [user, navigate, location]);
 
+ 
   return (
     <>
       <section className="sign_up">

@@ -32,10 +32,11 @@ const SignUp = () => {
     try {
       const response = await axiosClient.post("api/register", formData);
       if (response.status === 201) {
-        setSuccessMessage("Registration successful!");
+        // setSuccessMessage("Registration successful!");
+        setSuccessMessage("Please check your email to verify your account.");
         console.log("Server response:", response.data);
 
-        setSuccessMessage("Registration successful!");
+        // setSuccessMessage("Registration successful!");
         // Reset form fields
         setTitle("");
         setFirstName("");
