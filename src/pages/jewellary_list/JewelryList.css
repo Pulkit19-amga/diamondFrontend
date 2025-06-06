@@ -92,27 +92,81 @@
     .filter-divider {
       color: #888;
     }
-    .categories-bar {
-      display: flex;
-      gap: 25px;
-      align-items: center;
-      padding: 15px 0;
-      overflow-x: auto;
-    }
-    .categories-bar img {
-      width: 40px;
-      height: 40px;
-      object-fit: contain;
-    }
-    .categories-bar .cat-item {
-      text-align: center;
-      font-size: 12px;
-      color: #333;
-    }
-    .cat-item.active {
-      font-weight: bold;
-      text-decoration: underline;
-    }
+    /* .categories-bar { */
+      /* display: flex; */
+      /* gap: 25px; */
+      /* align-items: center; */
+      /* padding: 15px 0; */
+      /* overflow-x: auto; */
+    /* } */
+    /* .categories-bar img { */
+      /* width: 40px; */
+      /* height: 40px; */
+      /* object-fit: contain; */
+    /* } */
+    /* .categories-bar .cat-item { */
+      /* text-align: center; */
+      /* font-size: 12px; */
+      /* color: #333; */
+    /* } */
+    /* .cat-item.active { */
+      /* font-weight: bold; */
+      /* text-decoration: underline; */
+    /* } */
+
+.categories-bar {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 15px 10px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #eee;
+  width: 100%;
+  scroll-snap-type: x mandatory;
+}
+
+.categories-bar::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for cleaner look */
+}
+
+.cat-item {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 13px;
+  color: #555;
+  transition: all 0.2s ease;
+  padding: 5px 8px;
+}
+
+.cat-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-bottom: 5px;
+  transition: transform 0.2s ease;
+}
+
+.cat-item:hover img {
+  transform: scale(1.1);
+}
+
+.cat-item.active {
+  font-weight: 600;
+  color: #007bff;
+}
+
+.cat-item.active img {
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 2px;
+}
+
+
+
     .applied-filters-bar {
       display: flex;
       align-items: center;
