@@ -142,7 +142,7 @@ const DiamondHeader = ({
           <span className="filter-label" onClick={handleFilterClick}>
             <strong>FILTER BY</strong>
           </span>
-          <span className="divider">|</span>
+          <span>|</span>
           <span className="filter-text" onClick={handleFilterClick}>
             {selectedFilter || "REPORT"}
             <span className="arrow">{showFilterDropdown ? "▲" : "▼"}</span>
@@ -152,7 +152,7 @@ const DiamondHeader = ({
             <strong>SORT BY</strong>
           </span>
 
-          <span className="divider">|</span>
+          <span>|</span>
 
           <span className="sort-text" onClick={handleSortClick}>
             {selectedSort}

@@ -51,38 +51,28 @@ const Header = () => {
           </div>
           <div className="right-side-logo-wrapper">
             <div className="d-flex align-items-center gap-3">
-              <div className="icon phn-icon">
-                <div
-                  className="icon phn-icon"
-                  style={{ pointerEvents: "none" }}
-                >
-                  <div className="icon phn-icon">
-                    <a
-                      href="tel:+18168881111"
-                      className="text-decoration-none text-white d-flex align-items-center"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="icon-phone"
-                        viewBox="0 0 23 23"
-                      >
-                        <g transform="translate(-19 -41)">
-                          <rect
-                            fill="#fff"
-                            opacity="0"
-                            transform="translate(19 41)"
-                          />
-                          {/* You can add the full phone icon path here if needed */}
-                        </g>
-                      </svg>
-                      <span className="small--hide text-white">
-                        {" "}
-                        +1 (816) 888-1111
-                      </span>
-                    </a>
-                  </div>
-                </div>
-              </div>
+  <div className="icon phn-icon">
+ <a
+  href="tel:+18168881111"
+  style={{
+    color: "#fff",
+    fontSize: "18px",
+    textDecoration: "none",
+    display: "inline-flex",
+    alignItems: "center",
+  }}
+>
+  <i
+    className="fa-solid fa-phone"
+    style={{ marginRight: "8px", color: "#fff" }}
+  ></i>
+  +1 (816) 888-1111
+</a>
+
+
+</div>
+
+
 
               <div className="icon search-icon">
                 <div className="search-box">

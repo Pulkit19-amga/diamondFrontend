@@ -46,9 +46,20 @@ const MyOrders = () => {
               onClick={() => handleOrderClick(order)}
             >
               <div className="order-left">
-                <div className="order-image">
-                  <img src={"https://via.placeholder.com/100"} alt={"Order"} />
-                </div>
+               <div className="order-image">
+  <img
+    src={
+      items && Object.values(items)[0]?.image
+        ? `/images/shapes/${Object.values(items)[0].image}`
+        : "/images/shapes/round.jpg"
+    }
+    alt="Order Item"
+    onError={(e) => {
+      e.target.src = "/images/shapes/round.jpg";
+    }}
+  />
+</div>
+
                 <div className="order-info">
                   <div className="order-title">Order Id : {order.order_id}</div>
                   <div className="order-meta">

@@ -1,146 +1,220 @@
-.order-container {
+/* Enhanced OrderDetails Layout */
+.order-page-grid {
   display: flex;
   justify-content: space-between;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  background: #dddcdc;
-  margin: 3% 0px;
+  gap: 24px;
+  padding: 32px;
+  background-color: #f2f4f8;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.left-section {
- margin-left: 10%;
-  width: 45%;
-  background: #fff;
-  padding: 20px;
-  border-radius: 6px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+.order-main-box,
+.order-side-box {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 24px;
 }
 
-.right-section {
-      margin-right: 10%;
-    width: 30%;
+.order-main-box {
+  margin-left: 10%;
+  flex: 1;
+}
+
+.order-side-box {
+  flex: 1;
+  position: sticky;
+  top: 32px;
+  margin-right: 10%;
+}
+
+.order-product-head {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e1e1e1;
+  padding-bottom: 20px;
+  margin-bottom: 16px;
 }
 
-.shipping-details-box,
-.price-details-box {
-  background: #fff;
-  padding: 20px;
-  border-radius: 6px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+.product-details h4 {
+  font-size: 20px;
+  margin: 0 0 4px;
+  color: #222;
 }
 
-.shipping-details-box h4,
-.price-details-box h4 {
-  margin-bottom: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 5px;
+.product-details p {
+  margin: 3px 0;
+  font-size: 14px;
+  color: #555;
 }
 
-.product-header {
-  display: flex;
-  margin-bottom: 20px;
-}
-
-.product-image {
-  width: 60px;
-  height: 80px;
+.order-image-thumb {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
   object-fit: cover;
-  margin-right: 20px;
-}
-
-.product-info h3 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.seller {
-  color: gray;
-  font-size: 12px;
+  border: 1px solid #ccc;
 }
 
 .price {
+  font-size: 18px;
   font-weight: bold;
-  margin-top: 8px;
+  color: #d32f2f;
 }
 
-.order-status {
-  margin-top: 20px;
+.order-timeline-box {
+  margin: 24px 0 16px;
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 8px;
 }
 
-.status {
+.timeline-item {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
-  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333;
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
+  height: 12px;
+  width: 12px;
   border-radius: 50%;
   margin-right: 10px;
+  display: inline-block;
 }
 
 .green {
-  background: green;
+  background-color: #4caf50;
 }
 
 .red {
-  background: red;
+  background-color: #f44336;
 }
 
-.see-updates {
+.see-all-updates {
+  color: #1976d2;
+  font-weight: 500;
   font-size: 14px;
-  color: #007bff;
-  text-decoration: none;
-  display: inline-block;
-  margin-top: 5px;
-}
-
-.cancel-msg {
-  font-size: 14px;
-  margin: 10px 0;
-}
-
-.chat-btn {
-  margin-top: 10px;
-  background: #e9ecef;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
+  margin-top: 8px;
   cursor: pointer;
 }
 
-.experience {
-  margin-top: 20px;
-  border-top: 1px solid #ccc;
-  padding-top: 15px;
+.cancel-msg {
+  font-size: 13px;
+  color: #f44336;
+  margin-top: 6px;
+}
+
+.chat-with-us,
+.download-invoice {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.chat-with-us {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.chat-with-us:hover {
+  background-color: #bbdefb;
+}
+
+.download-invoice {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.download-invoice:hover {
+  background-color: #e0e0e0;
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 16px;
+  margin: 20px 0 10px;
+  color: #111;
+}
+
+.other-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid #eee;
+}
+
+.other-item-row .left {
+  font-size: 14px;
+  color: #444;
+}
+
+.status-dot {
+  color: #f44336;
+  margin-right: 4px;
+}
+
+.cancelled-label {
+  font-size: 12px;
+  color: #e53935;
+}
+
+.thumb-sm {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.shipping-details h4,
+.price-summary h4 {
+  font-size: 18px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 6px;
+}
+
+.shipping-details p {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.price-summary {
+  margin-top: 24px;
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 8px;
 }
 
 .price-row {
   display: flex;
   justify-content: space-between;
-  margin: 5px 0;
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #444;
 }
 
-.strikethrough {
-  text-decoration: line-through;
-  color: gray;
-}
-
-.total {
+.price-row.total {
   font-weight: bold;
+  font-size: 15px;
+  color: #000;
   border-top: 1px solid #ccc;
-  padding-top: 10px;
+  padding-top: 8px;
 }
 
-.cod {
-  list-style: none;
-  margin-top: 10px;
-  padding-left: 0;
+.payment-mode {
+  font-size: 13px;
+  margin-top: 12px;
+  color: #555;
 }

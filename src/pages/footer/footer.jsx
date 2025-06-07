@@ -62,22 +62,22 @@ const Footer = () => {
         <a href="/wedding-brands">Wedding bands</a>
       </li>
       <li id="footer-link_gemstones" className="site-footer__linklist-item">
-        <a href="">Gemstones</a>
+        <a href="#">Gemstones</a>
       </li>
       <li id="footer-link_jewelry" className="site-footer__linklist-item">
-        <a href="">Jewelry</a>
+        <a href="#">Jewelry</a>
       </li>
       <li id="footer-link_conflict-diamond-policy" className="site-footer__linklist-item">
-        <a href="">Conflict diamond policy</a>
+        <a href="#">Conflict diamond policy</a>
       </li>
       <li id="footer-link_lab-grown-diamonds" className="site-footer__linklist-item">
-        <a href="">Lab grown diamonds</a>
+        <a href="#">Lab grown diamonds</a>
       </li>
       <li id="footer-link_metals" className="site-footer__linklist-item">
-        <a href="">Metals</a>
+        <a href="#">Metals</a>
       </li>
       <li id="footer-link_blog" className="site-footer__linklist-item">
-        <a href="">Blog</a>
+        <a href="#">Blog</a>
       </li>
     </ul>
   </div>
@@ -91,13 +91,13 @@ const Footer = () => {
   {[
     { label: "Diamonds", link: "/diamond" },
     { label: "Engagement rings", link: "/engagement-ring-style" },
-    { label: "Bands for him", link: "/bands-for-him" },
-    { label: "Bands for her", link: "/bands-for-her" },
-    { label: "Home preview", link: "/home-preview" },
-    { label: "Gemstone rings", link: "/gemstone-rings" },
-    { label: "Preset rings", link: "/preset-rings" },
-    { label: "Custom rings", link: "/custom-rings" },
-    { label: "Fine jewelry", link: "/fine-jewelry" },
+    { label: "Bands for him", link: "#" },
+    { label: "Bands for her", link: "#" },
+    { label: "Home preview", link: "/home" },
+    { label: "Gemstone rings", link: "#" },
+    { label: "Preset rings", link: "#" },
+    { label: "Custom rings", link: "#" },
+    { label: "Fine jewelry", link: "#" },
   ].map((item, i) => (
     <li key={i} className="site-footer__linklist-item">
       <Link to={item.link} className="text-white">{item.label}</Link>

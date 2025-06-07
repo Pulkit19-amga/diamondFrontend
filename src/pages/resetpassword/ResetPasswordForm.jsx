@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosClient from "../../api/axios";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
+import './ResetPasswordForm.css';
 
 const ResetPasswordForm = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +13,6 @@ const ResetPasswordForm = () => {
   const { token } = useParams();
   const location = useLocation();
 
-  // Extract email from query string
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const emailFromUrl = queryParams.get("email");
@@ -34,8 +34,6 @@ const ResetPasswordForm = () => {
 
       if (response.data.message) {
         setSuccessMsg(response.data.message);
-        // alert('Password reset successful! Please login.');
-
         setTimeout(() => {
           navigate("/signin");
         }, 2000);
@@ -48,23 +46,24 @@ const ResetPasswordForm = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Reset Password</h2>
-      {error && <p className="text-danger">{error}</p>}
+    <div className="reset-password-container">
+      <h2 className="reset-password-title">Reset Password</h2>
+
+      {error && <p className="reset-password-error">{error}</p>}
       {successMsg && (
-        <p className="text-success">
+        <p className="reset-password-success">
           {successMsg} Redirecting to sign-in page...
         </p>
       )}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="reset-password-form">
         <input
           type="email"
           placeholder="Your Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="form-control my-2"
+          className="reset-password-input"
         />
         <input
           type="password"
@@ -72,7 +71,7 @@ const ResetPasswordForm = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="form-control my-2"
+          className="reset-password-input"
         />
         <input
           type="password"
@@ -80,9 +79,9 @@ const ResetPasswordForm = () => {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
-          className="form-control my-2"
+          className="reset-password-input"
         />
-        <button type="submit" className="btn btn-primary w-100">
+        <button type="submit" className="reset-password-button">
           Reset Password
         </button>
       </form>
