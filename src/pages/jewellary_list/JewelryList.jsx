@@ -1,73 +1,263 @@
-
-import React, { useState } from "react";
-
-import "./JewelryList.css"; 
+import React, { useEffect, useRef, useState } from "react";
+import axiosClient from "../../api/axios";
+import "./JewelryList.css";
 
 const JewelryList = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [activeCategory, setActiveCategory] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const perPage = 20;
+  // const totalPages = Math.ceil(total / perPage);
+  const loaderRef = useRef(null);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [activeMetal, setActiveMetal] = useState("");
   const [mainImage, setMainImage] = useState("assets/images/product.jpg");
+  const [selectedVariations, setSelectedVariations] = useState({});
+
+  const categories = ["EARRINGS", "BRACELETS", "RINGS", "NECKLACES"];
+
+  const categoryMap = {
+    EARRINGS: [
+      "Studs",
+      "Hoops",
+      "Halo",
+      "Fashion",
+      "Ear Cuffs",
+      "Stackable",
+      "Gemstone",
+      "Luxe",
+      "Ready to Ship",
+      "Create Your Own",
+      "SHOP ALL",
+    ],
+    BRACELETS: [
+      "Tennis",
+      "Mixed Shape",
+      "Bangle",
+      "Bolo",
+      "Fashion",
+      "Luxe",
+      "Ready to Ship",
+      "SHOP ALL",
+    ],
+    RINGS: [
+      "Anniversary",
+      "Eternity",
+      "Stackable",
+      "Fashion",
+      "Gemstone",
+      "Luxe",
+      "Ready to Ship",
+      "Create Your Own",
+      "SHOP ALL",
+    ],
+    NECKLACES: [
+      "Halo",
+      "Solitaire",
+      "Tennis",
+      "Fashion",
+      "Gemstone",
+      "Luxe",
+      "Ready to Ship",
+      "Create Your Own",
+      "SHOP ALL",
+    ],
+  };
 
   const addFilter = (value) => {
-    if (!appliedFilters.includes(value)) {
-      setAppliedFilters([...appliedFilters, value]);
+    // CASE 1: Main Category Clicked
+    if (categories.includes(value)) {
+      // Set the new main category
+      setActiveCategory(value);
+      setSelectedSubcategory(""); // Clear old subcategory
+
+      // Remove previous main category & its subcategory, then add the new one
+      setAppliedFilters((prev) => {
+        return prev
+          .filter(
+            (f) =>
+              !categories.includes(f) && // remove old main category
+              !Object.values(categoryMap).flat().includes(f) // remove any subcategory
+          )
+          .concat(value); // add new main category
+      });
+    }
+
+    // CASE 2: change subcategory only one sub category at a time
+    else if (activeCategory && categoryMap[activeCategory]?.includes(value)) {
+      setSelectedSubcategory(value);
+
+      // Remove any previous subcategory under the same category
+      setAppliedFilters((prev) => {
+        return prev
+          .filter((f) => !categoryMap[activeCategory].includes(f))
+          .concat(value);
+      });
+    }
+
+    // CASE 3: Other filters
+    else {
+      setAppliedFilters((prev) => {
+        if (!prev.includes(value)) {
+          return [...prev, value];
+        }
+        return prev;
+      });
     }
   };
 
   const removeFilter = (value) => {
-    setAppliedFilters(appliedFilters.filter((item) => item !== value));
+    if (categories.includes(value)) {
+      // Remove main category and its subcategory
+      const subToRemove = selectedSubcategory;
+      setActiveCategory("");
+      setSelectedSubcategory("");
+
+      setAppliedFilters((prev) =>
+        prev.filter((item) => item !== value && item !== subToRemove)
+      );
+    } else {
+      // Remove only the selected subcategory or independent filter
+      if (value === selectedSubcategory) {
+        setSelectedSubcategory("");
+      }
+
+      setAppliedFilters((prev) => prev.filter((item) => item !== value));
+    }
   };
 
   const clearAllFilters = () => {
     setAppliedFilters([]);
+    setActiveCategory("");
+    setSelectedSubcategory("");
   };
 
   const handleMetalClick = (metal) => {
     setActiveMetal(metal);
   };
 
+  const productssss = [
+    {
+      id: 1,
+      name: "Classic Round Diamond Four Prong Studs Earrings (F/G SI+)",
+      price: "$749",
+      originalPrice: "$1,070",
+      images: ["product.jpg", "product_model.jpg"],
+      discount: "30% OFF",
+      readyToShip: true,
+    },
+    {
+      id: 2,
+      name: "Elegant Necklace with Rose Gold Finish",
+      price: "$899",
+      originalPrice: "$1,250",
+      images: ["product.jpg", "product_model.jpg"],
+      discount: "25% OFF",
+      readyToShip: false,
+    },
+    {
+      id: 3,
+      name: "18K Gold Hoop Earrings ",
+      price: "$1,299",
+      originalPrice: "$1,599",
+      images: ["product.jpg", "product_model.jpg"],
+      discount: "18% OFF",
+      readyToShip: true,
+    },
+    {
+      id: 4,
+      name: "Men’s Diamond Bracelet",
+      price: "$2,099",
+      originalPrice: "$2,899",
+      images: ["product.jpg", "product_model.jpg"],
+      discount: "28% OFF",
+      readyToShip: false,
+    },
+  ];
 
-const products = [
-  {
-    id: 1,
-    name: "Classic Round Diamond Four Prong Studs Earrings (F/G SI+)",
-    price: "$749",
-    originalPrice: "$1,070",
-    images: ["product.jpg", "product_model.jpg"],
-    discount: "30% OFF",
-    readyToShip: true,
-  },
-  {
-    id: 2,
-    name: "Elegant Necklace with Rose Gold Finish",
-    price: "$899",
-    originalPrice: "$1,250",
-    images: ["product.jpg", "product_model.jpg"],
-    discount: "25% OFF",
-    readyToShip: false,
-  },
-  {
-    id: 3,
-    name: "18K Gold Hoop Earrings ",
-    price: "$1,299",
-    originalPrice: "$1,599",
-    images: ["product.jpg", "product_model.jpg"],
-    discount: "18% OFF",
-    readyToShip: true,
-  },
-  {
-    id: 4,
-    name: "Men’s Diamond Bracelet",
-    price: "$2,099",
-    originalPrice: "$2,899",
-    images: ["product.jpg", "product_model.jpg"],
-    discount: "28% OFF",
-    readyToShip: false,
-  },
-];
+  const fetchProducts = async ({ page, filters = [] }) => {
+    const isInitialLoad = page === 1;
 
+    if (isInitialLoad) {
+      setLoading(true);
+    }
 
+    try {
+      const response = await axiosClient.get("/api/get-all-products", {
+        params: { page, perPage, filters },
+      });
 
+      const fetchedProducts = response.data.data || [];
+      const formattedGroups = Object.entries(fetchedProducts).map(
+        ([sku, items]) => ({
+          master_sku: sku,
+          variations: items,
+        })
+      );
+
+      if (isInitialLoad) {
+        console.log("Initial load products:", formattedGroups);
+        setProducts(formattedGroups);
+      } else {
+        console.log("second load products:", formattedGroups);
+        setProducts((prev) => [...prev, ...formattedGroups]);
+      }
+
+      const totalMasterSkus = parseInt(response.data.totalMasterSkus) || 0;
+      const pages = Math.ceil(totalMasterSkus / perPage);
+      setTotalPages(pages);
+      setTotal(totalMasterSkus);
+    } catch (error) {
+      console.error("Product fetch failed", error);
+    } finally {
+      setLoading(false);
+      setIsFetchingMore(false); // allow next scroll
+    }
+  };
+
+  // Apply filter - reset to page 1
+  useEffect(() => {
+    setPage(1);
+    fetchProducts({ page: 1, filters: appliedFilters });
+  }, [appliedFilters]);
+
+  // Page change - load more
+  useEffect(() => {
+    if (page > 1) {
+      fetchProducts({ page, filters: appliedFilters });
+    }
+  }, [page]);
+
+  // Intersection Observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (
+          first.isIntersecting &&
+          !isFetchingMore &&
+          page < totalPages &&
+          !loading
+        ) {
+          setIsFetchingMore(true); // Block more calls immediately
+          setPage((prev) => prev + 1);
+        }
+      },
+      { threshold: 1 }
+    );
+
+    const currentLoader = loaderRef.current;
+    if (currentLoader) observer.observe(currentLoader);
+
+    return () => {
+      if (currentLoader) observer.unobserve(currentLoader);
+    };
+  }, [isFetchingMore, totalPages, page, loading]);
 
   return (
     <div className="container my-4">
@@ -83,8 +273,22 @@ const products = [
               Collection
             </span>
             <ul className="dropdown-menu">
-              <li><button className="dropdown-item" onClick={() => addFilter("All Earrings")}>All Earrings</button></li>
-              <li><button className="dropdown-item" onClick={() => addFilter("All Necklaces")}>All Necklaces</button></li>
+              <li>
+                <button
+                  className="dropdown-item"
+                  onClick={() => addFilter("All Earrings")}
+                >
+                  All Earrings
+                </button>
+              </li>
+              <li>
+                <button
+                  className="dropdown-item"
+                  onClick={() => addFilter("All Necklaces")}
+                >
+                  All Necklaces
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -92,10 +296,29 @@ const products = [
 
           {/* Style */}
           <div className="dropdown">
-            <span className="dropdown-toggle" data-bs-toggle="dropdown">Style</span>
+            <span className="dropdown-toggle" data-bs-toggle="dropdown">
+              Style
+            </span>
             <ul className="dropdown-menu">
-              <li><button className="dropdown-item" onClick={() => addFilter("Studs")}>Studs</button></li>
-              <li><button className="dropdown-item" onClick={() => addFilter("Hoops")}>Hoops</button></li>
+              {(categoryMap[activeCategory] || []).map((sub, idx) => (
+                <li key={sub + idx}>
+                  <button
+                    className="dropdown-item"
+                    onClick={() => addFilter(sub)}
+                  >
+                    {sub}
+                  </button>
+                </li>
+              ))}
+
+              <li>
+                <button
+                  className="dropdown-item"
+                  onClick={() => addFilter("Hoops")}
+                >
+                  Hoops
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -103,9 +326,18 @@ const products = [
 
           {/* Metal */}
           <div className="dropdown">
-            <span className="dropdown-toggle" data-bs-toggle="dropdown">Metal</span>
+            <span className="dropdown-toggle" data-bs-toggle="dropdown">
+              Metal
+            </span>
             <ul className="dropdown-menu">
-              <li><button className="dropdown-item" onClick={() => addFilter("Gold")}>Gold</button></li>
+              <li>
+                <button
+                  className="dropdown-item"
+                  onClick={() => addFilter("Gold")}
+                >
+                  Gold
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -113,31 +345,54 @@ const products = [
 
           {/* Price */}
           <div className="dropdown">
-            <span className="dropdown-toggle" data-bs-toggle="dropdown">Price</span>
+            <span className="dropdown-toggle" data-bs-toggle="dropdown">
+              Price
+            </span>
             <ul className="dropdown-menu">
-              <li><button className="dropdown-item" onClick={() => addFilter("Under $1000")}>Under $1000</button></li>
+              <li>
+                <button
+                  className="dropdown-item"
+                  onClick={() => addFilter("Under $1000")}
+                >
+                  Under $1000
+                </button>
+              </li>
             </ul>
           </div>
 
           <span className="filter-divider">|</span>
 
           <div className="form-check d-inline-block">
-            <input className="form-check-input" type="checkbox" id="readyToShip" />
-            <label className="form-check-label" htmlFor="readyToShip">Ready to Ship</label>
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="readyToShip"
+            />
+            <label className="form-check-label" htmlFor="readyToShip">
+              Ready to Ship
+            </label>
           </div>
         </div>
 
         <div>
-          <strong>SORT BY</strong> | <span className="dropdown-toggle" data-bs-toggle="dropdown">Featured</span>
+          <strong>SORT BY</strong> |{" "}
+          <span className="dropdown-toggle" data-bs-toggle="dropdown">
+            Featured
+          </span>
         </div>
       </div>
 
       {/* Category Icons Bar */}
       <div className="categories-bar mt-3">
-        {["earrings", "necklaces", "rings", "bracelets", "earrings", "mens", "studs", "hoops"].map((cat, index) => (
-          <div className={`cat-item ${index === 0 ? "active" : ""}`} key={cat + index}>
+        {categories.map((cat, index) => (
+          <div
+            className={`cat-item ${activeCategory === cat ? "active" : ""}`}
+            key={cat + index}
+            onClick={() => addFilter(cat)}
+            style={{ cursor: "pointer" }}
+          >
             <img src={`/images/product.webp`} alt={cat} />
-            <div>{cat.toUpperCase().replace("'S", "'S")}</div>
+            <div>{cat.toUpperCase()}</div>
           </div>
         ))}
       </div>
@@ -148,83 +403,145 @@ const products = [
           <strong>APPLIED FILTERS</strong>
           <div className="d-flex gap-2 flex-wrap">
             {appliedFilters.map((filter, idx) => (
-              <div className="filter-tag d-flex align-items-center px-2 py-1" key={idx}>
+              <div
+                className="filter-tag d-flex align-items-center px-2 py-1"
+                key={idx}
+              >
                 {filter}
-                <span className="ms-2 text-danger fw-bold" style={{ cursor: "pointer" }} onClick={() => removeFilter(filter)}>&times;</span>
+                <span
+                  className="ms-2 text-danger fw-bold"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => removeFilter(filter)}
+                >
+                  &times;
+                </span>
               </div>
             ))}
           </div>
-          <div className="clear-all ms-3" onClick={clearAllFilters}>CLEAR ALL</div>
+          <div className="clear-all ms-3" onClick={clearAllFilters}>
+            CLEAR ALL
+          </div>
         </div>
       )}
 
       {/* Product Listing */}
-      <h5 className="mt-4">Showing 1931 products.</h5>
-<div className="row row-cols-1 row-cols-md-4 g-4">
-  {products.map((product, idx) => (
-    <div className="col" key={product.id}>
-      <div className="product-card h-100 d-flex flex-column justify-content-between">
-        <div>
-          <div className="d-flex justify-content-between">
-            {product.readyToShip && (
-              <div className="ready-to-ship">READY TO SHIP</div>
-            )}
-            <div className="discount">{product.discount}</div>
+      <h5 className="mt-4">Showing {total} products.</h5>
+      <div className="row row-cols-1 row-cols-md-4 g-4">
+        {loading && <p>Loading products...</p>}
+
+        {products.map((group) => (
+          <div className="col" key={group.master_sku}>
+            <div className="product-card h-100 d-flex flex-column justify-content-between">
+              <div>
+                <div className="d-flex justify-content-between">
+                  {group.variations[selectedVariations[group.master_sku] || 0]
+                    ?.readyToShip
+                    ? "READY TO SHIP"
+                    : "NA"}
+
+                  <div className="discount">
+                    {group.variations[selectedVariations[group.master_sku] || 0]
+                      ?.discount || "NA"}
+                  </div>
+                </div>
+
+                <img
+                  src={`/images/${
+                    group.variations[selectedVariations[group.master_sku] || 0]
+                      ?.image || "STUDS.webp"
+                  }`}
+                  alt="Product"
+                  className="img-fluid my-3"
+                />
+
+                <div className="hover-thumbnails">
+                  {group.variations[
+                    selectedVariations[group.master_sku] || 0
+                  ]?.images?.map((img, i) => (
+                    <img
+                      key={i}
+                      src={`/images/${img}`}
+                      alt="thumb"
+                      onClick={() => setMainImage(`/images/${img}`)}
+                    />
+                  ))}
+                </div>
+
+                <p className="fw-semibold">
+                  {group.variations[selectedVariations[group.master_sku] || 0]
+                    ?.products_name || "NA"}
+                </p>
+                <p>
+                  {group.variations[selectedVariations[group.master_sku] || 0]
+                    ?.products_sku || "NA"}
+                </p>
+
+
+                <div
+                  className="variation-buttons mb-2"
+                  style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
+                >
+                  {group.variations.map((variation, index) => (
+                    <button
+                      key={index}
+                      onClick={() =>
+                        setSelectedVariations((prev) => ({
+                          ...prev,
+                          [group.master_sku]: index,
+                        }))
+                      }
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        backgroundColor: [
+                          "#dcdcdc",
+                          "#fceebb",
+                          "#f9d0cc",
+                          "#f2f2f2",
+                        ][index % 4],
+                        border:
+                          selectedVariations[group.master_sku] === index
+                            ? "2px solid black"
+                            : "none",
+                        fontWeight: "bold",
+                        color: "#222",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        boxShadow: "0 0 2px rgba(0,0,0,0.1)",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {variation?.metal || "14K"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <p className="mt-auto">
+                <span className="fw-bold">
+                  $
+                  {
+                    group.variations[selectedVariations[group.master_sku] || 0]
+                      ?.products_price
+                  }
+                </span>
+                <span className="original-price">
+                  {
+                    group.variations[selectedVariations[group.master_sku] || 0]
+                      ?.original_price
+                  }
+                </span>
+              </p>
+            </div>
           </div>
-
-          <img
-            src={`/images/STUDS.webp`}
-            alt="Product"
-            className="img-fluid my-3"
-          />
-
-          <div className="hover-thumbnails">
-            {product.images.map((img, i) => (
-              <img
-                key={i}
-                src={`/images/product.webp`}
-                alt="thumb"
-                onClick={() => setMainImage(`/images/${img}`)}
-              />
-            ))}
-          </div>
-
-          <p className="fw-semibold">{product.name}</p>
-
-          <div className="metal-options mb-2">
-            {["14K", "14K", "14K", "PT"].map((metal, idx) => (
-              <span
-                key={idx}
-                className={activeMetal === metal ? "active" : ""}
-                onClick={() => handleMetalClick(metal)}
-              >
-                {metal}
-              </span>
-            ))}
-          </div>
-
-          <div className="weight-options mb-2">
-            {["1/2", "3/4", "1", "1 1/2", "2", "3", "4"].map((w, idx) => (
-              <button
-                key={idx}
-                className={w === "2" ? "bg-dark text-white" : ""}
-              >
-                {w}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <p className="mt-auto">
-          <span className="fw-bold">{product.price}</span>
-          <span className="original-price">{product.originalPrice}</span>
-        </p>
+        ))}
       </div>
-    </div>
-  ))}
-</div>
 
-
+      <div ref={loaderRef}>
+        {isFetchingMore && <p>Loading more products...</p>}
+      </div>
     </div>
   );
 };
