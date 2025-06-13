@@ -8,14 +8,16 @@ const JewelryList = () => {
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const [activeCategory, setActiveCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const perPage = 20;
-  const totalPages = Math.ceil(total / perPage);
+  // const totalPages = Math.ceil(total / perPage);
   const loaderRef = useRef(null);
   const [appliedFilters, setAppliedFilters] = useState([]);
   const [activeMetal, setActiveMetal] = useState("");
   const [mainImage, setMainImage] = useState("assets/images/product.jpg");
+  const [selectedVariations, setSelectedVariations] = useState({});
 
   const categories = ["EARRINGS", "BRACELETS", "RINGS", "NECKLACES"];
 
@@ -68,7 +70,7 @@ const JewelryList = () => {
   };
 
   const addFilter = (value) => {
-    // CASE 1: Main Category Clicked 
+    // CASE 1: Main Category Clicked
     if (categories.includes(value)) {
       // Set the new main category
       setActiveCategory(value);
@@ -108,7 +110,6 @@ const JewelryList = () => {
       });
     }
   };
-
 
   const removeFilter = (value) => {
     if (categories.includes(value)) {
@@ -181,44 +182,69 @@ const JewelryList = () => {
 
   const fetchProducts = async ({ page, filters = [] }) => {
     const isInitialLoad = page === 1;
-    if (isInitialLoad) setLoading(true);
-    else setIsFetchingMore(true);
+
+    if (isInitialLoad) {
+      setLoading(true);
+    }
 
     try {
       const response = await axiosClient.get("/api/get-all-products", {
-        params: { page, perPage, filters: appliedFilters },
+        params: { page, perPage, filters },
       });
 
       const fetchedProducts = response.data.data || [];
+      const formattedGroups = Object.entries(fetchedProducts).map(
+        ([sku, items]) => ({
+          master_sku: sku,
+          variations: items,
+        })
+      );
+
       if (isInitialLoad) {
-        setProducts(fetchedProducts);
+        console.log("Initial load products:", formattedGroups);
+        setProducts(formattedGroups);
       } else {
-        setProducts((prev) => [...prev, ...fetchedProducts]);
+        console.log("second load products:", formattedGroups);
+        setProducts((prev) => [...prev, ...formattedGroups]);
       }
 
-      setTotal(response.data.total || 0);
+      const totalMasterSkus = parseInt(response.data.totalMasterSkus) || 0;
+      const pages = Math.ceil(totalMasterSkus / perPage);
+      setTotalPages(pages);
+      setTotal(totalMasterSkus);
     } catch (error) {
       console.error("Product fetch failed", error);
     } finally {
-      if (isInitialLoad) setLoading(false);
-      else setIsFetchingMore(false);
+      setLoading(false);
+      setIsFetchingMore(false); // allow next scroll
     }
   };
 
+  // Apply filter - reset to page 1
   useEffect(() => {
-    setPage(1); // reset page to 1 when filters change
+    setPage(1);
     fetchProducts({ page: 1, filters: appliedFilters });
   }, [appliedFilters]);
 
+  // Page change - load more
   useEffect(() => {
-    fetchProducts({ page, filters: appliedFilters });
+    if (page > 1) {
+      fetchProducts({ page, filters: appliedFilters });
+    }
   }, [page]);
 
+  // Intersection Observer
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const first = entries[0];
-        if (first.isIntersecting && !isFetchingMore && page < totalPages) {
+        if (
+          first.isIntersecting &&
+          !isFetchingMore &&
+          page < totalPages &&
+          !loading
+        ) {
+          setIsFetchingMore(true); // Block more calls immediately
           setPage((prev) => prev + 1);
         }
       },
@@ -231,7 +257,7 @@ const JewelryList = () => {
     return () => {
       if (currentLoader) observer.unobserve(currentLoader);
     };
-  }, [isFetchingMore, totalPages]);
+  }, [isFetchingMore, totalPages, page, loading]);
 
   return (
     <div className="container my-4">
@@ -402,65 +428,111 @@ const JewelryList = () => {
       <h5 className="mt-4">Showing {total} products.</h5>
       <div className="row row-cols-1 row-cols-md-4 g-4">
         {loading && <p>Loading products...</p>}
-        {products.map((product) => (
-          <div className="col" key={product.products_id}>
+
+        {products.map((group) => (
+          <div className="col" key={group.master_sku}>
             <div className="product-card h-100 d-flex flex-column justify-content-between">
               <div>
                 <div className="d-flex justify-content-between">
-                  {product.readyToShip && (
-                    <div className="ready-to-ship">READY TO SHIP</div>
-                  )}
-                  <div className="discount">{product.discount}</div>
+                  {group.variations[selectedVariations[group.master_sku] || 0]
+                    ?.readyToShip
+                    ? "READY TO SHIP"
+                    : "NA"}
+
+                  <div className="discount">
+                    {group.variations[selectedVariations[group.master_sku] || 0]
+                      ?.discount || "NA"}
+                  </div>
                 </div>
 
                 <img
-                  src={`/images/STUDS.webp`}
+                  src={`/images/${
+                    group.variations[selectedVariations[group.master_sku] || 0]
+                      ?.image || "STUDS.webp"
+                  }`}
                   alt="Product"
                   className="img-fluid my-3"
                 />
 
-                {productssss.map((productiii) => (
-                  <div className="hover-thumbnails">
-                    {productiii.images.map((img, i) => (
-                      <img
-                        key={i}
-                        src={`/images/product.webp`}
-                        alt="thumb"
-                        onClick={() => setMainImage(`/images/${img}`)}
-                      />
-                    ))}
-                  </div>
-                ))}
-
-                <p className="fw-semibold">{product.products_name}</p>
-
-                <div className="metal-options mb-2">
-                  {["14K", "14K", "14K", "PT"].map((metal, idx) => (
-                    <span
-                      key={idx}
-                      className={activeMetal === metal ? "active" : ""}
-                      onClick={() => handleMetalClick(metal)}
-                    >
-                      {metal}
-                    </span>
+                <div className="hover-thumbnails">
+                  {group.variations[
+                    selectedVariations[group.master_sku] || 0
+                  ]?.images?.map((img, i) => (
+                    <img
+                      key={i}
+                      src={`/images/${img}`}
+                      alt="thumb"
+                      onClick={() => setMainImage(`/images/${img}`)}
+                    />
                   ))}
                 </div>
 
-                <div className="weight-options mb-2">
-                  {["1/2", "3/4", "1", "1 1/2", "2", "3", "4"].map((w, idx) => (
+                <p className="fw-semibold">
+                  {group.variations[selectedVariations[group.master_sku] || 0]
+                    ?.products_name || "NA"}
+                </p>
+                <p>
+                  {group.variations[selectedVariations[group.master_sku] || 0]
+                    ?.products_sku || "NA"}
+                </p>
+
+
+                <div
+                  className="variation-buttons mb-2"
+                  style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
+                >
+                  {group.variations.map((variation, index) => (
                     <button
-                      key={idx}
-                      className={w === "2" ? "bg-dark text-white" : ""}
+                      key={index}
+                      onClick={() =>
+                        setSelectedVariations((prev) => ({
+                          ...prev,
+                          [group.master_sku]: index,
+                        }))
+                      }
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        backgroundColor: [
+                          "#dcdcdc",
+                          "#fceebb",
+                          "#f9d0cc",
+                          "#f2f2f2",
+                        ][index % 4],
+                        border:
+                          selectedVariations[group.master_sku] === index
+                            ? "2px solid black"
+                            : "none",
+                        fontWeight: "bold",
+                        color: "#222",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        boxShadow: "0 0 2px rgba(0,0,0,0.1)",
+                        cursor: "pointer",
+                      }}
                     >
-                      {w}
+                      {variation?.metal || "14K"}
                     </button>
                   ))}
                 </div>
               </div>
 
               <p className="mt-auto">
-                <span className="fw-bold">{product.products_price}</span>
-                <span className="original-price">{product.products_price}</span>
+                <span className="fw-bold">
+                  $
+                  {
+                    group.variations[selectedVariations[group.master_sku] || 0]
+                      ?.products_price
+                  }
+                </span>
+                <span className="original-price">
+                  {
+                    group.variations[selectedVariations[group.master_sku] || 0]
+                      ?.original_price
+                  }
+                </span>
               </p>
             </div>
           </div>
