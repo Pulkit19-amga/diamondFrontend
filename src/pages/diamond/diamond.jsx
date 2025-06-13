@@ -13,15 +13,12 @@ import AdvanceFilter from "./advanceFilter/AdvanceFilter";
 import DiamondHeader from "./diamondHeader/DiamondHeader";
 import DiamondTable from "./diamondTable/DiamondTable";
 import DiamondTabFilter from "./diamondTabFilter/DiamondTabFilter";
+import RingWrapper from "./ringWrapper/ringWrapper";
 
-const steps = [
-  { id: 1, label: "CHOOSE A DIAMOND" },
-  { id: 2, label: "CHOOSE A SETTING" },
-  { id: 3, label: "COMPLETE YOUR RING" },
-];
+
 
 export default function Diamond() {
-  const [currentStep, setCurrentStep] = useState(1);
+
   const [selectedShapes, setSelectedShapes] = useState([]); // select single as well as mutltiple shape
   const [diamonds, setDiamonds] = useState([]); // insert api data
   const [activeTab, setActiveTab] = useState("lab");
@@ -125,9 +122,7 @@ export default function Diamond() {
     setShowOnlyChecked(false);
   };
 
-  const handleStepClick = (stepId) => {
-    setCurrentStep(stepId);
-  };
+ 
 
   const typeMap = {
     natural: 1,
@@ -321,22 +316,7 @@ export default function Diamond() {
         </div>
       </section>
 
-      <div className="diamond-ring-wrapper">
-        <h2 className="title">Create Your Diamond Ring</h2>
-        <div className="step-container">
-          {steps.map((step, index) => (
-            <div
-              key={step.id}
-              className={`step ${currentStep === step.id ? "active" : ""}`}
-              onClick={() => handleStepClick(step.id)}
-            >
-              <span className="step-number">{step.id}</span>
-              <span className="step-label">{step.label}</span>
-              {index < steps.length - 1 && <span className="divider">|</span>}
-            </div>
-          ))}
-        </div>
-      </div>
+      <RingWrapper />
 
       <DiamondTabFilter
         activeTab={activeTab}

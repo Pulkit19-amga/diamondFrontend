@@ -1,11 +1,22 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import './thankyou.css';
-
 
 const ThankYou = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const order = location.state?.order;
+
+  const handleViewOrder = () => {
+    if (order) {
+      navigate(`/order-details/:orderId`, { state: { order } });
+    }
+  };
+
+  const handleContinueShopping = () => {
+    navigate("/diamond"); 
+  };
+
   return (
     <div className="thankyou-container">
       <div className="thankyou-card">
@@ -23,8 +34,12 @@ const ThankYou = () => {
               Total Price: <strong>{order.total_price}</strong>
             </p>
             <div className="thankyou-buttons">
-              <button className="btn-outline">VIEW ORDER</button>
-              <button className="btn-filled">CONTINUE SHOPPING</button>
+              <button className="btn-outline" onClick={handleViewOrder}>
+                VIEW ORDER
+              </button>
+              <button className="btn-filled" onClick={handleContinueShopping}>
+                CONTINUE SHOPPING
+              </button>
             </div>
           </>
         ) : (

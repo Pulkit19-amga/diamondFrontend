@@ -86,15 +86,22 @@ const SecondHeader = () => {
             <div className="right-side-logo-wrapper">
               <div className="d-flex align-items-center gap-3">
                 <div className="icon phn-icon">
-                  <a
-                    href="tell: +123456789"
-                    className="text-decoration-none text-black-custom"
-                  >
-                    <i className="fa fa-phone"></i>
-                    <span className="small--hide text-black-custom">
-                      +1 (816) 888-1111
-                    </span>
-                  </a>
+                <a
+  href="tel:+18168881111"
+  style={{
+    color: "#000",
+    fontSize: "18px",
+    textDecoration: "none",
+    display: "inline-flex",
+    alignItems: "center",
+  }}
+>
+  <i
+    className="fa-solid fa-phone"
+    style={{ marginRight: "8px", color: "#fff" }}
+  ></i>
+  +1 (816) 888-1111
+</a>
                 </div>
 
                 <div className="icon search-icon">

@@ -1,102 +1,97 @@
 .order-containers {
-  padding: 1rem;
-  max-width: 100%;
-  width: 100%;
+  padding: 32px;
+  background-color: #f7f9fc;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: "Segoe UI", sans-serif;
 }
-
 
 .order-item {
   display: flex;
-  background: #b4b4b4;
-  padding: 16px;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
   border-radius: 8px;
-  margin-bottom: 12px;
-  cursor: pointer; /* <-- Make it feel clickable */
-  transition: box-shadow 0.2s;
-   box-shadow: 0 2px 10px rgba(153, 152, 152, 0.1);
+  padding: 20px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  border-left: 5px solid #0d6efd;
 }
 
 .order-item:hover {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
-
-/* Left: Image + Info */
 .order-left {
   display: flex;
-  gap: 10px;
-  flex: 2;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
 }
 
 .order-image img {
-  width: 60px;
-  height: 80px;
+  width: 64px;
+  height: 64px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
 }
 
 .order-info {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 4px;
 }
 
 .order-title {
-  font-size: 15px;
-  font-weight: 500;
-  color: #1c1c1c;
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
 }
 
 .order-meta {
   font-size: 14px;
-  color: #5e5e5e;
+  color: #777;
 }
 
-/* Center: Price */
 .order-center {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.order-price {
-  font-size: 16px;
+  flex: 0.5;
+  text-align: center;
+  font-size: 18px;
   font-weight: 600;
-  color: #1c1c1c;
+  color: #28a745;
 }
 
-/* Right: Cancel Info */
 .order-right {
-
-  flex: 3;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 4px;
+  flex: 1;
+  text-align: right;
 }
 
 .order-status-row {
   display: flex;
+  justify-content: flex-end;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  font-size: 14px;
+  color: #444;
 }
 
 .status-dot {
-  width: 8px;
-  height: 8px;
-  background-color: #f44336;
+  height: 10px;
+  width: 10px;
   border-radius: 50%;
+  background-color: #ffc107;
 }
 
 .cancelled-text {
-  font-size: 14px;
-  font-weight: 600;
-  color: #222;
+  color: #dc3545;
+  font-weight: 500;
 }
 
 .order-reason {
   font-size: 13px;
-  color: #444;
+  color: #666;
+  margin-top: 4px;
 }
