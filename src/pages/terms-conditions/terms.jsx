@@ -18,25 +18,25 @@ export default function Terms() {
               </div>
               <div className="page-content">
                 <p>
-                  Welcome to www.diamonds.com (“The Diamonds”). If there is
+                  Welcome to https://thecaratcasa.com (“The caratcasa”). If there is
                   anything at all we can do to improve your experience, please
                   do not hesitate to contact us at&nbsp;&nbsp;
                   <a
-                    href="mailto:service@diamond.com"
+                    href="mailto:service@TheCaratecasa.com"
                     aria-describedby="a11y-external-message"
                   >
-                    service@diamonds.com
+                    service@TheCaratecasa.com
                   </a>
                   &nbsp; or&nbsp;&nbsp;
                   <a
-                    href="tel:1-123456789"
+                    href="tel:+1 (816) 888-1111"
                     aria-describedby="a11y-external-message"
-                    aria-label="call 1-123456789"
+                    aria-label="call +1 (816) 888-1111"
                     data-uw-rm-vglnk=""
-                    uw-rm-vague-link-id="tel:1-123456789$call 1-123456789"
+                    uw-rm-vague-link-id="tel:+1 (816) 888-1111$call +1 (816) 888-1111"
                   >
                     {" "}
-                    1-123456789
+                    +1 (816) 888-1111
                   </a>
                 </p>
                 <p>
@@ -303,7 +303,7 @@ export default function Terms() {
                 </p>
                 <p>
                   You may opt-out of the Service at any time. Text the single
-                  keyword command STOP to +18558801253 or click the unsubscribe
+                  keyword command STOP to +1 (816) 888-1111 or click the unsubscribe
                   link (where available) in any text message to cancel. You'll
                   receive a one-time opt-out confirmation text message. No
                   further messages will be sent to your mobile device, unless
@@ -314,7 +314,7 @@ export default function Terms() {
                   provided in their respective mobile terms.
                 </p>
                 <p>
-                  For Service support or assistance, text HELP to +18558801253
+                  For Service support or assistance, text HELP to +1 (816) 888-1111
                   or email{" "}
                   <a
                     href="mailto:service@thecaratcasa.com"
@@ -667,13 +667,13 @@ export default function Terms() {
                   </a>{" "}
                   or{" "}
                   <a
-                    href="tel:1-844-234-6364"
+                    href="tel:+1 (816) 888-1111"
                     aria-describedby="a11y-external-message"
-                    aria-label="call 1-844-234-6364"
+                    aria-label="call +1 (816) 888-1111"
                     data-uw-rm-vglnk=""
-                    uw-rm-vague-link-id="tel:1-844-234-6364$call 1-844-234-6364"
+                    uw-rm-vague-link-id="tel:+1 (816) 888-1111$call +1 (816) 888-1111"
                   >
-                    1-844-234-6364
+                  +1 (816) 888-1111
                   </a>
                   . For written inquiries, please submit to Service at
                   Renaissance FMI Inc. 46-24 28th Street, Long Island City,

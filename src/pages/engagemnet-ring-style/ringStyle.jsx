@@ -51,7 +51,7 @@ export default function RingStyle() {
                   </li>
                   <li className="">
                     <a
-                      href="/pages/diamonds-4cs"
+                      href="#"
                       className=""
                       data-uw-rm-brl="PR"
                     >
@@ -60,7 +60,7 @@ export default function RingStyle() {
                   </li>
                   <li className="">
                     <a
-                      href="/pages/wedding-band-styles"
+                      href="/wedding-band-styles"
                       className=""
                       data-uw-rm-brl="PR"
                     >
@@ -69,7 +69,7 @@ export default function RingStyle() {
                   </li>
                   <li className="">
                     <a
-                      href="/pages/fine-jewelry-earrings"
+                      href="#"
                       className=""
                       data-uw-rm-brl="PR"
                     >
@@ -78,7 +78,7 @@ export default function RingStyle() {
                   </li>
                   <li className="">
                     <a
-                      href="/pages/gemstones-types-guide"
+                      href="#"
                       className=""
                       data-uw-rm-brl="PR"
                     >
@@ -93,7 +93,7 @@ export default function RingStyle() {
                     <ul className="flex-sm text-uppercase">
                       <li className="active">
                         <a
-                          href="/pages/engagement-ring-style"
+                          href="#"
                           data-uw-rm-brl="PR"
                         >
                           Style
@@ -102,7 +102,7 @@ export default function RingStyle() {
 
                       <li className="">
                         <a
-                          href="/pages/engagement-ring-settings"
+                          href="#"
                           data-uw-rm-brl="PR"
                         >
                           Settings
@@ -111,7 +111,7 @@ export default function RingStyle() {
 
                       <li className="">
                         <a
-                          href="/pages/engagement-ring-diamond-types"
+                          href="#"
                           data-uw-rm-brl="PR"
                         >
                           Diamond Types
@@ -120,7 +120,7 @@ export default function RingStyle() {
 
                       <li className="">
                         <a
-                          href="/pages/engagement-ring-diamond-shapes"
+                          href="#"
                           data-uw-rm-brl="PR"
                         >
                           Diamond Shapes
@@ -129,7 +129,7 @@ export default function RingStyle() {
 
                       <li className="">
                         <a
-                          href="/pages/engagement-ring-metal"
+                          href="#"
                           data-uw-rm-brl="PR"
                         >
                           Metal
@@ -138,7 +138,7 @@ export default function RingStyle() {
 
                       <li className="">
                         <a
-                          href="/pages/engagement-ring-sizing"
+                          href="#"
                           data-uw-rm-brl="PR"
                         >
                           Ring Sizing
@@ -147,7 +147,7 @@ export default function RingStyle() {
 
                       <li className="">
                         <a
-                          href="/pages/engagement-ring-budgeting"
+                          href="#"
                           data-uw-rm-brl="PR"
                         >
                           Budgeting

@@ -23,6 +23,7 @@ import ThankYou from "./pages/order-success/thankyou";
 import PaymentFailed from "./pages/payment_failed/PaymentFailed";
 import OrderDetails from "./pages/order_details/OrderDetails";
 import JewelryList from "./pages/jewellary_list/JewelryList";
+import ScrollToTop from "./pages/scrolltop/ScrollToTop";
 
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
 
   return (
     <>
+    <ScrollToTop />
       {isHome ? <Header /> : <SecondHeader />}
       <main>
         <Routes>
@@ -57,9 +59,9 @@ export default function App() {
           <Route path="/thankyou" element={<ThankYou />} />
 
           <Route path="/paymnet-failed" element={<PaymentFailed />} />
-          <Route path="/order-details/:userId/:nth" element={<OrderDetails /> } />
+          <Route path="/order-details/:orderId" element={<OrderDetails /> } />
           <Route path="/jewelry-list" element={<JewelryList /> } />
-          
+
 
         </Routes>
       </main>

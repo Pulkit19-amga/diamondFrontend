@@ -26,7 +26,7 @@ export default function Policy() {
                 <a href="mailto:service@thecaratcasa.com">
                   service@thecaratcasa.com
                 </a>{" "}
-                or <a href="tel:1-844-234-6463">1-844-234-6463</a>
+                or <a href="tel:+1 (816) 888-1111">+1 (816) 888-1111</a>
               </p>
 
               <h2 className="policy_title">

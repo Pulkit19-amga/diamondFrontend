@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./DiamondDetails.css";
 import { useCart } from "../../../cart/CartContext";
 import NoDealbreakers from "./nobrokrage/NoDealbreakers";
 import Help from "../../contact/help";
+import RingWrapper from "../../diamond/ringWrapper/ringWrapper";
 
 const steps = [
   { id: 1, label: "CHOOSE A DIAMOND" },
@@ -11,7 +12,11 @@ const steps = [
   { id: 3, label: "COMPLETE YOUR RING" },
 ];
 
+
+
+
 export default function DiamondDetails() {
+  const detailsRef = useRef(null);
   const [selectedView, setSelectedView] = useState("image");
   const { state } = useLocation();
   const diamond = state?.diamond;
@@ -31,27 +36,7 @@ export default function DiamondDetails() {
     setCurrentStep(stepId);
   };
 
-  // const handleAddToCart = () => {
-  //   try {
-  //     const cartKey = 'cart';
-  //     const existingCart = JSON.parse(localStorage.getItem(cartKey)) || [];
-
-  //     const isDuplicate = existingCart.some(item => item.certificate_number === diamond.certificate_number);
-  //     if (isDuplicate) {
-  //       alert("This diamond is already in your cart.");
-  //       return;
-  //     }
-
-  //     const updatedCart = [...existingCart, diamond];
-  //     localStorage.setItem(cartKey, JSON.stringify(updatedCart));
-  //     addToCart(diamond); // ✅ sync with context
-
-  //     alert("Diamond added to cart successfully!");
-  //   } catch (error) {
-  //     console.error("Error adding to cart:", error);
-  //     alert("Something went wrong. Please try again.");
-  //   }
-  // };
+ 
 
   const handleAddToCart = () => {
     const cartKey = "cart";
@@ -99,22 +84,7 @@ export default function DiamondDetails() {
         </div>
       </section>
 
-      <div className="diamond-ring-wrapper">
-        <h2 className="title">Create Your Diamond Ring</h2>
-        <div className="step-container">
-          {steps.map((step, index) => (
-            <div
-              key={step.id}
-              className={`step ${currentStep === step.id ? "active" : ""}`}
-              onClick={() => handleStepClick(step.id)}
-            >
-              <span className="step-number">{step.id}</span>
-              <span className="step-label">{step.label}</span>
-              {index < steps.length - 1 && <span className="divider">|</span>}
-            </div>
-          ))}
-        </div>
-      </div>
+   <RingWrapper />
 
       <div
         style={{
@@ -229,12 +199,21 @@ export default function DiamondDetails() {
               <p>Shape: {diamond.shape.name}</p>
               <p>Carat: {diamond.carat_weight}</p>
               <p>Cut: {diamond.cut.full_name}</p>
-              <a
-                href="#"
-                style={{ color: "#3c749b", textDecoration: "underline" }}
-              >
-                MORE DETAILS
-              </a>
+<a
+  href="#"
+  onClick={(e) => {
+    e.preventDefault();
+    setOpenSection("details");
+    setTimeout(() => {
+      detailsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100); // delay to wait for the DOM to render
+  }}
+  style={{ color: "#3c749b", textDecoration: "underline", cursor: "pointer" }}
+>
+  MORE DETAILS
+</a>
+
+
             </div>
             <div>
               <p>Color: {diamond.color.name}</p>
@@ -295,8 +274,9 @@ export default function DiamondDetails() {
               DIAMOND DETAILS
               <span>{openSection === "details" ? "▲" : "▼"}</span>
             </div>
-            {openSection === "details" && (
-              <div className="contentStyle">
+           {openSection === "details" && (
+  <div className="contentStyle" ref={detailsRef}>
+
                 {[
                   ["CARAT", diamond.carat_weight],
                   ["SHAPE", diamond.shape.name],
