@@ -192,7 +192,7 @@ const SecondHeader = () => {
                     { label: "WEDDING", path: "/wedding-brands" },
                     { label: "Diamonds", path: "/diamond" },
                     { label: "HIGh jewelry" },
-                    { label: "jewelry", path: "/jewelry-list" },
+                    { label: "jewelry", path: "/shop-all-jewelry" },
                     { label: "collections" },
                   ].map((item, index) => (
                     <li key={index} className="nav-item">

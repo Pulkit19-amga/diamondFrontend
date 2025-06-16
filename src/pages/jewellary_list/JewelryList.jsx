@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import axiosClient from "../../api/axios";
+import debounce from "lodash/debounce";
+import { Link } from "react-router-dom";
 import "./JewelryList.css";
 
 const JewelryList = () => {
@@ -193,25 +195,37 @@ const JewelryList = () => {
       });
 
       const fetchedProducts = response.data.data || [];
-      const formattedGroups = Object.entries(fetchedProducts).map(
-        ([sku, items]) => ({
-          master_sku: sku,
-          variations: items,
-        })
-      );
 
       if (isInitialLoad) {
-        console.log("Initial load products:", formattedGroups);
-        setProducts(formattedGroups);
+        console.log("Initial load products:", fetchedProducts);
+        setProducts(fetchedProducts);
+
+        const defaultSelections = {};
+        fetchedProducts.forEach((group) => {
+          if (group.variations?.length > 0) {
+            defaultSelections[group.id] = 0;
+          }
+        });
+        setSelectedVariations(defaultSelections);
       } else {
-        console.log("second load products:", formattedGroups);
-        setProducts((prev) => [...prev, ...formattedGroups]);
+        console.log("second load products:", fetchedProducts);
+        setProducts((prev) => [...prev, ...fetchedProducts]);
+        const newSelections = {};
+        fetchedProducts.forEach((group) => {
+          if (group.variations?.length > 0) {
+            newSelections[group.id] = 0;
+          }
+        });
+        setSelectedVariations((prev) => ({
+          ...prev,
+          ...newSelections,
+        }));
       }
 
-      const totalMasterSkus = parseInt(response.data.totalMasterSkus) || 0;
-      const pages = Math.ceil(totalMasterSkus / perPage);
+      const totalProducts = parseInt(response.data.totalProducts) || 0;
+      const pages = Math.ceil(totalProducts / perPage);
       setTotalPages(pages);
-      setTotal(totalMasterSkus);
+      setTotal(totalProducts);
     } catch (error) {
       console.error("Product fetch failed", error);
     } finally {
@@ -235,6 +249,10 @@ const JewelryList = () => {
 
   // Intersection Observer
   useEffect(() => {
+    const handleIntersection = debounce(() => {
+      setIsFetchingMore(true);
+      setPage((prev) => prev + 1);
+    }, 300);
     const observer = new IntersectionObserver(
       (entries) => {
         const first = entries[0];
@@ -244,8 +262,7 @@ const JewelryList = () => {
           page < totalPages &&
           !loading
         ) {
-          setIsFetchingMore(true); // Block more calls immediately
-          setPage((prev) => prev + 1);
+          handleIntersection();
         }
       },
       { threshold: 1 }
@@ -430,56 +447,43 @@ const JewelryList = () => {
         {loading && <p>Loading products...</p>}
 
         {products.map((group) => (
-          <div className="col" key={group.master_sku}>
+          <div className="col" key={group.id}>
             <div className="product-card h-100 d-flex flex-column justify-content-between">
               <div>
                 <div className="d-flex justify-content-between">
-                  {group.variations[selectedVariations[group.master_sku] || 0]
-                    ?.readyToShip
-                    ? "READY TO SHIP"
-                    : "NA"}
-
+                  {group.product?.ready_to_ship ? "READY TO SHIP" : "NA"}
                   <div className="discount">
-                    {group.variations[selectedVariations[group.master_sku] || 0]
+                    {group.variations[selectedVariations[group.id] || 0]
                       ?.discount || "NA"}
                   </div>
                 </div>
+                <Link
+                  to={`/jewellary-details/${group.product?.master_sku}`}
+                  className="text-decoration-none text-dark"
+                >
+                  <img
+                    src={`/images/${
+                      group.variations[selectedVariations[group.id] || 0]
+                        ?.image || "STUDS.webp"
+                    }`}
+                    alt="Product"
+                    className="img-fluid my-3"
+                  />
 
-                <img
-                  src={`/images/${
-                    group.variations[selectedVariations[group.master_sku] || 0]
-                      ?.image || "STUDS.webp"
-                  }`}
-                  alt="Product"
-                  className="img-fluid my-3"
-                />
-
-                <div className="hover-thumbnails">
-                  {group.variations[
-                    selectedVariations[group.master_sku] || 0
-                  ]?.images?.map((img, i) => (
-                    <img
-                      key={i}
-                      src={`/images/${img}`}
-                      alt="thumb"
-                      onClick={() => setMainImage(`/images/${img}`)}
-                    />
-                  ))}
-                </div>
-
-                <p className="fw-semibold">
-                  {group.variations[selectedVariations[group.master_sku] || 0]
-                    ?.products_name || "NA"}
-                </p>
+                  <p className="fw-semibold">{group.product?.name || "NA"}</p>
+                </Link>
                 <p>
-                  {group.variations[selectedVariations[group.master_sku] || 0]
-                    ?.products_sku || "NA"}
+                  {group.variations[selectedVariations[group.id] || 0]?.sku ||
+                    "NA"}
                 </p>
-
 
                 <div
                   className="variation-buttons mb-2"
-                  style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
+                  style={{
+                    display: "flex",
+                    gap: "8px",
+                    flexWrap: "wrap",
+                  }}
                 >
                   {group.variations.map((variation, index) => (
                     <button
@@ -487,7 +491,7 @@ const JewelryList = () => {
                       onClick={() =>
                         setSelectedVariations((prev) => ({
                           ...prev,
-                          [group.master_sku]: index,
+                          [group.id]: index,
                         }))
                       }
                       style={{
@@ -501,7 +505,7 @@ const JewelryList = () => {
                           "#f2f2f2",
                         ][index % 4],
                         border:
-                          selectedVariations[group.master_sku] === index
+                          selectedVariations[group.id] === index
                             ? "2px solid black"
                             : "none",
                         fontWeight: "bold",
@@ -513,7 +517,7 @@ const JewelryList = () => {
                         cursor: "pointer",
                       }}
                     >
-                      {variation?.metal || "14K"}
+                      {variation.metal || "14K"}
                     </button>
                   ))}
                 </div>
@@ -522,16 +526,12 @@ const JewelryList = () => {
               <p className="mt-auto">
                 <span className="fw-bold">
                   $
-                  {
-                    group.variations[selectedVariations[group.master_sku] || 0]
-                      ?.products_price
-                  }
+                  {group.variations[selectedVariations[group.id] || 0]?.price ||
+                    "NA"}
                 </span>
                 <span className="original-price">
-                  {
-                    group.variations[selectedVariations[group.master_sku] || 0]
-                      ?.original_price
-                  }
+                  {group.variations[selectedVariations[group.id] || 0]
+                    ?.original_price || ""}
                 </span>
               </p>
             </div>

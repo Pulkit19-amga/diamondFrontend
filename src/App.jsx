@@ -58,7 +58,7 @@ export default function App() {
 
           <Route path="/paymnet-failed" element={<PaymentFailed />} />
           <Route path="/order-details/:userId/:nth" element={<OrderDetails /> } />
-          <Route path="/jewelry-list" element={<JewelryList /> } />
+          <Route path="/shop-all-jewelry" element={<JewelryList /> } />
           
 
         </Routes>
