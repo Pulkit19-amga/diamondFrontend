@@ -63,7 +63,7 @@ export default function Home() {
           </div>
           <div className="col-12">
             <img
-              src="images/build_enagement.webp"
+              src="https://images.unsplash.com/photo-1716366192997-817bb5e88d52?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDB8fGRpYW1vbmQlMjByaW5nfGVufDB8fDB8fHww"
               alt=""
               className="img-fluid"
             />
@@ -74,7 +74,7 @@ export default function Home() {
         <div className="row">
           <div className="col-12">
             <img
-              src="images/ring-box.webp"
+              src="https://img.freepik.com/free-photo/beautiful-engagement-ring-with-diamonds_23-2149509236.jpg?ga=GA1.1.1364773145.1746277227&semt=ais_hybrid&w=740"
               alt=""
               className="img-fluid"
             />
@@ -171,7 +171,7 @@ export default function Home() {
         <div>
           <div>
             <img
-              src="images/home.webp"
+              src="https://images.unsplash.com/photo-1559006864-38a01f201f95?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGRpYW1vbmQlMjByaW5nfGVufDB8fDB8fHww"
               alt=""
               className="img-fluid p-2"
             />

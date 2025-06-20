@@ -1,0 +1,97 @@
+.order-containers {
+  padding: 32px;
+  background-color: #f7f9fc;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  border-left: 5px solid #0d6efd;
+}
+
+.order-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.order-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.order-image img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.order-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-title {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+}
+
+.order-meta {
+  font-size: 14px;
+  color: #777;
+}
+
+.order-center {
+  flex: 0.5;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #28a745;
+}
+
+.order-right {
+  flex: 1;
+  text-align: right;
+}
+
+.order-status-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #444;
+}
+
+.status-dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: #ffc107;
+}
+
+.cancelled-text {
+  color: #dc3545;
+  font-weight: 500;
+}
+
+.order-reason {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+}
