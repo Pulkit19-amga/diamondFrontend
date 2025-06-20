@@ -1,0 +1,92 @@
+.jwl-mega-menu-container-fixed {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100vw;
+  background: white;
+  z-index: 9999;
+  padding: 40px 60px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  overflow-x: hidden;
+}
+
+.jwl-mega-menu {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  /* gap: 40px; */
+  flex-wrap: nowrap;
+  align-items: flex-start;
+}
+
+
+.jwl-mega-col {
+  /* flex: 1; */
+  min-width: 150px;
+}
+
+.jwl-menu-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  display: flex;
+}
+
+.jwl-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.jwl-list li {
+  margin-bottom: 6px;
+}
+
+.jwl-list li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 13px;
+  transition: color 0.3s ease;
+  display: flex;
+  
+}
+
+.jwl-list li a:hover {
+  color: #d51c1c;
+}
+
+.jwl-shop-all a {
+  font-weight: bold;
+  color: #000;
+}
+
+.jwl-image-col {
+  width: 220px;
+  text-align: left;
+}
+
+.jwl-image-col img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+}
+
+
+.jwl-caption {
+  margin-top: 10px;
+}
+
+.jwl-caption h6 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.jwl-caption a {
+  text-decoration: underline;
+  color: #007bff;
+  font-weight: bold;
+}

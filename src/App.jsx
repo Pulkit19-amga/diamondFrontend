@@ -1,9 +1,11 @@
 import { Routes, Route, useLocation } from "react-router-dom";
+import ScrollToTop from "./pages/scrolltop/ScrollToTop";
+import Footer from "./pages/footer/footer";
+import HeaderWrapper from "./pages/header/HeaderWrapper";
+
+// All your page imports
 import Home from "./pages/home/home";
 import Contact from "./pages/contact/contact";
-import Header from "./pages/header/header";
-import SecondHeader from "./pages/header/secondHeader";
-import Footer from "./pages/footer/footer";
 import Engagement from "./pages/engagement/engagement";
 import About from "./pages/about/about";
 import Diamond from "./pages/diamond/diamond";
@@ -23,17 +25,15 @@ import ThankYou from "./pages/order-success/thankyou";
 import PaymentFailed from "./pages/payment_failed/PaymentFailed";
 import OrderDetails from "./pages/order_details/OrderDetails";
 import JewelryList from "./pages/jewellary_list/JewelryList";
-import ScrollToTop from "./pages/scrolltop/ScrollToTop";
+import JewelryDetailsPage from "./pages/jewellary-details/JewellaryDetails";
+import MegaMenu from "./pages/mega-menu/megaMenu";
 
 
 export default function App() {
-  const location = useLocation();
-  const isHome = location.pathname === "/";
-
   return (
     <>
-    <ScrollToTop />
-      {isHome ? <Header /> : <SecondHeader />}
+      <ScrollToTop />
+      <HeaderWrapper />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -50,19 +50,15 @@ export default function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
-          <Route
-            path="/reset-password/:token"
-            element={<ResetPasswordForm />}
-          />
+          <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/thankyou" element={<ThankYou />} />
-
           <Route path="/paymnet-failed" element={<PaymentFailed />} />
-          <Route path="/order-details/:orderId" element={<OrderDetails /> } />
-          <Route path="/jewelry-list" element={<JewelryList /> } />
-
-
+          <Route path="/order-details/:orderId" element={<OrderDetails />} />
+          <Route path="/jewelry-list" element={<JewelryList />} />
+          <Route path="/jewellary-details/:sku" element={<JewelryDetailsPage />} />
+          <Route path="/megamenu" element={<MegaMenu />} />
         </Routes>
       </main>
       <Footer />
