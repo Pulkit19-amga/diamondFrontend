@@ -35,6 +35,7 @@ export function AuthProvider({ children }) {
 
       const token = response.data.token;
 
+
       // Save token to localStorage
       localStorage.setItem("auth_token", token);
 
@@ -50,6 +51,9 @@ export function AuthProvider({ children }) {
       throw error; // Let the component catch and show errors
     }
   };
+
+
+     
   const logout = async () => {
     await axiosClient.post("/api/logout");
     localStorage.removeItem("auth_token");

@@ -2,9 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import axiosClient from "../../api/axios";
 import debounce from "lodash/debounce";
 import { Link } from "react-router-dom";
-import Zoom from "react-medium-image-zoom";
-import "react-medium-image-zoom/dist/styles.css";
-
 import "./JewelryList.css";
 
 const JewelryList = () => {
@@ -202,8 +199,7 @@ const JewelryList = () => {
       if (isInitialLoad) {
         console.log("Initial load products:", fetchedProducts);
         setProducts(fetchedProducts);
-
-        const defaultSelections = {};
+                const defaultSelections = {};
         fetchedProducts.forEach((group) => {
           if (group.variations?.length > 0) {
             defaultSelections[group.id] = 0;
@@ -280,6 +276,37 @@ const JewelryList = () => {
   }, [isFetchingMore, totalPages, page, loading]);
 
   return (
+<>
+      <section className="hero_section_wrapper">
+        <div classNamee="container-fluid p-0 position-relative">
+          <img
+            src="https://www.withclarity.com/cdn/shop/files/Women_s_Diamond_Gemstone_Jewelry_1366x.jpg?v=1729163233"
+            alt=""
+            className="img-fluid w-100"
+          />
+          <div className="wrapper position-absolute text-center w-100 mb-5">
+            <h2 className="fs-1 slide-title text-white">
+              ENGAGEMENT RING EDUCATION
+            </h2>
+            <div className="content">
+              <p className="text-white">
+                Learn about engagement ring setting styles, metal options, ring
+                sizing and more.
+              </p>
+            </div>
+            <div className="slide-btn-wrapper justify-content-center align-items-center gap-5">
+              <a
+                title="SHOP ENGAGEMENT RINGS"
+                href="#"
+                className="text-white btn border-button border my-2 p-2 rounded-0 fw-bold border-white"
+              >
+                SHOP ENGAGEMENT RINGS
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
     <div className="container my-4">
       {/* Filters Top Bar */}
       <div className="d-flex justify-content-between filters-bar">
@@ -446,110 +473,100 @@ const JewelryList = () => {
 
       {/* Product Listing */}
       <h5 className="mt-4">Showing {total} products.</h5>
-      <div className="row row-cols-1 row-cols-md-4 g-4">
-        {loading && <p>Loading products...</p>}
+<div className="row row-cols-1 row-cols-md-4 g-4">
+  {loading && <p>Loading products...</p>}
 
-        {products.map((group) => {
-          const selectedIndex = selectedVariations[group.id] || 0;
-          const selectedVariation = group.variations[selectedIndex];
-          const weights = JSON.parse(selectedVariation?.weight || "[]");
-          const image = selectedVariation?.image || "STUDS.webp";
-          const price = selectedVariation?.price || "NA";
-          const originalPrice = selectedVariation?.original_price || "";
-          const discount = selectedVariation?.discount || "NA";
-          const sku = selectedVariation?.sku || "NA";
-
-          return (
-            <div className="col" key={group.id}>
-              <div className="product-card h-100 d-flex flex-column justify-content-between">
-                <div>
-                  <div className="d-flex justify-content-between">
-                    <span>
-                      {group.product?.ready_to_ship ? "READY TO SHIP" : "NA"}
-                    </span>
-                    <div className="discount">{discount}</div>
-                  </div>
-
-                  <Link
-                    to={`/jewellary-details/${group.product?.master_sku}`}
-                    className="text-decoration-none text-dark"
-                  >
-                    <img
-                      src={`/images/${image}`}
-                      alt="Product"
-                      className="img-fluid my-3"
-                    />
-                    <p className="fw-semibold">{group.product?.name || "NA"}</p>
-                  </Link>
-
-                  <p>{sku}</p>
-
-                  {/* Metal Variation Buttons */}
-                  <div
-                    className="product-variation__buttons mb-2"
-                    style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
-                  >
-                    {group.variations.map((variation, index) => (
-                      <button
-                        key={index}
-                        className={`product-variation__btn product-variation__btn--color-${
-                          index % 4
-                        } ${
-                          selectedIndex === index
-                            ? "product-variation__btn--active"
-                            : ""
-                        }`}
-                        onClick={() =>
-                          setSelectedVariations((prev) => ({
-                            ...prev,
-                            [group.id]: index,
-                          }))
-                        }
-                      >
-                        {variation.carat || "NA"}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Carat Weights */}
-                <div className="product-variation__carat-group">
-                  <small className="product-variation__carat-title">
-                    Total Carat Weight
-                  </small>
-                  {weights.length > 0 && (
-                    <div className="product-variation__carat-wrap">
-                      {weights.map((w, idx) => (
-                        <div
-                          key={idx}
-                          className="product-variation__carat-pill"
-                        >
-                          {{
-                            0.5: "1/2",
-                            0.75: "3/4",
-                            1.5: "1 1/2",
-                          }[w] || w}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Price Section */}
-                <p className="mt-auto">
-                  <span className="fw-bold">${price}</span>
-                  <span className="original-price">{originalPrice}</span>
-                </p>
-              </div>
-            </div>
-          );
-        })}
+  {products.map((group) => (
+    <div className="col" key={group.id}>
+  <div className="product-card h-100 d-flex flex-column justify-content-between">
+  <div>
+    <div className="d-flex justify-content-between mb-2">
+      <span className="ready-to-ship-label">
+        {group.product?.ready_to_ship ? "READY TO SHIP" : "NA"}
+      </span>
+      <div className="discount">
+        {group.variations[selectedVariations[group.id] || 0]?.discount || "NA"}
       </div>
+    </div>
+
+    {/* ✅ Image */}
+    <div className="product-image-wrapper">
+      <img
+        src={`/images/${
+          group.variations[selectedVariations[group.id] || 0]?.image || "STUDS.webp"
+        }`}
+        alt="Product"
+        className="product-image"
+      />
+    </div>
+
+    {/* ✅ Title and SKU Block */}
+    <div className="product-text-area">
+      <Link
+        to={`/jewellary-details/${group.product?.master_sku}`}
+        className="text-decoration-none text-dark"
+      >
+        <p className="product-title">{group.product?.name || "NA"}</p>
+      </Link>
+      <p className="sku-text">
+        {group.variations[selectedVariations[group.id] || 0]?.sku || "NA"}
+      </p>
+    </div>
+
+    {/* ✅ Variation Buttons */}
+    <div className="variation-buttons mb-2">
+      {group.variations.map((variation, index) => (
+        <button
+          key={index}
+          onClick={() =>
+            setSelectedVariations((prev) => ({
+              ...prev,
+              [group.id]: index,
+            }))
+          }
+          style={{
+            width: "32px",
+            height: "32px",
+            fontSize: "11px",
+            fontWeight: "600",
+            borderRadius: "50%",
+            backgroundColor: ["#dcdcdc", "#fceebb", "#f9d0cc", "#f2f2f2"][index % 4],
+            border: selectedVariations[group.id] === index ? "2px solid black" : "none",
+            color: "#222",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+          }}
+        >
+          {variation.metal || "14K"}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  {/* ✅ Price Section */}
+  <p className="mt-auto">
+    <span className="fw-bold">
+      ${group.variations[selectedVariations[group.id] || 0]?.price || "NA"}
+    </span>
+    <span className="original-price">
+      {group.variations[selectedVariations[group.id] || 0]?.original_price || ""}
+    </span>
+  </p>
+</div>
+
+
+    </div>
+  ))}
+</div>
+
 
       <div ref={loaderRef}>
         {isFetchingMore && <p>Loading more products...</p>}
       </div>
     </div>
+    </>
   );
 };
 

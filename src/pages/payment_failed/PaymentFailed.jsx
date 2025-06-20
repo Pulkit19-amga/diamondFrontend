@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useLocation } from "react-router-dom";
 import "./PaymentFailed.css";
@@ -5,11 +6,13 @@ import "./PaymentFailed.css";
 const PaymentFailed = () => {
   const location = useLocation();
   const orderId = location.state?.orderId;
+
   return (
     <div className="payment-wrapper">
       <div className="payment-card">
         <div className="payment-icon">!</div>
         <h2 className="payment-title">Payment Failed</h2>
+
         {orderId && (
           <p>
             Your PayPal Order ID: <strong>{orderId}</strong>
@@ -25,6 +28,7 @@ const PaymentFailed = () => {
           <a href="#" className="support-link">
             Contact Support
           </a>
+
         </p>
       </div>
     </div>

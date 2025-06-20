@@ -10,8 +10,7 @@ const Checkout = () => {
   const navigate = useNavigate();
   const [selectedMethod, setSelectedMethod] = useState("");
   const [errors, setErrors] = useState({});
-  // const { state } = useLocation();
-  // const { cartItems = [], subtotal = 0 } = state || {};
+
 
   const location = useLocation();
   const { cartItems: contextCartItems, clearCart } = useCart();
@@ -139,7 +138,7 @@ const Checkout = () => {
             is_get_offer: formData.smsOffers ? 1 : 0,
           });
 
-          // console.log("Address saved:", response.data);
+          console.log("Address saved:", response.data);
           // alert("Address saved successfully!");
 
           // If user selected PayPal, create PayPal order and redirect
@@ -176,7 +175,7 @@ const Checkout = () => {
           });
 
           clearCart();
-          // console.log("Order created:", orderResponse.data);
+          console.log("Order created:", orderResponse.data);
           navigate("/thankyou", { state: { order: orderResponse.data } });
         } catch (error) {
           console.error("Error submitting order:", error);
@@ -217,9 +216,9 @@ const Checkout = () => {
 
     const params = new URLSearchParams(location.search);
     const paypalStatus = params.get("paypal_status");
+
     const paypalOrderId = params.get("paypal_order_id");
 
-    // console.log("PayPal status:", paypalStatus);
 
     if (paypalStatus === "cancelled") {
       // 🟥 Handle PayPal cancellation
@@ -229,20 +228,18 @@ const Checkout = () => {
       navigate("/paymnet-failed", {
         state: {
           orderId: params.get("paypal_order_id"),
+
         },
       });
       return;
     }
 
     if (paypalStatus === "success" && user) {
-      const savedData = localStorage.getItem("pendingAddress");
-      if (!savedData) {
-        alert("Order data missing. Please try again.");
-        navigate("/paymnet-failed", {
-          state: {
-            orderId: params.get("paypal_order_id"),
-          },
-        });
+
+      const saved = localStorage.getItem("pendingAddress");
+
+      if (!saved) {
+        console.warn("No pending address found after PayPal redirect.");
         return;
       }
 
@@ -251,8 +248,8 @@ const Checkout = () => {
         selectedMethod: savedMethod,
         cartItems: savedCartItems,
       } = JSON.parse(savedData);
-      // console.log("Is cartItems an array?", Array.isArray(cartItems));
-      // console.log("Is cartItems empty?", cartItems?.length === 0);
+      console.log("Is cartItems an array?", Array.isArray(cartItems));
+      console.log("Is cartItems empty?", cartItems?.length === 0);
 
       // Validate saved data exists
       if (
@@ -304,7 +301,7 @@ const Checkout = () => {
             payment_status: "paid",
             is_gift: savedFormData.isGift || false,
             payment_id: paypalOrderId ?? null,
-            notes: savedFormData.notes || "",
+            notes: formData.notes || "",
 
           });
 
@@ -331,44 +328,7 @@ const Checkout = () => {
     }
   }, [user, navigate, location]);
 
-  // useEffect(() => {
-  //   const fetchAddress = async () => {
-  //     if (user) {
-  //       try {
-  //         const res = await axiosClient.get(`/api/user-address/${user.id}`);
-  //         const addr = res.data;
-
-  //         if (addr) {
-  //           setFormData((prev) => ({
-  //             ...prev,
-  //             first_name: addr.first_name,
-  //             last_name: addr.last_name,
-  //             country: addr.country,
-  //             apartment: addr.address?.apartment || "",
-  //             address: addr.address?.street || "",
-  //             city: addr.address?.city || "",
-  //             zip_code: addr.address?.zip || "",
-  //             phone: addr.phone_number,
-  //             smsOffers: addr.is_get_offer === 1,
-  //           }));
-  //         }
-  //       } catch (err) {
-  //         console.error("No existing address found.");
-  //       }
-  //     }
-  //   };
-
-  //   fetchAddress();
-
-  //   const savedData = localStorage.getItem("pendingAddress");
-  //   if (savedData) {
-  //     const { formData, selectedMethod } = JSON.parse(savedData);
-  //     setFormData(formData);
-  //     setSelectedMethod(selectedMethod);
-  //     localStorage.removeItem("pendingAddress");
-  //   }
-  // }, [user]);
-
+ 
   return (
     <>
       <section className="sign_up">

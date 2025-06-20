@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import MyOrders from '../order/myOrders'
+import MyOrders from "../order/myOrders";
 import "./profile.css";
 
 const Profile = () => {
@@ -12,7 +12,8 @@ const Profile = () => {
   const handleLogout = async () => {
     setLogoutLoading(true);
     try {
-      await logout(); 
+      await logout();
+
       navigate("/signin");
     } catch (error) {
       console.error("Logout failed:", error);
@@ -147,7 +148,11 @@ const Profile = () => {
                 </div>
 
                 <div className="btn-wrapper small--hide">
-                  <button className="btn btn-wide" onClick={handleLogout} disabled={logoutLoading}>
+                  <button
+                    className="btn btn-wide"
+                    onClick={handleLogout}
+                    disabled={logoutLoading}
+                  >
                     {logoutLoading ? "Logging out..." : "Log out"}
                   </button>
                 </div>
