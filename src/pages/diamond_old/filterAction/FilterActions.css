@@ -1,0 +1,30 @@
+.filter-btn {
+  margin-top: 20px;
+}
+.left-buttons {
+  display: flex;
+  gap: 2rem;
+  justify-content: center; /* Center items, not space-between */
+}
+
+.custom-btn {
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+  border: 2px solid #103147;
+  font-size: 0.875rem;
+  width: 700px; /* Fixed width */
+  transition: transform 0.5s ease, background-color 0.3s ease, color 0.3s ease;
+  text-align: center;
+}
+
+.custom-btn.outlined {
+  background-color: transparent;
+  color: #103147;
+}
+
+.custom-btn.outlined:hover {
+  transform: scaleX(0.9); /* Shrink both sides */
+  background-color: #103147;
+  color: white;
+}
