@@ -4,6 +4,8 @@ import axiosClient from "../../api/axios";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
 import "./index.css";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
+
 
 const SignUp = () => {
   const [title, setTitle] = useState("");
@@ -14,6 +16,7 @@ const SignUp = () => {
   const [anniversaryDate, setAnniversaryDate] = useState(null);
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -170,15 +173,30 @@ const SignUp = () => {
                   />
                 </div>
 
-                <div className="input__group my-3">
-                  <input
-                    type="password"
-                    className="w-100 px-3 py-2 "
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
+               <div className="input__group my-3 position-relative">
+  <input
+    type={showPassword ? "text" : "password"}
+    className="w-100 px-3 py-2 pe-5"
+    placeholder="Password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+  />
+  <span
+    className="position-absolute"
+    onClick={() => setShowPassword(!showPassword)}
+    style={{
+      top: "50%",
+      right: "15px",
+      transform: "translateY(-50%)",
+      cursor: "pointer",
+      color: "#999",
+      fontSize: "18px",
+    }}
+  >
+    {showPassword ? <BsEyeSlash className="signin-eye-icon" /> : <BsEye className="signin-eye-icon" />}
+  </span>
+</div>
+
 
                 <div className="form__submission">
                   <button

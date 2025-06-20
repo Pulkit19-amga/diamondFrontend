@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axiosClient from "../../api/axios";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 import './ResetPasswordForm.css';
 
 const ResetPasswordForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const navigate = useNavigate();
@@ -65,22 +68,42 @@ const ResetPasswordForm = () => {
           required
           className="reset-password-input"
         />
-        <input
-          type="password"
-          placeholder="New Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="reset-password-input"
-        />
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-          className="reset-password-input"
-        />
+
+       <div className="reset-password-input-wrapper">
+  <input
+    type={showPassword ? "text" : "password"}
+    placeholder="New Password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    required
+    className="reset-password-input"
+  />
+  <span
+    className="password-toggle-icon"
+    onClick={() => setShowPassword(!showPassword)}
+  >
+    {showPassword ? <BsEyeSlash className="reset-eye-icon"  /> : <BsEye className="reset-eye-icon"  />}
+  </span>
+</div>
+
+<div className="reset-password-input-wrapper">
+  <input
+    type={showConfirm ? "text" : "password"}
+    placeholder="Confirm Password"
+    value={confirmPassword}
+    onChange={(e) => setConfirmPassword(e.target.value)}
+    required
+    className="reset-password-input"
+  />
+  <span
+    className="password-toggle-icon"
+    onClick={() => setShowConfirm(!showConfirm)}
+  >
+    {showConfirm ? <BsEyeSlash className="reset-eye-icon" /> : <BsEye className="reset-eye-icon" />}
+  </span>
+</div>
+
+
         <button type="submit" className="reset-password-button">
           Reset Password
         </button>
