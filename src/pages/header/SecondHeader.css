@@ -19,3 +19,32 @@
   color: white !important;
   background-color: black !important;
 }
+
+
+
+.header-wrapper.jwl-menu-open {
+  background-color: #fff !important;
+  transition: background-color 10s ease;
+}
+
+.header-wrapper.jwl-menu-open .text-white {
+  color: #000 !important; 
+}
+
+.second-header-wrapper.menu-active {
+  background-color: white !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
+
+.jwl-mega-menu-container-fixed {
+  position: fixed;
+  top: 190px; /* adjust depending on your header height */
+  left: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 998;
+  padding: 30px 60px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
