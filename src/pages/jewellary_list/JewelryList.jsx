@@ -623,8 +623,8 @@ const JewelryList = () => {
         ))}
       </div>
 
+      {/* ✅ Price Section */}
       <div>
-        {/* ✅ Price Section */}
         <p className="mt-auto">
           <span className="fw-bold">
             $
@@ -636,6 +636,7 @@ const JewelryList = () => {
           </span>
         </p>
       </div>
+
       <div ref={loaderRef}>
         {isFetchingMore && <p>Loading more products...</p>}
       </div>
