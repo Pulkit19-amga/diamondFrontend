@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../cart/CartContext";
-import { useState } from "react";
+import MegaMenu from "../mega-menu/megaMenu";
+import "./SecondHeader.css";
 
-const SecondHeader = () => {
+const SecondHeader = ({ onHoverChange }) => {
   const { user } = useAuth();
   const { cartItems } = useCart();
   const navigate = useNavigate();
+  const [showMegaMenu, setShowMegaMenu] = useState(false);
+  const timeoutRef = useRef(null);
 
   const handleRedirect = () => {
     if (user) {
@@ -17,37 +20,26 @@ const SecondHeader = () => {
     }
   };
 
+  const handleMegaEnter = () => {
+    clearTimeout(timeoutRef.current);
+    setShowMegaMenu(true);
+    onHoverChange && onHoverChange(true);
+  };
+
+  const handleMegaLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setShowMegaMenu(false);
+      onHoverChange && onHoverChange(false);
+    }, 200);
+  };
+
   return (
     <>
-      {/* Custom Styles */}
-      <style>{`
-        .icon svg, .icon i {
-          color: black !important;
-          fill: black !important;
-        }
-
-        .navbar-nav .nav-item .btn {
-          transition: background-color 0.3s, color 0.3s;
-        }
-
-        .navbar-nav .nav-item .btn:hover {
-          background-color: black !important;
-          color: white !important;
-        }
-
-        .text-black-custom {
-          color: black !important;
-        }
-      `}</style>
-
-      <header className="header-wrapper bg-white text-black">
+      <header className={`header-wrapper bg-white text-black ${showMegaMenu ? "header-white-active" : ""}`}>
         <div className="header-top-wrapper">
           <div className="container">
-            <p className="m-0 text-center p-2 ">
-              <strong className="text-white">
-                {" "}
-                FREE INSURED SHIPPING & RETURNS | LIFETIME WARRANTY
-              </strong>
+            <p className="m-0 text-center p-2">
+              <strong className="text-white">FREE INSURED SHIPPING & RETURNS | LIFETIME WARRANTY</strong>
             </p>
           </div>
         </div>
@@ -62,12 +54,7 @@ const SecondHeader = () => {
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
                 >
-                  <img
-                    src="./svg/book-appoinment.svg"
-                    height={20}
-                    width={20}
-                    style={{ filter: "invert(100%)" }} // black color
-                  />
+                  <img src="./svg/book-appoinment.svg" height={20} width={20} style={{ filter: "invert(100%)" }} />
                   Book an Appointment
                 </button>
               </div>
@@ -75,33 +62,26 @@ const SecondHeader = () => {
 
             <div className="logo-wrapper">
               <a className="navbar-brand text-black" href="/">
-                <img
-                  src="./images/logo-23.png"
-                  className="img-fluid"
-                  alt="Logo"
-                />
+                <img src="./images/logo-23.png" className="img-fluid" alt="Logo" />
               </a>
             </div>
 
             <div className="right-side-logo-wrapper">
               <div className="d-flex align-items-center gap-3">
                 <div className="icon phn-icon">
-                <a
-  href="tel:+18168881111"
-  style={{
-    color: "#000",
-    fontSize: "18px",
-    textDecoration: "none",
-    display: "inline-flex",
-    alignItems: "center",
-  }}
->
-  <i
-    className="fa-solid fa-phone"
-    style={{ marginRight: "8px", color: "#fff" }}
-  ></i>
-  +1 (816) 888-1111
-</a>
+                  <a
+                    href="tel:+18168881111"
+                    style={{
+                      color: "#000",
+                      fontSize: "18px",
+                      textDecoration: "none",
+                      display: "inline-flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <i className="fa-solid fa-phone" style={{ marginRight: "8px", color: "#fff" }}></i>
+                    +1 (816) 888-1111
+                  </a>
                 </div>
 
                 <div className="icon search-icon">
@@ -127,28 +107,18 @@ const SecondHeader = () => {
                         style={{ fill: "black" }}
                       />
                     </svg>
-                    <span style={{ color: "black" }}>
-                      {user
-                        ? `Hi, ${user.name || "User"}`
-                        : "SIGN IN / UP"}
-                    </span>
+                    <span style={{ color: "black" }}>{user ? `Hi, ${user.name || "User"}` : "SIGN IN / UP"}</span>
                   </button>
                 </div>
 
                 <div className="icon wishlist-icon">
-                  <a
-                    className="text-decoration-none text-black-custom"
-                    href="#"
-                  >
+                  <a className="text-decoration-none text-black-custom" href="#">
                     <i className="fa fa-heart"></i>
                   </a>
                 </div>
 
                 <div className="icon cart-icon position-relative">
-                  <Link
-                    to="/cart"
-                    className="text-decoration-none text-black position-relative"
-                  >
+                  <Link to="/cart" className="text-decoration-none text-black position-relative">
                     <svg
                       aria-hidden="true"
                       focusable="false"
@@ -162,10 +132,7 @@ const SecondHeader = () => {
                       ></path>
                     </svg>
                     {cartItems.length > 0 && (
-                      <span
-                        className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                        style={{ fontSize: "0.75rem" }}
-                      >
+                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                         {cartItems.length}
                       </span>
                     )}
@@ -175,52 +142,61 @@ const SecondHeader = () => {
             </div>
           </div>
 
+          {/* Navigation */}
           <nav className="py-2 navbar navbar-expand-lg text-center">
             <div className="container-fluid">
-              <button
-                className="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarTogglerDemo03"
-                aria-controls="navbarTogglerDemo03"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-              >
-                <span className="navbar-toggler-icon"></span>
-              </button>
-
-              <div
-                className="collapse navbar-collapse justify-content-center"
-                id="navbarTogglerDemo03"
-              >
+              <div className="collapse navbar-collapse justify-content-center" id="navbarTogglerDemo03">
                 <ul className="navbar-nav text-center gap-4 align-items-center">
-                  {[
-                    { label: "ENGAGEMENT", path: "/engagement" },
-                    { label: "WEDDING", path: "/wedding-brands" },
-                    { label: "Diamonds", path: "/diamond" },
-                    { label: "HIGh jewelry" },
-                    { label: "jewelry", path: "/jewelry-list" },
-                    { label: "collections" },
-                  ].map((item, index) => (
-                    <li key={index} className="nav-item">
-                      <div className="dropdown">
-                        <button
-                          type="button"
-                          className="btn text-uppercase dropdown-toggle text-black"
-                          data-bs-toggle="dropdown"
-                          onClick={() => item.path && navigate(item.path)}
-                        >
-                          {item.label}
-                        </button>
+                  <li className="nav-item">
+                    <button className="btn text-uppercase" onClick={() => navigate("/engagement")}>
+                      ENGAGEMENT
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button className="btn text-uppercase" onClick={() => navigate("/wedding-brands")}>
+                      WEDDING
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button className="btn text-uppercase " onClick={() => navigate("/diamond")}>
+                      Diamonds
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button className="btn text-uppercase ">HIGH JEWELRY</button>
+                  </li>
+
+                  {/* Jewelry Hover Logic */}
+                  <li
+                    className="nav-item position-relative"
+                    onMouseEnter={handleMegaEnter}
+                    onMouseLeave={handleMegaLeave}
+                  >
+                    <button className="btn text-uppercase dropdown-toggle " onClick={() => navigate("/jewelry-list")}>
+                      Jewelry
+                    </button>
+
+                    {showMegaMenu && (
+                      <div
+                        className="jwl-mega-menu-container-fixed"
+                        onMouseEnter={handleMegaEnter}
+                        onMouseLeave={handleMegaLeave}
+                      >
+                        <MegaMenu />
                       </div>
-                    </li>
-                  ))}
+                    )}
+                  </li>
+
+                  <li className="nav-item">
+                    <button className="btn text-uppercase ">Collections</button>
+                  </li>
                 </ul>
               </div>
             </div>
           </nav>
         </div>
       </header>
+
       <div className="header-spacer" style={{ height: "172px" }}></div>
     </>
   );

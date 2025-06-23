@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import axiosClient from "../../api/axios";
 import debounce from "lodash/debounce";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 import "./JewelryList.css";
 
 const JewelryList = () => {
@@ -14,146 +16,241 @@ const JewelryList = () => {
   const [activeCategory, setActiveCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const perPage = 20;
-  // const totalPages = Math.ceil(total / perPage);
   const loaderRef = useRef(null);
-  const [appliedFilters, setAppliedFilters] = useState([]);
+  const [appliedFilters, setAppliedFilters] = useState({});
   const [activeMetal, setActiveMetal] = useState("");
   const [selectedVariations, setSelectedVariations] = useState({});
-  const [categories, setCategories] = useState([]);
-  const [categoryMap, setCategoryMap] = useState({});
+  const location = useLocation();
+  
+  const categories = ["EARRINGS", "BRACELETS", "RINGS", "NECKLACES"];
 
-  // const categories = ["EARRINGS", "BRACELETS", "RINGS", "NECKLACES"];
-
-  // const categoryMap = {
-  //   EARRINGS: [
-  //     "Studs",
-  //     "Hoops",
-  //     "Halo",
-  //     "Fashion",
-  //     "Ear Cuffs",
-  //     "Stackable",
-  //     "Gemstone",
-  //     "Luxe",
-  //     "Ready to Ship",
-  //     "Create Your Own",
-  //     "SHOP ALL",
-  //   ],
-  //   BRACELETS: [
-  //     "Tennis",
-  //     "Mixed Shape",
-  //     "Bangle",
-  //     "Bolo",
-  //     "Fashion",
-  //     "Luxe",
-  //     "Ready to Ship",
-  //     "SHOP ALL",
-  //   ],
-  //   RINGS: [
-  //     "Anniversary",
-  //     "Eternity",
-  //     "Stackable",
-  //     "Fashion",
-  //     "Gemstone",
-  //     "Luxe",
-  //     "Ready to Ship",
-  //     "Create Your Own",
-  //     "SHOP ALL",
-  //   ],
-  //   NECKLACES: [
-  //     "Halo",
-  //     "Solitaire",
-  //     "Tennis",
-  //     "Fashion",
-  //     "Gemstone",
-  //     "Luxe",
-  //     "Ready to Ship",
-  //     "Create Your Own",
-  //     "SHOP ALL",
-  //   ],
-  // };
+  const categoryMap = {
+    EARRINGS: [
+      "Studs",
+      "Hoops",
+      "Halo",
+      "Fashion",
+      "Ear Cuffs",
+      "Stackable",
+      "Gemstone",
+      "Luxe",
+      "Ready to Ship",
+      "Create Your Own",
+      "SHOP ALL",
+    ],
+    BRACELETS: [
+      "Tennis",
+      "Mixed Shape",
+      "Bangle",
+      "Bolo",
+      "Fashion",
+      "Luxe",
+      "Ready to Ship",
+      "SHOP ALL",
+    ],
+    RINGS: [
+      "Anniversary",
+      "Eternity",
+      "Stackable",
+      "Fashion",
+      "Gemstone",
+      "Luxe",
+      "Ready to Ship",
+      "Create Your Own",
+      "SHOP ALL",
+    ],
+    NECKLACES: [
+      "Halo",
+      "Solitaire",
+      "Tennis",
+      "Fashion",
+      "Gemstone",
+      "Luxe",
+      "Ready to Ship",
+      "Create Your Own",
+      "SHOP ALL",
+    ],
+  };
 
   const addFilter = (value) => {
-    // CASE 1: Main Category Clicked
+    // CASE 1: Main Category
     if (categories.includes(value)) {
-      // Set the new main category
       setActiveCategory(value);
-      setSelectedSubcategory(""); // Clear old subcategory
-
-      // Remove previous main category & its subcategory, then add the new one
-      setAppliedFilters((prev) => {
-        return prev
-          .filter(
-            (f) =>
-              !categories.includes(f) && // remove old main category
-              !Object.values(categoryMap).flat().includes(f) // remove any subcategory
-          )
-          .concat(value); // add new main category
-      });
-    }
-
-    // CASE 2: change subcategory only one sub category at a time
-    else if (activeCategory && categoryMap[activeCategory]?.includes(value)) {
-      setSelectedSubcategory(value);
-
-      // Remove any previous subcategory under the same category
-      setAppliedFilters((prev) => {
-        return prev
-          .filter((f) => !categoryMap[activeCategory].includes(f))
-          .concat(value);
-      });
-    }
-
-    // CASE 3: Other filters
-    else {
-      setAppliedFilters((prev) => {
-        if (!prev.includes(value)) {
-          return [...prev, value];
-        }
-        return prev;
-      });
-    }
-  };
-
-  const removeFilter = (value) => {
-    if (categories.includes(value)) {
-      // Remove main category and its subcategory
-      const subToRemove = selectedSubcategory;
-      setActiveCategory("");
       setSelectedSubcategory("");
 
-      setAppliedFilters((prev) =>
-        prev.filter((item) => item !== value && item !== subToRemove)
-      );
-    } else {
-      // Remove only the selected subcategory or independent filter
-      if (value === selectedSubcategory) {
-        setSelectedSubcategory("");
-      }
+      // Simulate mapping category name to ID if you have it
+      const categoryId = categoryMapIds[value] || null;
 
-      setAppliedFilters((prev) => prev.filter((item) => item !== value));
+      setAppliedFilters((prev) => ({
+        ...prev,
+        category: categoryId,
+        subcategory: undefined, // Clear old subcategory
+      }));
+    }
+
+    // CASE 2: Subcategory
+    else if (activeCategory && categoryMap[activeCategory]?.includes(value)) {
+      const subId = categoryMapIds[value] || null;
+
+      setSelectedSubcategory(value);
+      setAppliedFilters((prev) => ({
+        ...prev,
+        subcategory: subId,
+      }));
+    }
+
+    // CASE 3: Price Filter
+    else if (value === "Under $1000") {
+      setAppliedFilters((prev) => ({
+        ...prev,
+        price: "under-1000",
+      }));
+    }
+
+    // CASE 4: Other (extend as needed)
+    else {
+      setAppliedFilters((prev) => ({
+        ...prev,
+        [value]: true,
+      }));
     }
   };
 
+  // const addFilter = (value) => {
+  //   // CASE 1: Main Category Clicked
+  //   if (categories.includes(value)) {
+  //     // Set the new main category
+  //     setActiveCategory(value);
+  //     setSelectedSubcategory(""); // Clear old subcategory
+
+  //     // Remove previous main category & its subcategory, then add the new one
+  //     setAppliedFilters((prev) => {
+  //       return prev
+  //         .filter(
+  //           (f) =>
+  //             !categories.includes(f) && // remove old main category
+  //             !Object.values(categoryMap).flat().includes(f) // remove any subcategory
+  //         )
+  //         .concat(value); // add new main category
+  //     });
+  //   }
+
+  // const removeFilter = (key) => {
+  //   setAppliedFilters((prev) => {
+  //     const updated = { ...prev };
+  //     delete updated[key];
+  //     return updated;
+  //   });
+
+  //   if (key === "category") {
+  //     setActiveCategory("");
+  //     setSelectedSubcategory("");
+  //   }
+
+  //   if (key === "subcategory") {
+  //     setSelectedSubcategory("");
+  //   }
+  // };
+
+  //   // CASE 2: change subcategory only one sub category at a time
+  //   else if (activeCategory && categoryMap[activeCategory]?.includes(value)) {
+  //     setSelectedSubcategory(value);
+
+  //     // Remove any previous subcategory under the same category
+  //     setAppliedFilters((prev) => {
+  //       return prev
+  //         .filter((f) => !categoryMap[activeCategory].includes(f))
+  //         .concat(value);
+  //     });
+  //   } else if (value === "Under $1000") {
+  //     setAppliedFilters((prev) => ({
+  //       ...prev,
+  //       price: "under-1000",
+  //     }));
+  //   }
+
+  //   // CASE 3: Other filters
+  //   else {
+  //     setAppliedFilters((prev) => {
+  //       if (!prev.includes(value)) {
+  //         return [...prev, value];
+  //       }
+  //       return prev;
+  //     });
+  //   }
+  // };
+
+  // const removeFilter = (value) => {
+  //   if (categories.includes(value)) {
+  //     // Remove main category and its subcategory
+  //     const subToRemove = selectedSubcategory;
+  //     setActiveCategory("");
+  //     setSelectedSubcategory("");
+
+  //     setAppliedFilters((prev) =>
+  //       prev.filter((item) => item !== value && item !== subToRemove)
+  //     );
+  //   } else {
+  //     // Remove only the selected subcategory or independent filter
+  //     if (value === selectedSubcategory) {
+  //       setSelectedSubcategory("");
+  //     }
+
+  //     setAppliedFilters((prev) => prev.filter((item) => item !== value));
+  //   }
+  // };
+
   const clearAllFilters = () => {
-    setAppliedFilters([]);
+    setAppliedFilters({});
     setActiveCategory("");
     setSelectedSubcategory("");
   };
+
+  const removeFilterByKey = (key) => {
+    setAppliedFilters((prev) => {
+      const updated = { ...prev };
+      delete updated[key];
+      return updated;
+    });
+  };
+  // const clearAllFilters = () => {
+  //   setAppliedFilters([]);
+  //   setActiveCategory("");
+  //   setSelectedSubcategory("");
+  // };
 
   const handleMetalClick = (metal) => {
     setActiveMetal(metal);
   };
 
   useEffect(() => {
-    fetch("/api/categories-map")
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data.categories); // [{id, name}, ...]
-        setCategoryMap(data.categoryMap); // { "EARRINGS": [ {id, name}, ... ] }
-      });
-  }, []);
+    const params = new URLSearchParams(location.search);
+    const categoryParam = params.get("category");
+    const subcategoryParam = params.get("subcategory");
+
+    const filters = {};
+
+    // Parse category param (e.g., "rings-22")
+    if (categoryParam) {
+      const id = parseInt(categoryParam.split("-").pop());
+      if (!isNaN(id)) {
+        filters.category = id;
+      }
+    }
+
+    // Parse subcategory param (e.g., "halo-5")
+    if (subcategoryParam) {
+      const id = parseInt(subcategoryParam.split("-").pop());
+      if (!isNaN(id)) {
+        filters.subcategory = id;
+      }
+    }
+  console.log("Parsed filters from URL:", filters);
+    setAppliedFilters(filters);
+  }, [location.search]);
 
   const fetchProducts = async ({ page, filters = [] }) => {
+    console.log("Fetching products with filters:", filters);
     const isInitialLoad = page === 1;
 
     if (isInitialLoad) {
@@ -170,6 +267,7 @@ const JewelryList = () => {
       if (isInitialLoad) {
         console.log("Initial load products:", fetchedProducts);
         setProducts(fetchedProducts);
+
         const defaultSelections = {};
         fetchedProducts.forEach((group) => {
           if (group.variations?.length > 0) {
@@ -246,10 +344,14 @@ const JewelryList = () => {
     };
   }, [isFetchingMore, totalPages, page, loading]);
 
+  const visibleFilters = Object.entries(appliedFilters).filter(
+    ([key]) => key !== "category" && key !== "subcategory"
+  );
+
   return (
     <>
       <section className="hero_section_wrapper">
-        <div classNamee="container-fluid p-0 position-relative">
+        <div className="container-fluid p-0 position-relative">
           <img
             src="https://www.withclarity.com/cdn/shop/files/Women_s_Diamond_Gemstone_Jewelry_1366x.jpg?v=1729163233"
             alt=""
@@ -416,7 +518,33 @@ const JewelryList = () => {
         </div>
 
         {/* Applied Filters */}
-        {appliedFilters.length > 0 && (
+        {visibleFilters.length > 0 && (
+          <div className="applied-filters-bar mt-3">
+            <strong>APPLIED FILTERS</strong>
+            <div className="d-flex gap-2 flex-wrap">
+              {visibleFilters.map(([key, value], idx) => (
+                <div
+                  className="filter-tag d-flex align-items-center px-2 py-1"
+                  key={idx}
+                >
+                  {key}: {value}
+                  <span
+                    className="ms-2 text-danger fw-bold"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => removeFilterByKey(key)}
+                  >
+                    &times;
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="clear-all ms-3" onClick={clearAllFilters}>
+              CLEAR ALL
+            </div>
+          </div>
+        )}
+
+        {/* {appliedFilters.length > 0 && (
           <div className="applied-filters-bar mt-3">
             <strong>APPLIED FILTERS</strong>
             <div className="d-flex gap-2 flex-wrap">
@@ -440,7 +568,7 @@ const JewelryList = () => {
               CLEAR ALL
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Product Listing */}
         <h5 className="mt-4">Showing {total} products.</h5>
@@ -451,80 +579,73 @@ const JewelryList = () => {
             const selectedIndex = selectedVariations[group.id] || 0;
             const selectedVariation = group.variations[selectedIndex];
             const weights = selectedVariation?.weight || [];
-            // const image = selectedVariation?.image || "STUDS.webp";
             const image =
               selectedVariation?.images?.length > 0
-                ? `${
-                    import.meta.env.VITE_BACKEND_URL
-                  }/storage/variation_images/${selectedVariation.images[0]}`
+                ? `${import.meta.env.VITE_BACKEND_URL}/storage/${
+                    selectedVariation.images[0]
+                  }`
                 : `${
                     import.meta.env.VITE_BACKEND_URL
                   }/storage/variation_images/No_Image_Available.jpg`;
             const price = selectedVariation?.price || "NA";
             const originalPrice = selectedVariation?.original_price || "";
-            const discount = selectedVariation?.discount || "NA";
+            const discount = selectedVariation?.discount || "";
             const sku = selectedVariation?.sku || "NA";
 
             return (
               <div className="col" key={group.id}>
-                <div className="product-card h-100 d-flex flex-column justify-content-between">
-                  <div>
-                    <div className="d-flex justify-content-between">
-                      <span>
-                        {group.product?.ready_to_ship ? "READY TO SHIP" : "NA"}
+                <div className="h-100 d-flex flex-column">
+                  {/* IMAGE WITH OVERLAY TEXT */}
+                  <div className="product-image-container position-relative shadow">
+                    <img
+                      src={image}
+                      alt="Product"
+                      className="product-image-full"
+                    />
+
+                    {/* Overlay Text */}
+                    <div className="overlay-text d-flex justify-content-between px-2">
+                      <span className="ready-to-ship">
+                        {group.product?.ready_to_ship ? "READY TO SHIP" : ""}
                       </span>
-                      <div className="discount">{discount}</div>
+                      <span className="discount">{discount}</span>
                     </div>
+                  </div>
 
-                    <Link
-                      to={`/jewellary-details/${group.product?.master_sku}`}
-                      className="text-decoration-none text-dark"
-                    >
-                      <img
-                        src={image}
-                        alt="Product"
-                        className="img-fluid my-3"
-                        style={{
-                          maxWidth: "250px",
-                          maxHeight: "250px",
-                          objectFit: "contain",
-                          display: "block",
-                          margin: "0 auto",
-                        }}
-                      />
-                      <p className="fw-semibold">
-                        {group.product?.name || "NA"}
-                      </p>
-                    </Link>
+                  {/* PRODUCT NAME */}
+                  <Link
+                    to={`/jewellary-details/${group.product?.master_sku}`}
+                    className="text-decoration-none text-dark mt-2"
+                  >
+                    <p className="fw-semibold mb-1">
+                      {group.product?.name || "NA"}
+                    </p>
+                  </Link>
 
-                    <p>{sku}</p>
+                  <p className="mb-2">{sku}</p>
 
-                    {/* Metal Variation Buttons */}
-                    <div
-                      className="product-variation__buttons mb-2"
-                      style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
-                    >
-                      {group.variations.map((variation, index) => (
-                        <button
-                          key={index}
-                          className={`product-variation__btn product-variation__btn--color-${
-                            index % 4
-                          } ${
-                            selectedIndex === index
-                              ? "product-variation__btn--active"
-                              : ""
-                          }`}
-                          onClick={() =>
-                            setSelectedVariations((prev) => ({
-                              ...prev,
-                              [group.id]: index,
-                            }))
-                          }
-                        >
-                          {variation.carat || "NA"}
-                        </button>
-                      ))}
-                    </div>
+                  {/* Metal Variation Buttons */}
+                  <div className="product-variation__buttons mb-2">
+                    {group.variations.map((variation, index) => (
+                      <button
+                        key={index}
+                        className={`product-variation__btn product-variation__btn--color-${
+                          index % 4
+                        } ${
+                          selectedIndex === index
+                            ? "product-variation__btn--active"
+                            : ""
+                        }`}
+                        onClick={() =>
+                          setSelectedVariations((prev) => ({
+                            ...prev,
+                            [group.id]: index,
+                          }))
+                        }
+                      >
+                        {variation.carat || "NA"}
+                      </button>
+                    ))}
                   </div>
 
                   {/* Carat Weights */}
@@ -553,92 +674,21 @@ const JewelryList = () => {
                   {/* Price Section */}
                   <p className="mt-auto">
                     <span className="fw-bold">${price}</span>
-                    <span className="original-price">{originalPrice}</span>
+                    {originalPrice && (
+                      <span className="original-price text-muted text-decoration-line-through ms-2">
+                        ${originalPrice}
+                      </span>
+                    )}
                   </p>
                 </div>
               </div>
             );
           })}
         </div>
-      </div>
 
-      {/* ✅ Image */}
-      <div className="product-image-wrapper">
-        <img
-          src={`/images/${
-            group.variations[selectedVariations[group.id] || 0]?.image ||
-            "STUDS.webp"
-          }`}
-          alt="Product"
-          className="product-image"
-        />
-      </div>
-
-      {/* ✅ Title and SKU Block */}
-      <div className="product-text-area">
-        <Link
-          to={`/jewellary-details/${group.product?.master_sku}`}
-          className="text-decoration-none text-dark"
-        >
-          <p className="product-title">{group.product?.name || "NA"}</p>
-        </Link>
-        <p className="sku-text">
-          {group.variations[selectedVariations[group.id] || 0]?.sku || "NA"}
-        </p>
-      </div>
-
-      {/* ✅ Variation Buttons */}
-      <div className="variation-buttons mb-2">
-        {group.variations.map((variation, index) => (
-          <button
-            key={index}
-            onClick={() =>
-              setSelectedVariations((prev) => ({
-                ...prev,
-                [group.id]: index,
-              }))
-            }
-            style={{
-              width: "32px",
-              height: "32px",
-              fontSize: "11px",
-              fontWeight: "600",
-              borderRadius: "50%",
-              backgroundColor: ["#dcdcdc", "#fceebb", "#f9d0cc", "#f2f2f2"][
-                index % 4
-              ],
-              border:
-                selectedVariations[group.id] === index
-                  ? "2px solid black"
-                  : "none",
-              color: "#222",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-            }}
-          >
-            {variation.metal || "14K"}
-          </button>
-        ))}
-      </div>
-
-      {/* ✅ Price Section */}
-      <div>
-        <p className="mt-auto">
-          <span className="fw-bold">
-            $
-            {group.variations[selectedVariations[group.id] || 0]?.price || "NA"}
-          </span>
-          <span className="original-price">
-            {group.variations[selectedVariations[group.id] || 0]
-              ?.original_price || ""}
-          </span>
-        </p>
-      </div>
-
-      <div ref={loaderRef}>
-        {isFetchingMore && <p>Loading more products...</p>}
+        <div ref={loaderRef}>
+          {isFetchingMore && <p>Loading more products...</p>}
+        </div>
       </div>
     </>
   );

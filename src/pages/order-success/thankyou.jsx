@@ -26,13 +26,13 @@ const ThankYou = () => {
         </div>
         {order ? (
           <>
-            <h2>Thank you for ordering!</h2>
-            <p>
+            <h2 className="thankyou_h2">Thank you for ordering!</h2>
+            <p className="thankyou_p">
               Order ID: <strong> {order.order_id}</strong>
             </p>
-            <p>
+            <p className="thankyou_p">
               Total Price: <strong>{order.total_price}</strong>
-            </p>
+            </p >
             <div className="thankyou-buttons">
               <button className="btn-outline" onClick={handleViewOrder}>
                 VIEW ORDER
@@ -43,7 +43,7 @@ const ThankYou = () => {
             </div>
           </>
         ) : (
-          <p>No order data found.</p>
+          <p className="thankyou_p">No order data found.</p>
         )}
       </div>
     </div>

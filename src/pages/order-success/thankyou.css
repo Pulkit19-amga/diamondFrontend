@@ -49,14 +49,14 @@
   z-index: 0;
 }
 
-h2 {
+.thankyou_h2 {
   margin: 10px 0;
   font-size: 22px;
   font-weight: 600;
   color: #333;
 }
 
-p {
+.thankyou_p {
   font-size: 14px;
   color: #888;
   margin-bottom: 30px;
