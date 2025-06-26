@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import Zoom from 'react-medium-image-zoom';
-import 'react-medium-image-zoom/dist/styles.css';
+import React, { useState, useEffect } from "react";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 import { useParams } from "react-router-dom";
+import axiosClient from "../../api/axios";
 
 import "./JewellaryDetails.css";
 
@@ -12,22 +13,35 @@ const metalOptions = [
   { id: "PT", label: "PT" },
 ];
 
-
 const JewelryDetailsPage = () => {
-const { sku } = useParams();
-
-
+  const { sku } = useParams();
   const [activeFeature, setActiveFeature] = useState(null);
-const [selectedMetal, setSelectedMetal] = useState("14K-white");
-const [selectedPlan, setSelectedPlan] = useState("1-year");
-const [selectedWeight, setSelectedWeight] = useState("2");
-const [selectedQuality, setSelectedQuality] = useState("F/G SI+");
+  const [selectedMetal, setSelectedMetal] = useState("14K-white");
+  const [selectedPlan, setSelectedPlan] = useState("1-year");
+  const [selectedWeight, setSelectedWeight] = useState("2");
+  const [selectedQuality, setSelectedQuality] = useState("F/G SI+");
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!sku) return;
+
+    axiosClient.get(`/api/product-by-sku/${sku}`)
+    .then((response)=>{
+      setProduct(response.data);
+      setLoading(false);
+    })
+    .catch((error)=>{
+      console.error('Error fetching product',error);
+      setLoading(false);
+    });
+  }, [sku]);
 
   const toggleFeature = (index) => {
     setActiveFeature(activeFeature === index ? null : index);
   };
 
- const [mainImage, setMainImage] = useState("/images/product.webp");
+  const [mainImage, setMainImage] = useState("/images/product.webp");
 
   const thumbnails = [
     "/images/STUDS.webp",
@@ -39,24 +53,24 @@ const [selectedQuality, setSelectedQuality] = useState("F/G SI+");
 
 
   const protectionPlans = [
-  { id: "1-year", label: "1 Year - $79" },
-  { id: "2-year", label: "2 Year - $99" },
-  {
-    id: "3-year",
-    label: (
-      <>
-        3 Year - $159 <br />
-        <small className="text-muted">MOST POPULAR</small>
-      </>
-    ),
-  },
-];
+    { id: "1-year", label: "1 Year - $79" },
+    { id: "2-year", label: "2 Year - $99" },
+    {
+      id: "3-year",
+      label: (
+        <>
+          3 Year - $159 <br />
+          <small className="text-muted">MOST POPULAR</small>
+        </>
+      ),
+    },
+  ];
 
   return (
     <div className="container py-5">
       <div className="row">
         {/* Left Images */}
-       <div className="col-md-1 thumbs">
+        <div className="col-md-1 thumbs">
           {thumbnails.map((src, i) => (
             <img
               key={i}
@@ -78,7 +92,9 @@ const [selectedQuality, setSelectedQuality] = useState("F/G SI+");
               />
             </Zoom>
           </div>
-          <button className="btn btn-outline-dark mt-2">📷 VIRTUAL TRY ON</button>
+          <button className="btn btn-outline-dark mt-2">
+            📷 VIRTUAL TRY ON
+          </button>
         </div>
 
         {/* Right Details */}
@@ -87,24 +103,24 @@ const [selectedQuality, setSelectedQuality] = useState("F/G SI+");
             Classic Round Diamond Four Prong Studs Earrings (F/G SI+)
           </h5>
           <p>
-            <strong>$847</strong>{' '}
-            <del className="text-muted">$1,210</del>{' '}
+            <strong>$847</strong> <del className="text-muted">$1,210</del>{" "}
             <span className="text-success">($363 OFF)</span>
           </p>
 
           <p className="mb-1">METAL COLOR</p>
-<div className="d-flex mb-3">
-  {metalOptions.map((metal, i) => (
-    <div
-      key={i}
-      className={`option-circle ${selectedMetal === metal.id ? "active" : ""}`}
-      onClick={() => setSelectedMetal(metal.id)}
-    >
-      {metal.label}
-    </div>
-  ))}
-</div>
-
+          <div className="d-flex mb-3">
+            {metalOptions.map((metal, i) => (
+              <div
+                key={i}
+                className={`option-circle ${
+                  selectedMetal === metal.id ? "active" : ""
+                }`}
+                onClick={() => setSelectedMetal(metal.id)}
+              >
+                {metal.label}
+              </div>
+            ))}
+          </div>
 
           <p className="mb-1">
             DIAMOND TYPE : <strong>LAB</strong>
@@ -112,31 +128,31 @@ const [selectedQuality, setSelectedQuality] = useState("F/G SI+");
 
           <p className="mb-1">TOTAL CARAT WEIGHT :</p>
           <div className="mb-3">
-  {["1/2", "3/4", "1", "1 1/2", "2", "3", "4"].map((w, i) => (
-    <span
-      key={i}
-      className={`option-btn ${selectedWeight === w ? "active" : ""}`}
-      onClick={() => setSelectedWeight(w)}
-    >
-      {w}
-    </span>
-  ))}
-</div>
-
+            {["1/2", "3/4", "1", "1 1/2", "2", "3", "4"].map((w, i) => (
+              <span
+                key={i}
+                className={`option-btn ${selectedWeight === w ? "active" : ""}`}
+                onClick={() => setSelectedWeight(w)}
+              >
+                {w}
+              </span>
+            ))}
+          </div>
 
           <p className="mb-1">DIAMOND QUALITY :</p>
-         <div className="mb-3">
-  {["EF VS+", "F/G SI+"].map((q, i) => (
-    <span
-      key={i}
-      className={`option-btn ${selectedQuality === q ? "active" : ""}`}
-      onClick={() => setSelectedQuality(q)}
-    >
-      {q}
-    </span>
-  ))}
-</div>
-
+          <div className="mb-3">
+            {["EF VS+", "F/G SI+"].map((q, i) => (
+              <span
+                key={i}
+                className={`option-btn ${
+                  selectedQuality === q ? "active" : ""
+                }`}
+                onClick={() => setSelectedQuality(q)}
+              >
+                {q}
+              </span>
+            ))}
+          </div>
 
           <hr />
 
@@ -161,19 +177,22 @@ const [selectedQuality, setSelectedQuality] = useState("F/G SI+");
             ADD CLARITY COMMITMENT PROTECTION PLAN
           </div>
           <p className="protection-plan">
-            Ensure your jewelry lasts a lifetime. <span title="More Info">ℹ️</span>
+            Ensure your jewelry lasts a lifetime.{" "}
+            <span title="More Info">ℹ️</span>
           </p>
           <div className="d-flex gap-2">
-  {protectionPlans.map((plan) => (
-    <div
-      key={plan.id}
-      className={`option-btn ${selectedPlan === plan.id ? "active" : ""}`}
-      onClick={() => setSelectedPlan(plan.id)}
-    >
-      {plan.label}
-    </div>
-  ))}
-</div>
+            {protectionPlans.map((plan) => (
+              <div
+                key={plan.id}
+                className={`option-btn ${
+                  selectedPlan === plan.id ? "active" : ""
+                }`}
+                onClick={() => setSelectedPlan(plan.id)}
+              >
+                {plan.label}
+              </div>
+            ))}
+          </div>
 
           <div className="container py-4">
             {/* Add to Cart Section */}
@@ -183,11 +202,12 @@ const [selectedQuality, setSelectedQuality] = useState("F/G SI+");
                 VIRTUAL / SHOWROOM APPOINTMENT
               </button>
               <p className="mt-2 mb-0">
-                Ships by <strong>Thurs, June 12</strong> | Track in real time before it ships
+                Ships by <strong>Thurs, June 12</strong> | Track in real time
+                before it ships
               </p>
               <p className="mb-1">
-                <span className="text-primary">0% APR</span> or as low as $53/mo with{' '}
-                <strong>affirm</strong>. <a href="#">See if you qualify</a>
+                <span className="text-primary">0% APR</span> or as low as $53/mo
+                with <strong>affirm</strong>. <a href="#">See if you qualify</a>
               </p>
               <p className="mb-2">
                 Free Insured Shipping. <a href="#">30 Day Returns.</a>
@@ -213,7 +233,8 @@ const [selectedQuality, setSelectedQuality] = useState("F/G SI+");
                 <i className="bi bi-x"></i>
               </div>
               <div className="bg-light p-2 mt-3">
-                <i className="bi bi-gift"></i> Earn 847 Points when you buy this item.
+                <i className="bi bi-gift"></i> Earn 847 Points when you buy this
+                item.
               </div>
             </div>
           </div>
@@ -232,21 +253,28 @@ const [selectedQuality, setSelectedQuality] = useState("F/G SI+");
             <div className="d-flex align-items-center" key={i}>
               <span className="me-2">{5 - i} Star</span>
               <div className="progress flex-grow-1">
-                <div className="progress-bar" style={{ width: `${percent}%` }}></div>
+                <div
+                  className="progress-bar"
+                  style={{ width: `${percent}%` }}
+                ></div>
               </div>
             </div>
           ))}
 
           {["James R.", "Chloe T.", "Daniel S."].map((name, i) => (
             <div className="review-item" key={i}>
-              <strong>{name}</strong>{' '}
+              <strong>{name}</strong>{" "}
               <span className="text-success">Verified Buyer</span>
-              <br />★★★★★<br />
-              {[
-                "Love these earrings! The studs are absolutely stunning and catch the light perfectly.",
-                "Great sparkle and fit. My second purchase from this site. Love it!",
-                "Amazing quality and craftsmanship. Highly recommended."
-              ][i]}
+              <br />
+              ★★★★★
+              <br />
+              {
+                [
+                  "Love these earrings! The studs are absolutely stunning and catch the light perfectly.",
+                  "Great sparkle and fit. My second purchase from this site. Love it!",
+                  "Amazing quality and craftsmanship. Highly recommended.",
+                ][i]
+              }
             </div>
           ))}
           <div className="text-center mt-3">
@@ -261,24 +289,28 @@ const [selectedQuality, setSelectedQuality] = useState("F/G SI+");
               {
                 title: "Gemologist Consultation",
                 content:
-                  "Our dedicated gemologists offer comprehensive support throughout your diamond selection process..."
+                  "Our dedicated gemologists offer comprehensive support throughout your diamond selection process...",
               },
               {
                 title: "Conflict Free Diamonds",
                 content:
-                  "We are committed to sourcing diamonds from conflict-free regions..."
+                  "We are committed to sourcing diamonds from conflict-free regions...",
               },
               {
                 title: "Home Preview",
                 content:
-                  "Try your favorite designs from the comfort of your home..."
-              }
+                  "Try your favorite designs from the comfort of your home...",
+              },
             ].map((feature, i) => (
               <div className="feature-item" key={i}>
                 <h5 onClick={() => toggleFeature(i)}>
                   {feature.title} <i className="bi bi-chevron-down"></i>
                 </h5>
-                <div className={`feature-content ${activeFeature === i ? "active" : ""}`}>
+                <div
+                  className={`feature-content ${
+                    activeFeature === i ? "active" : ""
+                  }`}
+                >
                   <p>{feature.content}</p>
                 </div>
               </div>

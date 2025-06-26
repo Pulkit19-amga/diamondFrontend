@@ -4,7 +4,6 @@ import debounce from "lodash/debounce";
 import { Link, useLocation } from "react-router-dom";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
-
 import "./JewelryList.css";
 
 const JewelryList = () => {
@@ -22,6 +21,7 @@ const JewelryList = () => {
   const [activeMetal, setActiveMetal] = useState({});
   const [selectedVariations, setSelectedVariations] = useState({});
   const location = useLocation();
+
   const categories = ["EARRINGS", "BRACELETS", "RINGS", "NECKLACES"];
 
   const categoryMap = {
@@ -134,9 +134,38 @@ const JewelryList = () => {
     setActiveMetal(metal);
   };
 
-  const fetchProducts = async ({ page, filters = {} }) => {
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const categoryParam = params.get("category");
+    const subcategoryParam = params.get("subcategory");
+
+    const filters = {};
+
+    // Parse category param (e.g., "rings-22")
+    if (categoryParam) {
+      const id = parseInt(categoryParam.split("-").pop());
+      if (!isNaN(id)) {
+        filters.category = id;
+      }
+    }
+
+    // Parse subcategory param (e.g., "halo-5")
+    if (subcategoryParam) {
+      const id = parseInt(subcategoryParam.split("-").pop());
+      if (!isNaN(id)) {
+        filters.subcategory = id;
+      }
+    }
+    console.log("Parsed filters from URL:", filters);
+    setAppliedFilters(filters);
+  }, [location.search]);
+  
+  const fetchProducts = async ({ page, filters = [] }) => {
     const isInitialLoad = page === 1;
-    if (isInitialLoad) setLoading(true);
+
+    if (isInitialLoad) {
+      setLoading(true);
+    }
 
     try {
       const response = await axiosClient.get("/api/get-all-products", {
@@ -144,26 +173,27 @@ const JewelryList = () => {
       });
 
       const fetchedProducts = response.data.data || [];
-      const totalProducts = parseInt(response.data.totalProducts) || 0;
-      const pages = Math.ceil(totalProducts / perPage);
 
       if (isInitialLoad) {
         setProducts(fetchedProducts);
+
         const defaultSelections = {};
         const defaultActiveMetals = {};
 
         fetchedProducts.forEach((group) => {
           const variationKeys = Object.keys(group.metal_variations);
           if (variationKeys.length > 0) {
-            const defaultMetal = variationKeys[0];
-            defaultActiveMetals[group.id] = parseInt(defaultMetal);
-            defaultSelections[group.id] = 0;
+            const randomMetalId =
+              variationKeys[Math.floor(Math.random() * variationKeys.length)];
+            defaultActiveMetals[group.id] = parseInt(randomMetalId);
+            defaultSelections[group.id] = 0; // Always select 1st variation by default
           }
         });
 
         setSelectedVariations(defaultSelections);
         setActiveMetal(defaultActiveMetals);
       } else {
+        console.log("second load products:", fetchedProducts);
         setProducts((prev) => [...prev, ...fetchedProducts]);
 
         const newSelections = {};
@@ -172,60 +202,107 @@ const JewelryList = () => {
         fetchedProducts.forEach((group) => {
           const variationKeys = Object.keys(group.metal_variations);
           if (variationKeys.length > 0) {
-            const defaultMetal = variationKeys[0];
-            newActiveMetals[group.id] = parseInt(defaultMetal);
+            const randomMetalId =
+              variationKeys[Math.floor(Math.random() * variationKeys.length)];
+            newActiveMetals[group.id] = parseInt(randomMetalId);
             newSelections[group.id] = 0;
           }
         });
 
-        setSelectedVariations((prev) => ({ ...prev, ...newSelections }));
-        setActiveMetal((prev) => ({ ...prev, ...newActiveMetals }));
+        setSelectedVariations((prev) => ({
+          ...prev,
+          ...newSelections,
+        }));
+
+        setActiveMetal((prev) => ({
+          ...prev,
+          ...newActiveMetals,
+        }));
       }
 
+      const totalProducts = parseInt(response.data.totalProducts) || 0;
+      const pages = Math.ceil(totalProducts / perPage);
       setTotalPages(pages);
       setTotal(totalProducts);
     } catch (error) {
       console.error("Product fetch failed", error);
     } finally {
       setLoading(false);
-      setIsFetchingMore(false);
+      setIsFetchingMore(false); // allow next scroll
     }
   };
+  // const fetchProducts = async ({ page, filters = [] }) => {
+  //   // console.log("Fetching products with filters:", filters);
+  //   const isInitialLoad = page === 1;
 
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const categoryParam = params.get("category");
-    const subcategoryParam = params.get("subcategory");
-    const filters = {};
+  //   if (isInitialLoad) {
+  //     setLoading(true);
+  //   }
 
-    if (categoryParam) {
-      const id = parseInt(categoryParam.split("-").pop());
-      if (!isNaN(id)) filters.category = id;
-    }
+  //   try {
+  //     const response = await axiosClient.get("/api/get-all-products", {
+  //       params: { page, perPage, filters },
+  //     });
 
-    if (subcategoryParam) {
-      const id = parseInt(subcategoryParam.split("-").pop());
-      if (!isNaN(id)) filters.subcategory = id;
-    }
+  //     const fetchedProducts = response.data.data || [];
 
-    setAppliedFilters(filters);
-  }, [location.search]);
+  //     if (isInitialLoad) {
+  //       // console.log("Initial load products:", fetchedProducts);
+  //       setProducts(fetchedProducts);
 
+  //       const defaultSelections = {};
+  //       fetchedProducts.forEach((group) => {
+  //         if (group.variations?.length > 0) {
+  //           defaultSelections[group.id] = 0;
+  //         }
+  //       });
+  //       setSelectedVariations(defaultSelections);
+  //     } else {
+  //       console.log("second load products:", fetchedProducts);
+  //       setProducts((prev) => [...prev, ...fetchedProducts]);
+  //       const newSelections = {};
+  //       fetchedProducts.forEach((group) => {
+  //         if (group.variations?.length > 0) {
+  //           newSelections[group.id] = 0;
+  //         }
+  //       });
+  //       setSelectedVariations((prev) => ({
+  //         ...prev,
+  //         ...newSelections,
+  //       }));
+  //     }
+
+  //     const totalProducts = parseInt(response.data.totalProducts) || 0;
+  //     const pages = Math.ceil(totalProducts / perPage);
+  //     setTotalPages(pages);
+  //     setTotal(totalProducts);
+  //   } catch (error) {
+  //     console.error("Product fetch failed", error);
+  //   } finally {
+  //     setLoading(false);
+  //     setIsFetchingMore(false); // allow next scroll
+  //   }
+  // };
+
+  // Apply filter - reset to page 1
   useEffect(() => {
     setPage(1);
     fetchProducts({ page: 1, filters: appliedFilters });
   }, [appliedFilters]);
 
+  // Page change - load more
   useEffect(() => {
-    if (page > 1) fetchProducts({ page, filters: appliedFilters });
+    if (page > 1) {
+      fetchProducts({ page, filters: appliedFilters });
+    }
   }, [page]);
 
+  // Intersection Observer
   useEffect(() => {
     const handleIntersection = debounce(() => {
       setIsFetchingMore(true);
       setPage((prev) => prev + 1);
     }, 300);
-
     const observer = new IntersectionObserver(
       (entries) => {
         const first = entries[0];
@@ -243,6 +320,7 @@ const JewelryList = () => {
 
     const currentLoader = loaderRef.current;
     if (currentLoader) observer.observe(currentLoader);
+
     return () => {
       if (currentLoader) observer.unobserve(currentLoader);
     };
@@ -283,6 +361,7 @@ const JewelryList = () => {
           </div>
         </div>
       </section>
+
       <div className="container my-4">
         {/* Filters Top Bar */}
         <div className="d-flex justify-content-between filters-bar">
@@ -453,28 +532,7 @@ const JewelryList = () => {
           {loading && <p>Loading products...</p>}
 
           {products.map((group) => {
-            console.log(
-              "Metal Variations for group",
-              group.id,
-              group.metal_variations
-            );
-
-            const metalKeys = Object.keys(group.metal_variations).sort(
-              (a, b) => {
-                const qualityA =
-                  group.metal_variations[a][0]?.metal_color?.quality || "";
-                const qualityB =
-                  group.metal_variations[b][0]?.metal_color?.quality || "";
-                const numA = parseInt(qualityA);
-                const numB = parseInt(qualityB);
-
-                if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
-                if (!isNaN(numA)) return -1;
-                if (!isNaN(numB)) return 1;
-                return qualityA.localeCompare(qualityB);
-              }
-            );
-
+            const metalKeys = Object.keys(group.metal_variations);
             const currentMetalId = String(
               activeMetal[group.id] ?? metalKeys[0]
             );
@@ -484,15 +542,13 @@ const JewelryList = () => {
 
             const weights = selectedVariation?.weight || [];
             const image =
-              Array.isArray(selectedVariation?.images) &&
-              selectedVariation.images.length > 0
+              selectedVariation?.images?.length > 0
                 ? `${import.meta.env.VITE_BACKEND_URL}/storage/${
                     selectedVariation.images[0]
                   }`
                 : `${
                     import.meta.env.VITE_BACKEND_URL
                   }/storage/variation_images/No_Image_Available.jpg`;
-
             const price = selectedVariation?.price || "NA";
             const originalPrice = selectedVariation?.original_price || "";
             const sku = selectedVariation?.sku || "NA";
@@ -501,12 +557,15 @@ const JewelryList = () => {
             return (
               <div className="col" key={group.id}>
                 <div className="h-100 d-flex flex-column">
+                  {/* IMAGE WITH OVERLAY TEXT */}
                   <div className="product-image-container position-relative shadow">
                     <img
                       src={image}
                       alt="Product"
                       className="product-image-full"
                     />
+
+                    {/* Overlay Text */}
                     <div className="overlay-text d-flex justify-content-between px-2">
                       <span className="ready-to-ship">
                         {group.product?.ready_to_ship ? "READY TO SHIP" : ""}
@@ -515,6 +574,7 @@ const JewelryList = () => {
                     </div>
                   </div>
 
+                  {/* PRODUCT NAME */}
                   <Link
                     to={`/jewellary-details/${group.product?.master_sku}`}
                     className="text-decoration-none text-dark mt-2"
@@ -525,6 +585,8 @@ const JewelryList = () => {
                   </Link>
 
                   <p className="mb-2">{sku}</p>
+
+                  {/* Metal Variation Buttons */}
 
                   <div className="product-metal__buttons mb-2 d-flex gap-1 flex-wrap">
                     {metalKeys.map((metalId) => {
@@ -543,6 +605,7 @@ const JewelryList = () => {
                             }`,
                             color: "#000",
                           }}
+                          // title={metal?.quality}
                           onClick={() => {
                             setActiveMetal((prev) => ({
                               ...prev,
@@ -560,6 +623,7 @@ const JewelryList = () => {
                     })}
                   </div>
 
+                  {/* Carat Weights */}
                   <div className="product-variation__carat-group">
                     <small className="product-variation__carat-title">
                       Total Carat Weight
@@ -584,6 +648,7 @@ const JewelryList = () => {
                       ))}
                   </div>
 
+                  {/* Price Section */}
                   <p className="mt-auto">
                     <span className="fw-bold">${price}</span>
                     {originalPrice && (

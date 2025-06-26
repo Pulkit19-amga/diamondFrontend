@@ -22,13 +22,13 @@
   background-color: #f4d160;
 }
 
-.weight-options button {
-  border: 1px solid #ccc;
-  background: #fff;
-  padding: 3px 8px;
-  margin-right: 3px;
-  font-size: 12px;
+.product-variation__title {
+  margin-top: 5px;
+  height: 40px; 
+  line-height: 20px;
+  overflow: hidden;
 }
+
 
 .discount {
   color: red;
@@ -235,19 +235,19 @@
   margin-bottom: 0.5rem;
 }
 
-.product-variation__carat-wrap {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
 
 .product-variation__carat-pill {
   border: 1px solid #ccc;
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 14px;
+  padding: 1px 8px;
+  font-size: 10px;
   min-width: 36px;
   text-align: center;
+  margin-inline: 2px;
+}
+.product-variation__carat-pill.active{
+  border: 1px solid #000;
+  color: black;
+  background-color: white;
 }
 
 .product-image-container {
