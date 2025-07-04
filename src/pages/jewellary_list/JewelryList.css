@@ -24,7 +24,7 @@
 
 .product-variation__title {
   margin-top: 5px;
-  height: 40px; 
+  height: 40px;
   line-height: 20px;
   overflow: hidden;
 }
@@ -238,15 +238,18 @@
 
 .product-variation__carat-pill {
   border: 1px solid #ccc;
+  color: rgb(101, 101, 101);
   padding: 1px 8px;
   font-size: 10px;
   min-width: 36px;
   text-align: center;
   margin-inline: 2px;
 }
-.product-variation__carat-pill.active{
+
+.product-variation__carat-pill.active {
   border: 1px solid #000;
   color: black;
+  font-weight: 500;
   background-color: white;
 }
 
@@ -255,7 +258,8 @@
   height: 280px;
   overflow: hidden;
   border-radius: 10px;
-  box-shadow: 4px 4px 1px rgba(0, 0, 0, 0.15); /* smooth shadow */
+  box-shadow: 4px 4px 1px rgba(0, 0, 0, 0.15);
+  /* smooth shadow */
 }
 
 .product-image-full {
@@ -274,4 +278,123 @@
   font-weight: 600;
   font-size: 0.8rem;
   color: #000;
+}
+
+.style-scroll-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+
+  -webkit-overflow-scrolling: touch;
+  /* smooth scroll on iOS */
+  overscroll-behavior-x: none;
+  /* prevent over-scroll */
+
+  /* Remove native scroll arrows (Windows) */
+  scrollbar-width: thin;
+  /* Firefox */
+  scrollbar-color: #aaa transparent;
+
+  /* Remove Windows system-style arrows */
+  scrollbar-face-color: transparent;
+  scrollbar-highlight-color: transparent;
+  scrollbar-shadow-color: transparent;
+  scrollbar-3dlight-color: transparent;
+  scrollbar-arrow-color: transparent;
+  scrollbar-track-color: transparent;
+  scrollbar-darkshadow-color: transparent;
+
+  /* Optional visual cleanup */
+  background-clip: padding-box;
+  box-shadow: none !important;
+  background: white;
+  /* Match your site background */
+}
+
+/* WebKit (Chrome, Edge, Safari) scrollbar */
+.style-scroll-wrapper::-webkit-scrollbar {
+  height: 3px;
+}
+
+.style-scroll-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.style-scroll-wrapper::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 10px;
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+
+/* Show thumb only on hover or scroll */
+.style-scroll-wrapper:hover::-webkit-scrollbar-thumb,
+.style-scroll-wrapper:active::-webkit-scrollbar-thumb {
+  opacity: 1;
+}
+
+/*  Hide scrollbar arrows (buttons) */
+.style-scroll-wrapper::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* ===== Inner Scroll Items ===== */
+.style-icon-bar {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 5px;
+  flex-wrap: nowrap;
+  width: max-content;
+}
+
+.style-item {
+  width: 80px;
+  flex: 0 0 auto;
+  text-align: center;
+  cursor: pointer;
+}
+
+.style-img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 5px;
+}
+
+.style-name {
+  font-size: 11px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.active-style .style-name {
+  font-weight: 800;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgb(21, 52, 73);
+}
+
+.price-label-jewelry-page{
+  font-size: 10px;
+}
+.price-label-jewelry-page.active {
+  font-weight: 600;
+  border-bottom: 1px solid rgb(21, 52, 73);
+}
+
+.price-box.active .price-checkbox {
+  border-color: #b9c1c8;
+  background-color: rgb(21, 52, 73);
+}
+
+.price-scroll-wrapper {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 8px;
+}
+
+.price-filter-bar {
+  min-width: max-content;
 }

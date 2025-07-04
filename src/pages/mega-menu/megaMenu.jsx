@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./megaMenu.css";
 
-import axiosClient from '../../api/axios'; 
+import axiosClient from "../../api/axios";
 import { useNavigate } from "react-router-dom";
 
 const slugify = (text) =>
@@ -16,11 +16,10 @@ const MegaMenu = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axiosClient.get('/api/categories-map')
-      .then(res => {
-        setMainCategories(res.data.categories);
-        setCategoryMap(res.data.categoryMap);
-      });
+    axiosClient.get("/api/categories-map").then((res) => {
+      setMainCategories(res.data.categories);
+      setCategoryMap(res.data.categoryMap);
+    });
   }, []);
 
   const handleClick = (main, sub = null) => {
@@ -30,10 +29,9 @@ const MegaMenu = () => {
     const params = new URLSearchParams();
     params.set("category", mainParam);
     if (subParam) params.set("subcategory", subParam);
-
-    // navigate(`/products?${params.toString()}`);
     navigate(`/jewelry-list?${params.toString()}`);
   };
+
   return (
     <div className="jwl-mega-menu-container-fixed">
       <div className="jwl-mega-menu">
@@ -76,6 +74,7 @@ const MegaMenu = () => {
                 </a>
               </li>
             </ul>
+
           </div>
         ))}
 
