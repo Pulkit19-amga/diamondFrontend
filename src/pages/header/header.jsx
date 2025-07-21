@@ -10,6 +10,7 @@ const Header = ({ onHoverChange }) => {
   const { cartItems } = useCart();
   const navigate = useNavigate();
   const [showMegaMenu, setShowMegaMenu] = useState(false);
+  const [megaMenuType, setMegaMenuType] = useState(null);
 
   const timeoutRef = useRef(null);
 
@@ -21,8 +22,9 @@ const Header = ({ onHoverChange }) => {
     }
   };
 
-  const handleMegaMenuEnter = () => {
+  const handleMegaMenuEnter = (type) => {
     clearTimeout(timeoutRef.current);
+    setMegaMenuType(type);
     setShowMegaMenu(true);
     onHoverChange && onHoverChange(true);
   };
@@ -30,6 +32,7 @@ const Header = ({ onHoverChange }) => {
   const handleMegaMenuLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setShowMegaMenu(false);
+      setMegaMenuType(null);
       onHoverChange && onHoverChange(false);
     }, 200); // slight delay to allow moving between button and menu
   };
@@ -145,13 +148,26 @@ const Header = ({ onHoverChange }) => {
           <div className="container-fluid">
             <div className="collapse navbar-collapse justify-content-center">
               <ul className="navbar-nav text-center gap-4 align-items-center">
-                <li className="nav-item">
+                <li
+                  className="nav-item position-relative"
+                  onMouseEnter={() => handleMegaMenuEnter("engagement")}
+                  onMouseLeave={handleMegaMenuLeave}
+                >
                   <button
                     className="btn text-uppercase dropdown-toggle text-white"
                     onClick={() => navigate("/engagement")}
                   >
                     ENGAGEMENT
                   </button>
+                  {showMegaMenu && megaMenuType === "engagement" && (
+                    <div
+                      className="jwl-mega-menu-container-fixed"
+                      onMouseEnter={() => handleMegaMenuEnter("engagement")}
+                      onMouseLeave={handleMegaMenuLeave}
+                    >
+                      <MegaMenu type="engagement" />
+                    </div>
+                  )}
                 </li>
                 <li className="nav-item">
                   <button
@@ -178,7 +194,7 @@ const Header = ({ onHoverChange }) => {
                 {/* Jewelry Hover w/ MegaMenu */}
                 <li
                   className="nav-item position-relative"
-                  onMouseEnter={handleMegaMenuEnter}
+                  onMouseEnter={() => handleMegaMenuEnter("jewelry")}
                   onMouseLeave={handleMegaMenuLeave}
                 >
                   <button
@@ -188,13 +204,14 @@ const Header = ({ onHoverChange }) => {
                     Jewelry
                   </button>
 
-                  {showMegaMenu && (
+                  {showMegaMenu && megaMenuType === "jewelry" &&  (
                     <div
                       className="jwl-mega-menu-container-fixed"
-                      onMouseEnter={handleMegaMenuEnter}
+                      onMouseEnter={() => handleMegaMenuEnter("jewelry")}
                       onMouseLeave={handleMegaMenuLeave}
                     >
-                      <MegaMenu />
+                      <MegaMenu type="jewelry" />
+
                     </div>
                   )}
                 </li>

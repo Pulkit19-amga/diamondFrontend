@@ -86,16 +86,10 @@
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
-  padding: 10px 0;
-  border-bottom: 1px solid #ddd;
+  padding: 10px 0 0 0;
   font-size: 14px;
 }
 
-.filters-bar span,
-.filters-bar .dropdown-toggle {
-  color: #333;
-  cursor: pointer;
-}
 
 .filters-bar .form-check-label {
   margin-left: 5px;
@@ -257,7 +251,6 @@
   width: 100%;
   height: 280px;
   overflow: hidden;
-  border-radius: 10px;
   box-shadow: 4px 4px 1px rgba(0, 0, 0, 0.15);
   /* smooth shadow */
 }
@@ -265,7 +258,7 @@
 .product-image-full {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 
@@ -350,7 +343,22 @@
   width: max-content;
 }
 
+.collection-icon-bar {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 5px;
+  flex-wrap: nowrap;
+  width: max-content;
+}
+
 .style-item {
+  width: 80px;
+  flex: 0 0 auto;
+  text-align: center;
+  cursor: pointer;
+}
+
+.collection-item {
   width: 80px;
   flex: 0 0 auto;
   text-align: center;
@@ -376,9 +384,10 @@
   border-bottom: 1px solid rgb(21, 52, 73);
 }
 
-.price-label-jewelry-page{
+.price-label-jewelry-page {
   font-size: 10px;
 }
+
 .price-label-jewelry-page.active {
   font-weight: 600;
   border-bottom: 1px solid rgb(21, 52, 73);
@@ -398,3 +407,66 @@
 .price-filter-bar {
   min-width: max-content;
 }
+
+
+.ready-to-ship-label.active {
+  font-weight: 500;
+  border-bottom: 1px solid black;
+}
+
+.sort-by-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* spacing between label and select */
+  flex-wrap: wrap; /* allow wrap on smaller screens */
+}
+
+.sort-label {
+  white-space: nowrap;
+}
+
+.sort-dropdown {
+  max-width: 250px; /* or whatever fits your layout */
+  width: auto;
+  padding: 6px 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  border: none;
+}
+
+.sort-dropdown:focus {
+  border: 1px solid #1e2b3c;
+  box-sizing: border-box;
+}
+
+.metal-selector {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 15px 0 3px 0;
+}
+
+.metal-item {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  cursor: pointer;
+  font-size: 12px;
+  color: black;
+}
+
+.metal-item .metal-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+
+}
+
+.metal-item.active .metal-label {
+  font-weight: bold;
+  text-decoration: underline;
+}
+

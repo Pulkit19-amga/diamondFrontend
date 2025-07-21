@@ -11,7 +11,6 @@ const Checkout = () => {
   const [selectedMethod, setSelectedMethod] = useState("");
   const [errors, setErrors] = useState({});
 
-
   const location = useLocation();
   const { cartItems: contextCartItems, clearCart } = useCart();
 
@@ -216,10 +215,9 @@ const Checkout = () => {
 
     const params = new URLSearchParams(location.search);
     const paypalStatus = params.get("paypal_status");
-
     const paypalOrderId = params.get("paypal_order_id");
 
-
+    const savedData = localStorage.getItem("pendingAddress");
     if (paypalStatus === "cancelled") {
       // 🟥 Handle PayPal cancellation
       alert("You cancelled the PayPal payment. Your order was not placed.");
@@ -228,17 +226,13 @@ const Checkout = () => {
       navigate("/paymnet-failed", {
         state: {
           orderId: params.get("paypal_order_id"),
-
         },
       });
       return;
     }
 
     if (paypalStatus === "success" && user) {
-
-      const saved = localStorage.getItem("pendingAddress");
-
-      if (!saved) {
+      if (!savedData) {
         console.warn("No pending address found after PayPal redirect.");
         return;
       }
@@ -302,7 +296,6 @@ const Checkout = () => {
             is_gift: savedFormData.isGift || false,
             payment_id: paypalOrderId ?? null,
             notes: formData.notes || "",
-
           });
 
           clearCart();
@@ -319,7 +312,7 @@ const Checkout = () => {
       finalizeOrder();
     }
     // Restore form if coming back from /signin (no paypal status)
-    const savedData = localStorage.getItem("pendingAddress");
+
     if (savedData && !paypalStatus) {
       const { formData, selectedMethod } = JSON.parse(savedData);
       setFormData(formData);
@@ -328,7 +321,6 @@ const Checkout = () => {
     }
   }, [user, navigate, location]);
 
- 
   return (
     <>
       <section className="sign_up">
@@ -520,11 +512,7 @@ const Checkout = () => {
                       <div className="invalid-feedback">{errors.city}</div>
                     )}
                   </div>
-                  {/* <div className="col-md-4">
-                    <select className="form-select form-select-lg">
-                      <option>Alabama</option>
-                    </select>
-                  </div> */}
+
                   <div className="col-md-4">
                     <input
                       type="text"
@@ -855,6 +843,8 @@ const Checkout = () => {
                     const totalItemPrice = (item.price * item.quantity).toFixed(
                       2
                     );
+                    const isDiamond = !!item.certificate_number;
+
                     return (
                       <div
                         className="d-flex align-items-start mb-3"
@@ -862,10 +852,18 @@ const Checkout = () => {
                       >
                         <div className="me-3 position-relative">
                           <img
-                            src={`/images/shapes/${
-                              item.shape?.image || "placeholder.png"
-                            }`}
-                            alt={item.shape?.name || "Diamond"}
+                            src={
+                              isDiamond
+                                ? `/images/shapes/${
+                                    item.shape?.image || "placeholder.png"
+                                  }`
+                                : item.image || "/images/placeholder.png"
+                            }
+                            alt={
+                              isDiamond
+                                ? item.shape?.name || "Diamond"
+                                : item.name || "Jewelry"
+                            }
                             className="product-img"
                             onError={(e) => {
                               e.target.onerror = null;
@@ -879,18 +877,35 @@ const Checkout = () => {
                             {item.quantity}
                           </span>
                         </div>
+
                         <div className="product-info flex-grow-1">
-                          <strong>
-                            {item.carat_weight} Carat {item.shape?.name} Lab
-                            Diamond
-                          </strong>
-                          <br />
-                          <small>Color: {item.color?.name}</small>
-                          <br />
-                          <small>Clarity: {item.clarity?.name}</small>
-                          <br />
-                          <small>Cut: {item.cut?.full_name}</small>
+                          {isDiamond ? (
+                            <>
+                              <strong>
+                                {item.carat_weight} Carat {item.shape?.name} Lab
+                                Diamond
+                              </strong>
+                              <br />
+                              <small>Color: {item.color?.name}</small>
+                              <br />
+                              <small>Clarity: {item.clarity?.name}</small>
+                              <br />
+                              <small>Cut: {item.cut?.full_name}</small>
+                            </>
+                          ) : (
+                            <>
+                              <strong>{item.name || "Jewelry Product"}</strong>
+                              <br />
+                              <small>Weight: {item.weight || "N/A"}g</small>
+                              <br />
+                              <small>
+                                Protection Plan:{" "}
+                                {item.selectedPlan?.toUpperCase() || "N/A"}
+                              </small>
+                            </>
+                          )}
                         </div>
+
                         <div className="text-end">
                           <strong>${totalItemPrice}</strong>
                         </div>

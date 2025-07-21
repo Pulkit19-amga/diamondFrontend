@@ -76,7 +76,7 @@ const DiamondTable = ({
               )}
               <img
                 src={`${imageBaseUrl}${diamond.shape.image}`} // Constructing the full image URL
-                alt={diamond.shape.name}
+                alt={diamond.shape.name || "NA"}
                 className="diamond-img"
               />
             </div>

@@ -1,7 +1,6 @@
 *{
   margin: 0px;
   padding: 0px;
-  font-size: 16px;
 }
 body{
     font-family: "Quicksand", sans-serif;
@@ -92,10 +91,7 @@ left:unset !important;
 .slick-next {
   right: 8px !important;
 }
-p {
-  line-height: 30px;
-  margin-bottom: 25px;
-}
+
 .section-header-lg {
   color: #000;
   font-size: 44px;

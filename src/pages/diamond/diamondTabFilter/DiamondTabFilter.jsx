@@ -67,6 +67,8 @@ const DiamondTabFilter = ({ activeTab, onTabChange, onShapeChange }) => {
           <p>No shapes available</p>
         ) : (
           shapes.map((shape) => {
+            if (!shape || typeof shape !== "object") return null;
+
             const shapeName = shape.name || ""; // fallback just in case
             const shapeSlug = shapeName.toLowerCase().replace(/\s/g, "-");
             const isSelected = selectedShapes.some((s) => s.name === shapeName);
